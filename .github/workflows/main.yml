@@ -11,10 +11,7 @@ on:
 
 jobs:
   build:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [windows-latest, ubuntu-latest]
+    runs-on: windows-latest
 
     steps:
     - name: Check out code
@@ -23,26 +20,19 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: '3.x'  # Use the latest Python 3.x version
+        python-version: '3.x'
 
-    - name: Install dependencies (Windows)
-      if: matrix.os == 'windows-latest'
+    - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install cx_Freeze PyQt6 winshell pyautogui dualsense-controller
-
-    - name: Install dependencies (Linux)
-      if: matrix.os == 'ubuntu-latest'
-      run: |
-        python -m pip install --upgrade pip
-        pip install cx_Freeze PyQt6 dualsense-controller
 
     - name: Build the project
       run: |
         python setup.py build
 
-    - name: Upload build artifacts for ${{ matrix.os }}
+    - name: Upload build artifacts
       uses: actions/upload-artifact@v3
       with:
-        name: build-artifacts-${{ matrix.os }}
-        path: build/makeSense/  # Adjust this if necessary to match the actual build directory
+        name: build-artifacts-windows
+        path: build/makeSense/
