@@ -15,20 +15,13 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
-    <item row="2" column="0">
-     <widget class="QLabel" name="touchpadLabel">
+    <item row="6" column="0" colspan="2">
+     <widget class="QLabel" name="notFoundLabel">
       <property name="text">
-       <string>Touchpad</string>
+       <string>No Dualsense found.</string>
       </property>
-     </widget>
-    </item>
-    <item row="2" column="1">
-     <widget class="QCheckBox" name="touchpadBox">
-      <property name="layoutDirection">
-       <enum>Qt::LayoutDirection::RightToLeft</enum>
-      </property>
-      <property name="text">
-       <string/>
+      <property name="alignment">
+       <set>Qt::AlignmentFlag::AlignCenter</set>
       </property>
      </widget>
     </item>
@@ -50,7 +43,14 @@
       </item>
      </layout>
     </item>
-    <item row="3" column="0" colspan="2">
+    <item row="5" column="0" colspan="2">
+     <widget class="QPushButton" name="applyButton">
+      <property name="text">
+       <string>Apply</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="0" colspan="2">
      <layout class="QGridLayout" name="gridLayout_3">
       <item row="0" column="3">
        <widget class="QSpinBox" name="g">
@@ -96,20 +96,37 @@
       </item>
      </layout>
     </item>
-    <item row="4" column="0" colspan="2">
-     <widget class="QPushButton" name="applyButton">
+    <item row="3" column="0">
+     <widget class="QLabel" name="touchpadLabel">
       <property name="text">
-       <string>Apply</string>
+       <string>Touchpad</string>
       </property>
      </widget>
     </item>
-    <item row="5" column="0" colspan="2">
-     <widget class="QLabel" name="notFoundLabel">
-      <property name="text">
-       <string>No Dualsense found.</string>
+    <item row="3" column="1">
+     <widget class="QCheckBox" name="touchpadBox">
+      <property name="layoutDirection">
+       <enum>Qt::LayoutDirection::RightToLeft</enum>
       </property>
-      <property name="alignment">
-       <set>Qt::AlignmentFlag::AlignCenter</set>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="1">
+     <widget class="QCheckBox" name="startupBox">
+      <property name="layoutDirection">
+       <enum>Qt::LayoutDirection::RightToLeft</enum>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="0">
+     <widget class="QLabel" name="startupLabel">
+      <property name="text">
+       <string>Run at startup</string>
       </property>
      </widget>
     </item>
