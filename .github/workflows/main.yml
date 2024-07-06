@@ -41,8 +41,8 @@ jobs:
       run: |
         python setup.py build
 
-    - name: Upload build artifacts
+    - name: Upload build artifacts for ${{ matrix.os }}
       uses: actions/upload-artifact@v3
       with:
-        name: build-artifacts
-        path: build/makeSense/  # Adjusted to match the build directory in setup.py
+        name: build-artifacts-${{ matrix.os }}
+        path: build/makeSense/  # Adjust this if necessary to match the actual build directory
