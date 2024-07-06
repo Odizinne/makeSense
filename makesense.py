@@ -3,16 +3,19 @@ import os
 import json
 from PyQt6.QtWidgets import QApplication, QMainWindow, QSystemTrayIcon, QMenu
 from PyQt6.QtCore import QTimer, QPoint, QPointF, Qt
-from PyQt6.QtGui import QCursor, QAction, QIcon, QMouseEvent
+from PyQt6.QtGui import QCursor, QAction, QIcon
 from design import Ui_MainWindow
 from dualsense_controller import DualSenseController
 import pyautogui
+import winshell
 
 class MakeSense(QMainWindow):
     def __init__(self):
         super().__init__()
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
+        self.setWindowTitle("makeSense")
+        self.setWindowIcon(QIcon('icon.png'))
 
         self.controller = None
         self.last_touch_position = None
@@ -23,12 +26,14 @@ class MakeSense(QMainWindow):
 
         self.ui.applyButton.clicked.connect(self.set_lightbar_color)
         self.ui.touchpadBox.stateChanged.connect(self.handle_touchpad_state_change)
+        self.ui.startupBox.stateChanged.connect(self.handle_startup_state_change)
 
         self.setup_timers()
         self.create_system_tray_icon()
         self.check_for_controller()
         self.update_battery_level()
         self.handle_touchpad_state_change()
+        self.check_startup_shortcut()
         self.set_lightbar_color()
 
     def create_system_tray_icon(self):
@@ -89,7 +94,13 @@ class MakeSense(QMainWindow):
             else:
                 self.handle_touchpad_events = False
                 print("Touchpad disabled")
-                
+        self.save_settings()
+
+    def handle_startup_state_change(self):
+        if self.ui.startupBox.isChecked():
+            self.create_startup_shortcut()
+        else:
+            self.delete_startup_shortcut()
         self.save_settings()
 
     def check_for_controller(self):
@@ -163,20 +174,42 @@ class MakeSense(QMainWindow):
             self.ui.b.setValue(color["b"])
 
     def save_settings(self):
-        try:
-            settings = {
-                "touchpad_checked": self.ui.touchpadBox.isChecked(),
-                "lightbar_color": {
-                    "r": self.ui.r.value(),
-                    "g": self.ui.g.value(),
-                    "b": self.ui.b.value()
-                }
+        settings = {
+            "touchpad_checked": self.ui.touchpadBox.isChecked(),
+            "lightbar_color": {
+                "r": self.ui.r.value(),
+                "g": self.ui.g.value(),
+                "b": self.ui.b.value()
             }
+        }
 
-            with open(self.settings_file, 'w') as file:
-                json.dump(settings, file)
-        except Exception as e:
-            print(f"Failed to save settings: {e}")
+        with open(self.settings_file, 'w') as file:
+            json.dump(settings, file)
+
+    def create_startup_shortcut(self):
+        target = sys.executable
+        start_dir = os.path.dirname(os.path.realpath(__file__))
+        shortcut_path = os.path.join(winshell.startup(), "MakeSense.lnk")
+
+        winshell.CreateShortcut(
+            Path=shortcut_path,
+            Target=target,
+            StartIn=start_dir,
+            Icon=(target, 0),
+            Description="MakeSense Application"
+        )
+
+    def delete_startup_shortcut(self):
+        shortcut_path = os.path.join(winshell.startup(), "MakeSense.lnk")
+        os.remove(shortcut_path)
+
+
+    def check_startup_shortcut(self):
+        shortcut_path = os.path.join(winshell.startup(), "MakeSense.lnk")
+        if os.path.exists(shortcut_path):
+            self.ui.startupBox.setChecked(True)
+        else:
+            self.ui.startupBox.setChecked(False)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
