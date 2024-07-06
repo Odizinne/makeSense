@@ -76,16 +76,23 @@ class MakeSense(QMainWindow):
             self.ui.batteryBar,
             self.ui.applyButton,
             self.ui.touchpadBox,
-            self.ui.touchpadLabel
+            self.ui.touchpadLabel,
+            self.ui.startupBox,
+            self.ui.startupLabel
         ]
-
+    
         for element in elements_to_toggle:
             element.setVisible(show)
 
         self.ui.notFoundLabel.setVisible(not show)
+        if sys.platform == 'linux':
+            self.ui.startupBox.setVisible(False)
+            self.ui.startupLabel.setVisible(False)
+            self.ui.touchpadBox.setVisible(False)
+            self.ui.touchpadLabel.setVisible(False)
 
     def handle_touchpad_state_change(self):
-        if self.controller:
+        if self.controller and sys.platform == 'win32':
             self.controller.touch_finger_1.on_change(self.on_touchpad_change)
             self.controller.btn_touchpad.on_down(self.send_mouse_left_click_pressed)
             if self.ui.touchpadBox.isChecked():
@@ -202,7 +209,6 @@ class MakeSense(QMainWindow):
     def delete_startup_shortcut(self):
         shortcut_path = os.path.join(winshell.startup(), "MakeSense.lnk")
         os.remove(shortcut_path)
-
 
     def check_startup_shortcut(self):
         shortcut_path = os.path.join(winshell.startup(), "MakeSense.lnk")
