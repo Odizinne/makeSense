@@ -2,8 +2,7 @@
 
 Experimental python Dualsense driver using dualsense-controller 
 
-![image](https://github.com/Odizinne/makeSense/assets/102679854/b46ace7c-6ffa-4f31-aad2-f0edd0579a27)
-
+![image](https://github.com/Odizinne/makeSense/assets/102679854/8d528924-b5cf-4cf4-af6b-7d8c6699609e)
 
 This program is WIP and buggy.
 
@@ -13,7 +12,7 @@ You need Nefarius [HidHide](https://github.com/nefarius/HidHide/releases/downloa
 
 Restart your computer after installation.
 
-Download [latest build]() and extract it.
+Download [latest build](https://github.com/Odizinne/makeSense/releases/download/v0/makeSense.zip) and extract it.
 
 Run `makesense.exe`
 
