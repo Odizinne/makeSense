@@ -1,13 +1,14 @@
 name: Build and Upload Artifacts
 
 on:
-  push:
-    branches:
-      - main
-      - linux-compat
-  pull_request:
-    branches:
-      - main
+  # Disable build until i figure out how to install ViGEmBus driver in ci or bypass it
+  # push:
+  #   branches:
+  #     - main
+  #     - linux-compat
+  # pull_request:
+  #   branches:
+  #     - main
 
 jobs:
   build:
