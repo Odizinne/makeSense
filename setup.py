@@ -1,15 +1,9 @@
 from cx_Freeze import setup, Executable
-import sys
 
 build_dir = "build/makeSense"
-base = None
-zip_include_packages = ['PyQt6', 'dualsense-controller']
-include_files = ['icon.png']
-
-if sys.platform == "win32":
-    base = "Win32GUI"
-    zip_include_packages = ['PyQt6', 'winshell', 'dualsense-controller', 'pyautogui']
-    include_files = ['icon.png', 'dependencies/hidapi/hidapi.dll', 'dependencies/hidapi/hidapi.lib']
+base = "Win32GUI"
+zip_include_packages = ['PyQt6', 'winshell', 'dualsense-controller', 'pyautogui']
+include_files = ['icon.png', 'dependencies/hidapi/hidapi.dll', 'dependencies/hidapi/hidapi.lib']
 
 build_exe_options = {
     "include_files": include_files,

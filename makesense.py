@@ -56,7 +56,6 @@ class MakeSense(QMainWindow):
         self.device_instance_path = None
         self.touchpad_slots_created = False
         self.hidhide_path = r"C:\Program Files\Nefarius Software Solutions\HidHide\x64\hidhidecli.exe"
-        self.vigembus_path = r"C:\Program Files\Nefarius Software Solutions\ViGEm Bus Driver\nefconw.exe"
 
         self.settings_file = os.path.join(os.getenv('APPDATA'), 'makesense', 'settings.json')
         self.load_settings()
@@ -64,7 +63,6 @@ class MakeSense(QMainWindow):
         self.setup_ui_connections()
         self.setup_timers()
         self.create_system_tray_icon()
-        self.check_for_hidhide()
         self.controller_checker = ControllerChecker()
         self.controller_checker.controller_changed.connect(self.on_controller_changed)
         self.controller_checker.start()
@@ -134,10 +132,6 @@ class MakeSense(QMainWindow):
 
         with open(self.settings_file, 'w') as file:
             json.dump(settings, file)
-
-    def check_for_hidhide(self):
-        if not os.path.exists(self.hidhide_path) and not os.path.exists(self.vigembus_path):
-            self.ui.emulateXboxBox.setEnabled(False)
 
     def on_controller_changed(self, connected):
         if connected:
