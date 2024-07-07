@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>377</width>
-    <height>316</height>
+    <height>200</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,16 +15,6 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
-    <item row="6" column="0" colspan="2">
-     <widget class="QLabel" name="notFoundLabel">
-      <property name="text">
-       <string>No Dualsense found.</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignmentFlag::AlignCenter</set>
-      </property>
-     </widget>
-    </item>
     <item row="1" column="0" colspan="2">
      <layout class="QGridLayout" name="gridLayout_2">
       <item row="0" column="1">
@@ -43,14 +33,51 @@
       </item>
      </layout>
     </item>
-    <item row="5" column="0" colspan="2">
+    <item row="2" column="0">
+     <widget class="QLabel" name="startupLabel">
+      <property name="text">
+       <string>Run at startup</string>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="0" colspan="2">
      <widget class="QPushButton" name="applyButton">
       <property name="text">
        <string>Apply</string>
       </property>
      </widget>
     </item>
-    <item row="4" column="0" colspan="2">
+    <item row="3" column="1">
+     <widget class="QCheckBox" name="touchpadBox">
+      <property name="layoutDirection">
+       <enum>Qt::LayoutDirection::RightToLeft</enum>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </item>
+    <item row="7" column="0" colspan="2">
+     <widget class="QLabel" name="notFoundLabel">
+      <property name="text">
+       <string>No Dualsense found.</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignmentFlag::AlignCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="1">
+     <widget class="QCheckBox" name="startupBox">
+      <property name="layoutDirection">
+       <enum>Qt::LayoutDirection::RightToLeft</enum>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="0" colspan="2">
      <layout class="QGridLayout" name="gridLayout_3">
       <item row="0" column="3">
        <widget class="QSpinBox" name="g">
@@ -103,8 +130,8 @@
       </property>
      </widget>
     </item>
-    <item row="3" column="1">
-     <widget class="QCheckBox" name="touchpadBox">
+    <item row="4" column="1">
+     <widget class="QCheckBox" name="emulateXboxBox">
       <property name="layoutDirection">
        <enum>Qt::LayoutDirection::RightToLeft</enum>
       </property>
@@ -113,20 +140,10 @@
       </property>
      </widget>
     </item>
-    <item row="2" column="1">
-     <widget class="QCheckBox" name="startupBox">
-      <property name="layoutDirection">
-       <enum>Qt::LayoutDirection::RightToLeft</enum>
-      </property>
+    <item row="4" column="0">
+     <widget class="QLabel" name="emulateXboxLabel">
       <property name="text">
-       <string/>
-      </property>
-     </widget>
-    </item>
-    <item row="2" column="0">
-     <widget class="QLabel" name="startupLabel">
-      <property name="text">
-       <string>Run at startup</string>
+       <string>Emulate XBOX controller</string>
       </property>
      </widget>
     </item>
