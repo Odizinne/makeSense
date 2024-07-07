@@ -22,7 +22,14 @@ jobs:
       with:
         python-version: '3.x'
 
-    - name: Install dependencies
+    - name: Install ViGEmBus Driver
+      run: |
+        echo Downloading ViGEmBus driver...
+        curl -L -o vigembus_setup.exe https://github.com/ViGEm/ViGEmBus/releases/download/setup-v1.21.442/vigembus_setup.exe
+        echo Installing ViGEmBus driver silently...
+        vigembus_setup.exe /quiet /norestart
+
+    - name: Install Python dependencies
       run: |
         python -m pip install --upgrade pip
         pip install cx_Freeze PyQt6 winshell pyautogui dualsense-controller vgamepad
