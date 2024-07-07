@@ -55,6 +55,7 @@ class MakeSense(QMainWindow):
         self.handle_touchpad_events = False
         self.device_instance_path = None
         self.touchpad_slots_created = False
+        self.rumble_enabled = None
         self.hidhide_path = r"C:\Program Files\Nefarius Software Solutions\HidHide\x64\hidhidecli.exe"
 
         self.settings_file = os.path.join(os.getenv('APPDATA'), 'makesense', 'settings.json')
@@ -78,6 +79,7 @@ class MakeSense(QMainWindow):
         self.ui.touchpadBox.stateChanged.connect(self.handle_touchpad_state_change)
         self.ui.startupBox.stateChanged.connect(self.handle_startup_state_change)
         self.ui.emulateXboxBox.stateChanged.connect(self.handle_xbox_emulation_state_change)
+        self.ui.rumbleBox.stateChanged.connect(self.handle_rumble_state_change)
 
     def setup_timers(self):
         self.battery_timer = QTimer(self)
@@ -124,6 +126,9 @@ class MakeSense(QMainWindow):
             self.ui.g.setValue(settings.get("lightbar_color", {"r": 0, "g": 0, "b": 0}).get("g", 0))
             self.ui.b.setValue(settings.get("lightbar_color", {"r": 0, "g": 0, "b": 0}).get("b", 0))
             self.ui.emulateXboxBox.setChecked(settings.get("emulate_xbox_checked", False))
+            self.ui.rumbleBox.setEnabled(settings.get("emulate_xbox_checked", False))
+            self.ui.rumbleLabel.setEnabled(settings.get("emulate_xbox_checked", False))
+            self.ui.rumbleBox.setChecked(settings.get("rumble_checked", False))
 
     def save_settings(self):
         settings = {
@@ -133,7 +138,8 @@ class MakeSense(QMainWindow):
                 "g": self.ui.g.value(),
                 "b": self.ui.b.value()
             },
-            "emulate_xbox_checked": self.ui.emulateXboxBox.isChecked()
+            "emulate_xbox_checked": self.ui.emulateXboxBox.isChecked(),
+            "rumble_checked": self.ui.rumbleBox.isChecked()
         }
 
         with open(self.settings_file, 'w') as file:
@@ -172,7 +178,8 @@ class MakeSense(QMainWindow):
             self.ui.batteryLabel, self.ui.batteryBar,
             self.ui.applyButton, self.ui.touchpadBox, self.ui.touchpadLabel,
             self.ui.startupBox, self.ui.startupLabel,
-            self.ui.emulateXboxBox, self.ui.emulateXboxLabel
+            self.ui.emulateXboxBox, self.ui.emulateXboxLabel,
+            self.ui.rumbleBox, self.ui.rumbleLabel
         ]
 
         for element in elements_to_toggle:
@@ -196,11 +203,23 @@ class MakeSense(QMainWindow):
             self.delete_startup_shortcut()
         self.save_settings()
 
+    def handle_rumble_state_change(self):
+        if self.controller:
+            if self.ui.rumbleBox.isChecked():
+                self.rumble_enabled = True
+            else:
+                self.rumble_enabled = False
+        self.save_settings()
+
     def handle_xbox_emulation_state_change(self):
         if self.ui.emulateXboxBox.isChecked():
             self.start_xbox_emulation()
+            self.ui.rumbleBox.setEnabled(True)
+            self.ui.rumbleLabel.setEnabled(True)
         else:
             self.stop_xbox_emulation()
+            self.ui.rumbleBox.setEnabled(False)
+            self.ui.rumbleLabel.setEnabled(False)
         self.save_settings()
 
     def start_xbox_emulation(self):
@@ -275,7 +294,8 @@ class MakeSense(QMainWindow):
             self.gamepad.left_trigger(value=int(self.controller.left_trigger.value * 255))
             self.gamepad.right_trigger(value=int(self.controller.right_trigger.value * 255))
 
-            self.gamepad.register_notification(callback_function=self.rumble_callback)
+            if self.rumble_enabled:
+                self.gamepad.register_notification(callback_function=self.rumble_callback)
             self.gamepad.update()
 
     def rumble_callback(self, client, target, large_motor, small_motor, led_number, user_data):
