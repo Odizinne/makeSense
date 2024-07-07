@@ -281,6 +281,8 @@ class MakeSense(QMainWindow):
                 self.controller = None
                 self.toggle_ui_elements(False)
 
+                # implement stop xbox emulation if controller is disconnected
+
     def on_touchpad_change(self, value):
         if self.controller and self.handle_touchpad_events:
             touch_position = QPointF(value.x, value.y)
