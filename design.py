@@ -1,4 +1,4 @@
-# Form implementation generated from reading ui file '.\design.ui'
+# Form implementation generated from reading ui file 'design.ui'
 #
 # Created by: PyQt6 UI code generator 6.7.0
 #
@@ -92,7 +92,7 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.batteryLabel.setText(_translate("MainWindow", "Battery"))
         self.startupLabel.setText(_translate("MainWindow", "Run at startup"))
-        self.applyButton.setText(_translate("MainWindow", "Apply"))
+        self.applyButton.setText(_translate("MainWindow", "Set color"))
         self.notFoundLabel.setText(_translate("MainWindow", "No Dualsense found."))
         self.rLabel.setText(_translate("MainWindow", "Red"))
         self.gLabel.setText(_translate("MainWindow", "Gren"))

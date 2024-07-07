@@ -3,7 +3,7 @@ import os
 import json
 import subprocess
 from PyQt6.QtWidgets import QApplication, QMainWindow, QSystemTrayIcon, QMenu
-from PyQt6.QtCore import QTimer, QThread, pyqtSignal, Qt, QPointF, QPoint
+from PyQt6.QtCore import QTimer, QThread, pyqtSignal, QPointF, QPoint
 from PyQt6.QtGui import QIcon, QAction, QCursor
 import pyautogui
 import winshell
