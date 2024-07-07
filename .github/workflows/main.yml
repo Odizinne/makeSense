@@ -22,12 +22,16 @@ jobs:
       with:
         python-version: '3.x'
 
-    - name: Install ViGEmBus Driver
+    - name: Download ViGEmBus Driver
       run: |
         echo Downloading ViGEmBus driver...
         curl -L -o vigembus_setup.exe https://github.com/nefarius/ViGEmBus/releases/download/v1.22.0/ViGEmBus_1.22.0_x64_x86_arm64.exe
+
+    - name: Install ViGEmBus Driver
+      run: |
         echo Installing ViGEmBus driver silently...
-        vigembus_setup.exe /quiet /norestart
+        .\vigembus_setup.exe /quiet /norestart
+      shell: cmd
 
     - name: Install Python dependencies
       run: |
