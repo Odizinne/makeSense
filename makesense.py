@@ -295,9 +295,8 @@ class MakeSense(QMainWindow):
         
         result = subprocess.run([self.hidhide_path, '--dev-gaming'], capture_output=True, text=True, startupinfo=startupinfo)
         data = json.loads(result.stdout)
-        
         for device in data:
-            if device.get('friendlyName') == "Sony Interactive Entertainment DualSense Wireless Controller":
+            if device.get('friendlyName') == "Sony Interactive Entertainment DualSense Wireless Controller" or device.get('friendlyName') == "Sony Interactive Entertainment Wireless Controller":
                 if device['devices'] and len(device['devices']) > 0:
                     return device['devices'][0].get('deviceInstancePath')
 
