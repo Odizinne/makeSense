@@ -303,7 +303,7 @@ class MakeSense(QMainWindow):
 
     def create_startup_shortcut(self):
         target = sys.executable
-        start_dir = os.path.dirname(os.path.realpath(__file__))
+        start_dir = os.path.dirname(target)
         shortcut_path = os.path.join(winshell.startup(), "MakeSense.lnk")
 
         winshell.CreateShortcut(
