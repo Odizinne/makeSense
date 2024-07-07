@@ -25,7 +25,7 @@ jobs:
     - name: Install ViGEmBus Driver
       run: |
         echo Downloading ViGEmBus driver...
-        curl -L -o vigembus_setup.exe https://github.com/ViGEm/ViGEmBus/releases/download/setup-v1.21.442/vigembus_setup.exe
+        curl -L -o vigembus_setup.exe https://github.com/nefarius/ViGEmBus/releases/download/v1.22.0/ViGEmBus_1.22.0_x64_x86_arm64.exe
         echo Installing ViGEmBus driver silently...
         vigembus_setup.exe /quiet /norestart
 
