@@ -33,7 +33,7 @@ class ControllerChecker(QThread):
             elif not current_controller_present and controller_present_now:
                 self.controller = DualSenseController()
                 self.controller.activate()
-                self.controller.microphone.set_unmuted()
+                self.controller.microphone.set_unmuted() # Disable mic led
                 self.controller_changed.emit(True)
 
             self.msleep(3000)
@@ -66,6 +66,12 @@ class MakeSense(QMainWindow):
         self.controller_checker = ControllerChecker()
         self.controller_checker.controller_changed.connect(self.on_controller_changed)
         self.controller_checker.start()
+        self.initialize_ui_state()
+
+    def initialize_ui_state(self):
+        device_infos = DualSenseController.enumerate_devices()
+        controller_present_now = len(device_infos) > 0
+        self.on_controller_changed(controller_present_now)
 
     def setup_ui_connections(self):
         self.ui.applyButton.clicked.connect(self.set_lightbar_color)
