@@ -234,6 +234,8 @@ class MakeSense(QMainWindow):
         self.handle_touchpad_state_change()
         self.update_battery_level()
         self.check_startup_shortcut()
+        self.handle_xbox_emulation_state_change()
+        self.handle_rumble_state_change()
 
     def toggle_ui_elements(self, show):
         self.ui.controllerFrame.setVisible(show)
@@ -256,8 +258,9 @@ class MakeSense(QMainWindow):
         self.save_settings()
 
     def handle_rumble_state_change(self):
+        print("Rumble state changed")
         if self.controller:
-            if self.ui.rumbleBox.isChecked():
+            if self.ui.rumbleBox.isChecked() and self.ui.rumbleBox.isEnabled():
                 self.rumble_enabled = True
             else:
                 self.rumble_enabled = False
