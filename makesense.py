@@ -332,7 +332,14 @@ class MakeSense(QMainWindow):
     def update_battery_level(self):
         if self.controller:
             battery_level = round(self.controller.battery.value.level_percentage)
+            battery_status = self.controller.battery.value.charging
+            if battery_status:
+                battery_status = "Charging"
+            else:
+                battery_status = "Discharging"
             self.ui.batteryBar.setValue(battery_level)
+            self.ui.batteryLabel.setText(f"{battery_level}%")
+            self.ui.batteryStatusLabel.setText(battery_status)
 
     def get_device_instance_path(self):
         startupinfo = subprocess.STARTUPINFO()
