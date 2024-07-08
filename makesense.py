@@ -47,7 +47,7 @@ class MakeSense(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.setWindowTitle("MakeSense")
-        self.setWindowIcon(QIcon('icon.png'))
+        self.setWindowIcon(QIcon('icons/icon.png'))
         self.setFixedSize(self.size())
 
         self.controller = None
@@ -91,7 +91,7 @@ class MakeSense(QMainWindow):
 
     def create_system_tray_icon(self):
         self.tray_icon = QSystemTrayIcon(self)
-        self.tray_icon.setIcon(QIcon('icon.png'))
+        self.tray_icon.setIcon(QIcon('icons/icon.png'))
 
         show_action = QAction("Show", self)
         show_action.triggered.connect(self.show)
