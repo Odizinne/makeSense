@@ -352,8 +352,10 @@ class MakeSense(QMainWindow):
 
     def rumble_callback(self, client, target, large_motor, small_motor, led_number, user_data):
         if self.controller:
-            self.controller.left_rumble.set(large_motor)
-            self.controller.right_rumble.set(small_motor)
+            converted_large_motor = large_motor / 255.0
+            converted_small_motor = small_motor / 255.0
+            self.controller.left_rumble.set(converted_large_motor)
+            self.controller.right_rumble.set(converted_small_motor)
 
     def update_battery_level(self):
         if self.controller:
