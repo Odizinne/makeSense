@@ -103,10 +103,8 @@ class MakeSense(QMainWindow):
         self.on_controller_changed(controller_present_now)
 
     def setup_ui_connections(self):
-        # Lightbar color control connections
         self.ui.applyButton.clicked.connect(self.set_lightbar_color)
 
-        # Two-way synchronization between sliders and spinboxes
         self.ui.r.valueChanged.connect(self.sync_r_slider_spinbox)
         self.ui.rSlider.valueChanged.connect(self.sync_r_spinbox_slider)
         self.ui.g.valueChanged.connect(self.sync_g_slider_spinbox)
@@ -114,7 +112,6 @@ class MakeSense(QMainWindow):
         self.ui.b.valueChanged.connect(self.sync_b_slider_spinbox)
         self.ui.bSlider.valueChanged.connect(self.sync_b_spinbox_slider)
 
-        # Other UI connections
         self.ui.touchpadBox.stateChanged.connect(self.handle_touchpad_state_change)
         self.ui.startupBox.stateChanged.connect(self.handle_startup_state_change)
         self.ui.emulateXboxBox.stateChanged.connect(self.handle_xbox_emulation_state_change)
@@ -150,20 +147,36 @@ class MakeSense(QMainWindow):
         self.tray_icon.setIcon(QIcon('icons/icon.png'))
 
         show_action = QAction("Show", self)
-        show_action.triggered.connect(self.show)
-        hide_action = QAction("Hide", self)
-        hide_action.triggered.connect(self.hide)
+        show_action.triggered.connect(self.toggle_window)
+
         exit_action = QAction("Exit", self)
         exit_action.triggered.connect(self.quit)
 
         tray_menu = QMenu()
         tray_menu.addAction(show_action)
-        tray_menu.addAction(hide_action)
         tray_menu.addSeparator()
         tray_menu.addAction(exit_action)
 
         self.tray_icon.setContextMenu(tray_menu)
         self.tray_icon.show()
+        self.tray_icon.activated.connect(self.tray_icon_activated)
+
+    def tray_icon_activated(self, reason):
+        if reason == QSystemTrayIcon.ActivationReason.Trigger:
+            if self.isVisible():
+                self.hide()
+                self.tray_icon.contextMenu().actions()[0].setText("Show")
+            else:
+                self.show()
+                self.tray_icon.contextMenu().actions()[0].setText("Hide")
+
+    def toggle_window(self):
+        if self.isVisible():
+            self.hide()
+            self.tray_icon.contextMenu().actions()[0].setText("Show")
+        else:
+            self.show()
+            self.tray_icon.contextMenu().actions()[0].setText("Hide")
 
     def quit(self):
         self.stop_xbox_emulation()
@@ -258,7 +271,6 @@ class MakeSense(QMainWindow):
         self.save_settings()
 
     def handle_rumble_state_change(self):
-        print("Rumble state changed")
         if self.controller:
             if self.ui.rumbleBox.isChecked() and self.ui.rumbleBox.isEnabled():
                 self.rumble_enabled = True
