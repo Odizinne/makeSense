@@ -70,17 +70,47 @@ class MakeSense(QMainWindow):
         self.controller_checker.start()
         self.initialize_ui_state()
 
+
     def initialize_ui_state(self):
         device_infos = DualSenseController.enumerate_devices()
         controller_present_now = len(device_infos) > 0
         self.on_controller_changed(controller_present_now)
 
     def setup_ui_connections(self):
+        # Lightbar color control connections
         self.ui.applyButton.clicked.connect(self.set_lightbar_color)
+
+        # Two-way synchronization between sliders and spinboxes
+        self.ui.r.valueChanged.connect(self.sync_r_slider_spinbox)
+        self.ui.rSlider.valueChanged.connect(self.sync_r_spinbox_slider)
+        self.ui.g.valueChanged.connect(self.sync_g_slider_spinbox)
+        self.ui.gSlider.valueChanged.connect(self.sync_g_spinbox_slider)
+        self.ui.b.valueChanged.connect(self.sync_b_slider_spinbox)
+        self.ui.bSlider.valueChanged.connect(self.sync_b_spinbox_slider)
+
+        # Other UI connections
         self.ui.touchpadBox.stateChanged.connect(self.handle_touchpad_state_change)
         self.ui.startupBox.stateChanged.connect(self.handle_startup_state_change)
         self.ui.emulateXboxBox.stateChanged.connect(self.handle_xbox_emulation_state_change)
         self.ui.rumbleBox.stateChanged.connect(self.handle_rumble_state_change)
+
+    def sync_r_slider_spinbox(self, value):
+        self.ui.rSlider.setValue(value)
+
+    def sync_r_spinbox_slider(self, value):
+        self.ui.r.setValue(value)
+
+    def sync_g_slider_spinbox(self, value):
+        self.ui.gSlider.setValue(value)
+
+    def sync_g_spinbox_slider(self, value):
+        self.ui.g.setValue(value)
+
+    def sync_b_slider_spinbox(self, value):
+        self.ui.bSlider.setValue(value)
+
+    def sync_b_spinbox_slider(self, value):
+        self.ui.b.setValue(value)
 
     def setup_timers(self):
         self.battery_timer = QTimer(self)
@@ -123,9 +153,16 @@ class MakeSense(QMainWindow):
                 settings = json.load(file)
 
             self.ui.touchpadBox.setChecked(settings.get("touchpad_checked", False))
-            self.ui.r.setValue(settings.get("lightbar_color", {"r": 0, "g": 0, "b": 0}).get("r", 0))
-            self.ui.g.setValue(settings.get("lightbar_color", {"r": 0, "g": 0, "b": 0}).get("g", 0))
-            self.ui.b.setValue(settings.get("lightbar_color", {"r": 0, "g": 0, "b": 0}).get("b", 0))
+            r_value = settings.get("lightbar_color", {"r": 0, "g": 0, "b": 0}).get("r", 0)
+            g_value = settings.get("lightbar_color", {"r": 0, "g": 0, "b": 0}).get("g", 0)
+            b_value = settings.get("lightbar_color", {"r": 0, "g": 0, "b": 0}).get("b", 0)
+            self.ui.r.setValue(r_value)
+            self.ui.g.setValue(g_value)
+            self.ui.b.setValue(b_value)
+            self.ui.rSlider.setValue(r_value)
+            self.ui.gSlider.setValue(g_value)
+            self.ui.bSlider.setValue(b_value)
+
             self.ui.emulateXboxBox.setChecked(settings.get("emulate_xbox_checked", False))
             self.ui.rumbleBox.setEnabled(settings.get("emulate_xbox_checked", False))
             self.ui.rumbleLabel.setEnabled(settings.get("emulate_xbox_checked", False))
@@ -173,19 +210,7 @@ class MakeSense(QMainWindow):
         self.check_startup_shortcut()
 
     def toggle_ui_elements(self, show):
-        elements_to_toggle = [
-            self.ui.r, self.ui.g, self.ui.b,
-            self.ui.rLabel, self.ui.gLabel, self.ui.bLabel,
-            self.ui.batteryLabel, self.ui.batteryBar,
-            self.ui.applyButton, self.ui.touchpadBox, self.ui.touchpadLabel,
-            self.ui.startupBox, self.ui.startupLabel,
-            self.ui.emulateXboxBox, self.ui.emulateXboxLabel,
-            self.ui.rumbleBox, self.ui.rumbleLabel
-        ]
-
-        for element in elements_to_toggle:
-            element.setVisible(show)
-
+        self.ui.controllerFrame.setVisible(show)
         self.ui.notFoundLabel.setVisible(not show)
 
     def handle_touchpad_state_change(self):
@@ -378,6 +403,5 @@ class MakeSense(QMainWindow):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    app.setStyle("Fusion")
     makesense = MakeSense()
     sys.exit(app.exec())

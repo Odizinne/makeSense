@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>377</width>
-    <height>282</height>
+    <width>429</width>
+    <height>419</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,218 +15,414 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
-    <item row="10" column="0">
+    <item row="1" column="0">
+     <widget class="QFrame" name="controllerFrame">
+      <layout class="QGridLayout" name="gridLayout_7">
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item row="0" column="0">
+        <widget class="QLabel" name="batteryLabel">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="font">
+          <font>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>Battery</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="label">
+         <property name="font">
+          <font>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>Settings</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0">
+        <widget class="QLabel" name="label_2">
+         <property name="font">
+          <font>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>Lightbar</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="0">
+        <widget class="QFrame" name="lightbarFrame">
+         <property name="frameShape">
+          <enum>QFrame::Shape::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Shadow::Sunken</enum>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_5">
+          <property name="leftMargin">
+           <number>9</number>
+          </property>
+          <property name="topMargin">
+           <number>9</number>
+          </property>
+          <property name="rightMargin">
+           <number>9</number>
+          </property>
+          <property name="bottomMargin">
+           <number>9</number>
+          </property>
+          <property name="verticalSpacing">
+           <number>9</number>
+          </property>
+          <item row="1" column="0">
+           <widget class="QLabel" name="gLabel">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>Green</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QSlider" name="bSlider">
+            <property name="maximum">
+             <number>255</number>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Orientation::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="2">
+           <widget class="QSpinBox" name="g">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>80</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="wrapping">
+             <bool>false</bool>
+            </property>
+            <property name="frame">
+             <bool>true</bool>
+            </property>
+            <property name="buttonSymbols">
+             <enum>QAbstractSpinBox::ButtonSymbols::UpDownArrows</enum>
+            </property>
+            <property name="showGroupSeparator" stdset="0">
+             <bool>false</bool>
+            </property>
+            <property name="maximum">
+             <number>255</number>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0">
+           <widget class="QLabel" name="rLabel">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>Red</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QSlider" name="rSlider">
+            <property name="maximum">
+             <number>255</number>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Orientation::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="2">
+           <widget class="QSpinBox" name="r">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>80</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="wrapping">
+             <bool>false</bool>
+            </property>
+            <property name="frame">
+             <bool>true</bool>
+            </property>
+            <property name="buttonSymbols">
+             <enum>QAbstractSpinBox::ButtonSymbols::UpDownArrows</enum>
+            </property>
+            <property name="showGroupSeparator" stdset="0">
+             <bool>false</bool>
+            </property>
+            <property name="maximum">
+             <number>255</number>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QSlider" name="gSlider">
+            <property name="maximum">
+             <number>255</number>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Orientation::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="bLabel">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>Blue</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="2">
+           <widget class="QSpinBox" name="b">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>80</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="wrapping">
+             <bool>false</bool>
+            </property>
+            <property name="frame">
+             <bool>true</bool>
+            </property>
+            <property name="buttonSymbols">
+             <enum>QAbstractSpinBox::ButtonSymbols::UpDownArrows</enum>
+            </property>
+            <property name="showGroupSeparator" stdset="0">
+             <bool>false</bool>
+            </property>
+            <property name="maximum">
+             <number>255</number>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0" colspan="3">
+           <widget class="QPushButton" name="applyButton">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>Set color</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QFrame" name="batteryFrame">
+         <property name="frameShape">
+          <enum>QFrame::Shape::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Shadow::Sunken</enum>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_3">
+          <property name="leftMargin">
+           <number>9</number>
+          </property>
+          <property name="topMargin">
+           <number>9</number>
+          </property>
+          <property name="rightMargin">
+           <number>9</number>
+          </property>
+          <property name="bottomMargin">
+           <number>9</number>
+          </property>
+          <item row="0" column="0">
+           <widget class="QProgressBar" name="batteryBar">
+            <property name="value">
+             <number>24</number>
+            </property>
+            <property name="invertedAppearance">
+             <bool>false</bool>
+            </property>
+            <property name="textDirection">
+             <enum>QProgressBar::Direction::TopToBottom</enum>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="QFrame" name="settingsFrame">
+         <property name="frameShape">
+          <enum>QFrame::Shape::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Shadow::Sunken</enum>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_4">
+          <property name="leftMargin">
+           <number>9</number>
+          </property>
+          <property name="topMargin">
+           <number>9</number>
+          </property>
+          <property name="rightMargin">
+           <number>9</number>
+          </property>
+          <property name="bottomMargin">
+           <number>9</number>
+          </property>
+          <property name="verticalSpacing">
+           <number>12</number>
+          </property>
+          <item row="2" column="1">
+           <widget class="QCheckBox" name="emulateXboxBox">
+            <property name="layoutDirection">
+             <enum>Qt::LayoutDirection::RightToLeft</enum>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="emulateXboxLabel">
+            <property name="text">
+             <string>Emulate XBOX controller</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="touchpadLabel">
+            <property name="text">
+             <string>Touchpad</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QCheckBox" name="touchpadBox">
+            <property name="layoutDirection">
+             <enum>Qt::LayoutDirection::RightToLeft</enum>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QCheckBox" name="startupBox">
+            <property name="layoutDirection">
+             <enum>Qt::LayoutDirection::RightToLeft</enum>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0">
+           <widget class="QLabel" name="startupLabel">
+            <property name="text">
+             <string>Run at startup</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QLabel" name="rumbleLabel">
+            <property name="text">
+             <string>Rumble</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="QCheckBox" name="rumbleBox">
+            <property name="layoutDirection">
+             <enum>Qt::LayoutDirection::RightToLeft</enum>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item row="0" column="0" colspan="2">
      <widget class="QLabel" name="notFoundLabel">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
       <property name="text">
        <string>No Dualsense found.</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignmentFlag::AlignCenter</set>
       </property>
-     </widget>
-    </item>
-    <item row="3" column="0">
-     <widget class="QFrame" name="horizontalFrame_3">
-      <layout class="QHBoxLayout" name="emulateXboxFrame">
-       <property name="bottomMargin">
-        <number>0</number>
-       </property>
-       <item>
-        <widget class="QLabel" name="emulateXboxLabel">
-         <property name="text">
-          <string>Emulate XBOX controller</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QCheckBox" name="emulateXboxBox">
-         <property name="layoutDirection">
-          <enum>Qt::LayoutDirection::RightToLeft</enum>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-    </item>
-    <item row="0" column="0">
-     <widget class="QFrame" name="batteryFrame_2">
-      <layout class="QGridLayout" name="batteryFrame">
-       <property name="bottomMargin">
-        <number>0</number>
-       </property>
-       <item row="0" column="1">
-        <widget class="QLabel" name="batteryLabel">
-         <property name="text">
-          <string>Battery</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="2">
-        <widget class="QProgressBar" name="batteryBar">
-         <property name="value">
-          <number>24</number>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-    </item>
-    <item row="7" column="0">
-     <widget class="QFrame" name="rgbFrame_2">
-      <layout class="QGridLayout" name="rgbFrame">
-       <property name="bottomMargin">
-        <number>0</number>
-       </property>
-       <item row="0" column="3">
-        <widget class="QSpinBox" name="g">
-         <property name="maximum">
-          <number>255</number>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="0">
-        <widget class="QLabel" name="rLabel">
-         <property name="text">
-          <string>Red</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="2">
-        <widget class="QLabel" name="gLabel">
-         <property name="text">
-          <string>Green</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1">
-        <widget class="QSpinBox" name="r">
-         <property name="maximum">
-          <number>255</number>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="4">
-        <widget class="QLabel" name="bLabel">
-         <property name="text">
-          <string>Blue</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="5">
-        <widget class="QSpinBox" name="b">
-         <property name="maximum">
-          <number>255</number>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-    </item>
-    <item row="8" column="0">
-     <widget class="QFrame" name="gridFrame">
-      <layout class="QGridLayout" name="applyFrame">
-       <item row="0" column="1">
-        <widget class="QPushButton" name="applyButton">
-         <property name="text">
-          <string>Set color</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="0">
-        <spacer name="horizontalSpacer">
-         <property name="orientation">
-          <enum>Qt::Orientation::Horizontal</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>40</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-      </layout>
-     </widget>
-    </item>
-    <item row="4" column="0">
-     <widget class="QFrame" name="horizontalFrame_4">
-      <layout class="QHBoxLayout" name="rumbleFrame">
-       <property name="bottomMargin">
-        <number>0</number>
-       </property>
-       <item>
-        <widget class="QLabel" name="rumbleLabel">
-         <property name="text">
-          <string>Rumble</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QCheckBox" name="rumbleBox">
-         <property name="layoutDirection">
-          <enum>Qt::LayoutDirection::RightToLeft</enum>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-    </item>
-    <item row="2" column="0">
-     <widget class="QFrame" name="horizontalFrame_2">
-      <layout class="QGridLayout" name="gridLayout_2">
-       <property name="bottomMargin">
-        <number>0</number>
-       </property>
-       <item row="0" column="0">
-        <widget class="QLabel" name="touchpadLabel">
-         <property name="text">
-          <string>Touchpad</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1">
-        <widget class="QCheckBox" name="touchpadBox">
-         <property name="layoutDirection">
-          <enum>Qt::LayoutDirection::RightToLeft</enum>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-    </item>
-    <item row="1" column="0">
-     <widget class="QFrame" name="horizontalFrame">
-      <layout class="QHBoxLayout" name="startupFrame">
-       <property name="bottomMargin">
-        <number>0</number>
-       </property>
-       <item>
-        <widget class="QLabel" name="startupLabel">
-         <property name="text">
-          <string>Run at startup</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QCheckBox" name="startupBox">
-         <property name="layoutDirection">
-          <enum>Qt::LayoutDirection::RightToLeft</enum>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-        </widget>
-       </item>
-      </layout>
      </widget>
     </item>
    </layout>
