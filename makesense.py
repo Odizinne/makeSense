@@ -1,13 +1,39 @@
 import sys
 import os
+from PyQt6.QtWidgets import QApplication, QMessageBox
+from PyQt6.QtGui import QIcon
+
+def check_dependencies():
+    hidhide_path = r"C:\Program Files\Nefarius Software Solutions\HidHide\x64\hidhidecli.exe"
+    vigembus_path = r"C:\Program Files\Nefarius Software Solutions\ViGEm Bus Driver\nefconw.exe"
+
+    missing_components = []
+
+    if not os.path.exists(hidhide_path):
+        missing_components.append("HidHide")
+    if not os.path.exists(vigembus_path):
+        missing_components.append("ViGEm Bus Driver")
+
+    if missing_components:
+        error_message = "The following components are missing:\n" + "\n".join(missing_components) + "\n\nPlease install the missing components."
+        show_error_and_exit("Missing Dependencies", error_message)
+
+def show_error_and_exit(title, message):
+    app = QApplication(sys.argv)
+    app.setWindowIcon(QIcon('icons/icon.png'))
+    QMessageBox.critical(None, title, message)
+    sys.exit(1)
+
+check_dependencies()
+
+import vgamepad as vg
+from PyQt6.QtWidgets import QMainWindow, QSystemTrayIcon, QMenu
+from PyQt6.QtCore import QTimer, QThread, pyqtSignal, QPointF, QPoint
+from PyQt6.QtGui import QAction, QCursor
 import json
 import subprocess
-from PyQt6.QtWidgets import QApplication, QMainWindow, QSystemTrayIcon, QMenu
-from PyQt6.QtCore import QTimer, QThread, pyqtSignal, QPointF, QPoint
-from PyQt6.QtGui import QIcon, QAction, QCursor
 import pyautogui
 import winshell
-import vgamepad as vg
 from design import Ui_MainWindow
 from dualsense_controller import DualSenseController
 
