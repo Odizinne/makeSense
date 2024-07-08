@@ -36,7 +36,7 @@ class ControllerChecker(QThread):
                 self.controller.microphone.set_unmuted() # Disable mic led
                 self.controller_changed.emit(True)
 
-            self.msleep(3000)
+            self.msleep(1000)
 
     def stop(self):
         self.running = False
@@ -48,6 +48,7 @@ class MakeSense(QMainWindow):
         self.ui.setupUi(self)
         self.setWindowTitle("MakeSense")
         self.setWindowIcon(QIcon('icon.png'))
+        self.setFixedSize(self.size())
 
         self.controller = None
         self.gamepad = None
