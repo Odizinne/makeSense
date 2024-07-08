@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>429</width>
-    <height>441</height>
+    <height>475</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -362,10 +362,13 @@
             </property>
            </widget>
           </item>
-          <item row="2" column="0">
-           <widget class="QLabel" name="emulateXboxLabel">
+          <item row="0" column="1">
+           <widget class="QCheckBox" name="startupBox">
+            <property name="layoutDirection">
+             <enum>Qt::LayoutDirection::RightToLeft</enum>
+            </property>
             <property name="text">
-             <string>Emulate XBOX controller</string>
+             <string/>
             </property>
            </widget>
           </item>
@@ -373,6 +376,23 @@
            <widget class="QLabel" name="touchpadLabel">
             <property name="text">
              <string>Touchpad</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="QCheckBox" name="rumbleBox">
+            <property name="layoutDirection">
+             <enum>Qt::LayoutDirection::RightToLeft</enum>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QLabel" name="rumbleLabel">
+            <property name="text">
+             <string>Rumble</string>
             </property>
            </widget>
           </item>
@@ -386,13 +406,10 @@
             </property>
            </widget>
           </item>
-          <item row="0" column="1">
-           <widget class="QCheckBox" name="startupBox">
-            <property name="layoutDirection">
-             <enum>Qt::LayoutDirection::RightToLeft</enum>
-            </property>
+          <item row="2" column="0">
+           <widget class="QLabel" name="emulateXboxLabel">
             <property name="text">
-             <string/>
+             <string>Emulate XBOX controller</string>
             </property>
            </widget>
           </item>
@@ -403,22 +420,15 @@
             </property>
            </widget>
           </item>
-          <item row="3" column="0">
-           <widget class="QLabel" name="rumbleLabel">
+          <item row="4" column="0">
+           <widget class="QLabel" name="label_3">
             <property name="text">
-             <string>Rumble</string>
+             <string>Mic button shortcut</string>
             </property>
            </widget>
           </item>
-          <item row="3" column="1">
-           <widget class="QCheckBox" name="rumbleBox">
-            <property name="layoutDirection">
-             <enum>Qt::LayoutDirection::RightToLeft</enum>
-            </property>
-            <property name="text">
-             <string/>
-            </property>
-           </widget>
+          <item row="4" column="1">
+           <widget class="QComboBox" name="shortcutComboBox"/>
           </item>
          </layout>
         </widget>

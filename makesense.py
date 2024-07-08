@@ -82,10 +82,14 @@ class MakeSense(QMainWindow):
         self.handle_touchpad_events = False
         self.device_instance_path = None
         self.touchpad_slots_created = False
+        self.toggle_mic_slot_created = False
+        self.toggle_touchpad_slot_created = False
+        self.toggle_xbox_emulation_slot_created = False
         self.rumble_enabled = None
         self.hidhide_path = r"C:\Program Files\Nefarius Software Solutions\HidHide\x64\hidhidecli.exe"
-
         self.settings_file = os.path.join(os.getenv('APPDATA'), 'makesense', 'settings.json')
+
+        self.ui.shortcutComboBox.addItems(["Toggle mic state", "Toggle touchpad", "Toggle emulated XBOX"])
         self.load_settings()
 
         self.setup_ui_connections()
@@ -116,6 +120,8 @@ class MakeSense(QMainWindow):
         self.ui.startupBox.stateChanged.connect(self.handle_startup_state_change)
         self.ui.emulateXboxBox.stateChanged.connect(self.handle_xbox_emulation_state_change)
         self.ui.rumbleBox.stateChanged.connect(self.handle_rumble_state_change)
+
+        self.ui.shortcutComboBox.currentIndexChanged.connect(self.handle_shortcutComboBox)
 
     def sync_r_slider_spinbox(self, value):
         self.ui.rSlider.setValue(value)
@@ -195,6 +201,7 @@ class MakeSense(QMainWindow):
             r_value = settings.get("lightbar_color", {"r": 0, "g": 0, "b": 0}).get("r", 0)
             g_value = settings.get("lightbar_color", {"r": 0, "g": 0, "b": 0}).get("g", 0)
             b_value = settings.get("lightbar_color", {"r": 0, "g": 0, "b": 0}).get("b", 0)
+            index = settings.get("shortcut_combo_index", 0)
             self.ui.r.setValue(r_value)
             self.ui.g.setValue(g_value)
             self.ui.b.setValue(b_value)
@@ -207,6 +214,8 @@ class MakeSense(QMainWindow):
             self.ui.rumbleLabel.setEnabled(settings.get("emulate_xbox_checked", False))
             self.ui.rumbleBox.setChecked(settings.get("rumble_checked", False))
 
+            self.ui.shortcutComboBox.setCurrentIndex(index)
+
     def save_settings(self):
         settings = {
             "touchpad_checked": self.ui.touchpadBox.isChecked(),
@@ -216,7 +225,8 @@ class MakeSense(QMainWindow):
                 "b": self.ui.b.value()
             },
             "emulate_xbox_checked": self.ui.emulateXboxBox.isChecked(),
-            "rumble_checked": self.ui.rumbleBox.isChecked()
+            "rumble_checked": self.ui.rumbleBox.isChecked(),
+            "shortcut_combo_index" : self.ui.shortcutComboBox.currentIndex()
         }
 
         with open(self.settings_file, 'w') as file:
@@ -249,6 +259,7 @@ class MakeSense(QMainWindow):
         self.check_startup_shortcut()
         self.handle_xbox_emulation_state_change()
         self.handle_rumble_state_change()
+        self.handle_shortcutComboBox()
 
     def toggle_ui_elements(self, show):
         self.ui.controllerFrame.setVisible(show)
@@ -277,6 +288,35 @@ class MakeSense(QMainWindow):
             else:
                 self.rumble_enabled = False
         self.save_settings()
+
+    def toggle_mic_led(self):
+        if self.ui.shortcutComboBox.currentIndex() == 0:
+            self.controller.microphone.toggle_muted()
+
+    def toggle_touchpad(self):
+        if self.ui.shortcutComboBox.currentIndex() == 1:
+            self.ui.touchpadBox.setChecked(not self.ui.touchpadBox.isChecked())
+
+    def toggle_xbox_emulation(self):
+        if self.ui.shortcutComboBox.currentIndex() == 2:
+            self.ui.emulateXboxBox.setChecked(not self.ui.emulateXboxBox.isChecked())
+
+    def handle_shortcutComboBox(self):
+        if self.controller:
+                index = self.ui.shortcutComboBox.currentIndex()
+                if index == 0:
+                    if not self.toggle_mic_slot_created:
+                        self.controller.btn_mute.on_down(self.toggle_mic_led)
+                        self.toggle_mic_slot_created = True
+                elif index == 1:
+                    if not self.toggle_touchpad_slot_created:
+                        self.controller.btn_mute.on_down(self.toggle_touchpad)
+                        self.toggle_touchpad_slot_created = True
+                elif index == 2:
+                    if not self.toggle_xbox_emulation_slot_created:
+                        self.controller.btn_mute.on_down(self.toggle_xbox_emulation)
+                        self.toggle_xbox_emulation_slot_created = True
+                self.save_settings()
 
     def handle_xbox_emulation_state_change(self):
         if self.ui.emulateXboxBox.isChecked():
@@ -440,7 +480,7 @@ class MakeSense(QMainWindow):
     def send_mouse_left_click_pressed(self):
         if self.controller and self.handle_touchpad_events:
             pyautogui.leftClick()
-
+            
     def set_lightbar_color(self):
         r = self.ui.r.value()
         g = self.ui.g.value()
