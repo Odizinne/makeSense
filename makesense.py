@@ -250,6 +250,14 @@ class MakeSense(QMainWindow):
     def toggle_xbox_emulation(self):
         if self.ui.shortcutComboBox.currentIndex() == 2:
             self.ui.emulateXboxBox.setChecked(not self.ui.emulateXboxBox.isChecked())
+            xbox_status = "enabled" if self.ui.emulateXboxBox.isChecked() else "disabled"
+            dualsense_status = "hidden" if self.ui.emulateXboxBox.isChecked() else "visible"
+            self.tray_icon.showMessage(
+                f"XBOX controller emulation {xbox_status}.",
+                f"Dualsense controller is now {dualsense_status}.",
+                QSystemTrayIcon.MessageIcon.Information,
+                3000
+            )
 
     def handle_trigger_effect_change(self):
         if self.controller:
@@ -286,6 +294,7 @@ class MakeSense(QMainWindow):
                 if not self.toggle_xbox_emulation_slot_created:
                     self.controller.btn_mute.on_down(self.toggle_xbox_emulation)
                     self.toggle_xbox_emulation_slot_created = True
+
             self.save_settings()
 
     def handle_xbox_emulation_state_change(self):
