@@ -45,9 +45,10 @@ To build an executable by yourself, you'll need the following dependencies:
 - dualsense-controller
 - PyQt6
 - winshell
+- winreg
 - PyAutoGUI
 
-`pip install cx_freeze PyQt6 winshell PyAutoGUI dualsense-controller vgamepad`
+`pip install cx_freeze PyQt6 winshell winreg PyAutoGUI dualsense-controller vgamepad`
 
 If you do not have ViGEmBus driver installer, vgamepad will prompt you to install it.  
 You must install HidHide.
