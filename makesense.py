@@ -309,12 +309,14 @@ class MakeSense(QMainWindow):
         if self.controller and self.gamepad is None:
             self.device_instance_path = self.get_device_instance_path()
             self.gamepad = vg.VX360Gamepad()
+            self.gamepad.register_notification(callback_function=self.rumble_callback)
             self.hide_dualsense_controller()
             self.map_ds_to_xbox()
             self.xbox_emulation_timer.start(10)
 
     def stop_xbox_emulation(self):
         if self.gamepad:
+            self.gamepad.unregister_notification()
             self.gamepad = None
             self.show_dualsense_controller()
             self.xbox_emulation_timer.stop()
@@ -392,7 +394,7 @@ class MakeSense(QMainWindow):
             self.gamepad.right_trigger(value=int(self.controller.right_trigger.value * 255))
 
             
-            self.gamepad.register_notification(callback_function=self.rumble_callback)
+            
             self.gamepad.update()
 
     def rumble_callback(self, client, target, large_motor, small_motor, led_number, user_data):
