@@ -2,7 +2,7 @@
 
 Experimental python Dualsense driver using dualsense-controller 
 
-![image](https://github.com/Odizinne/makeSense/assets/102679854/ee81d7a9-1357-4dd2-8634-497d1fef134d)
+![image](screenshots/makeSense.png)
 
 ## Test
 
