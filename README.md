@@ -1,6 +1,6 @@
 # makeSense
 
-Experimental python Dualsense driver using dualsense-controller 
+Python Dualsense driver using dualsense-controller 
 
 ![image](screenshots/makeSense.png)
 
@@ -9,11 +9,14 @@ Experimental python Dualsense driver using dualsense-controller
 What's working:
 - LED
 - Touchpad
-- XBOX controller emulation
-- Rumble with emulated XBOX controller should be fixed now, i'll remove rumble checkbox after further testing.
+- Virtual XBOX controller
 
 What's partially working:
 - Battery percentage
+
+What's not implemented:
+- Multiple controller support
+- Trigger effects
 
 You need Nefarius [HidHide](https://github.com/nefarius/HidHide/releases/download/v1.5.230.0/HidHide_1.5.230_x64.exe) and [ViGEmBus Driver](https://github.com/nefarius/ViGEmBus/releases/download/v1.22.0/ViGEmBus_1.22.0_x64_x86_arm64.exe) installed in default location.
 
