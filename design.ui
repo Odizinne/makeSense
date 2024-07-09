@@ -40,6 +40,9 @@
          <property name="text">
           <string>Lightbar</string>
          </property>
+         <property name="indent">
+          <number>3</number>
+         </property>
         </widget>
        </item>
        <item row="2" column="0">
@@ -52,6 +55,9 @@
          <property name="text">
           <string>Settings</string>
          </property>
+         <property name="indent">
+          <number>3</number>
+         </property>
         </widget>
        </item>
        <item row="4" column="0">
@@ -63,6 +69,9 @@
          </property>
          <property name="text">
           <string>Virtual gamepad</string>
+         </property>
+         <property name="indent">
+          <number>3</number>
          </property>
         </widget>
        </item>
@@ -81,6 +90,9 @@
          </property>
          <property name="text">
           <string>Battery</string>
+         </property>
+         <property name="indent">
+          <number>3</number>
          </property>
         </widget>
        </item>
@@ -333,7 +345,7 @@
           <item row="1" column="0">
            <widget class="QLabel" name="batteryStatusLabel">
             <property name="text">
-             <string>TextLabel</string>
+             <string>Status</string>
             </property>
            </widget>
           </item>
@@ -401,7 +413,7 @@
           <item row="4" column="0">
            <widget class="QLabel" name="label_3">
             <property name="text">
-             <string>Mic button shortcut</string>
+             <string>Mic button</string>
             </property>
            </widget>
           </item>

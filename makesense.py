@@ -89,7 +89,7 @@ class MakeSense(QMainWindow):
         self.hidhide_path = r"C:\Program Files\Nefarius Software Solutions\HidHide\x64\hidhidecli.exe"
         self.settings_file = os.path.join(os.getenv('APPDATA'), 'makesense', 'settings.json')
 
-        self.ui.shortcutComboBox.addItems(["Toggle mic state", "Toggle touchpad", "Toggle emulated XBOX"])
+        self.ui.shortcutComboBox.addItems(["Toggle mic state", "Toggle touchpad", "Toggle virtual XBOX"])
         self.load_settings()
 
         self.setup_ui_connections()
