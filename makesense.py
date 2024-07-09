@@ -85,7 +85,7 @@ class MakeSense(QMainWindow):
         self.toggle_mic_slot_created = False
         self.toggle_touchpad_slot_created = False
         self.toggle_xbox_emulation_slot_created = False
-        self.rumble_enabled = None
+        self.rumble_intensity = 50
         self.hidhide_path = r"C:\Program Files\Nefarius Software Solutions\HidHide\x64\hidhidecli.exe"
         self.settings_file = os.path.join(os.getenv('APPDATA'), 'makesense', 'settings.json')
 
@@ -119,7 +119,7 @@ class MakeSense(QMainWindow):
         self.ui.touchpadBox.stateChanged.connect(self.handle_touchpad_state_change)
         self.ui.startupBox.stateChanged.connect(self.handle_startup_state_change)
         self.ui.emulateXboxBox.stateChanged.connect(self.handle_xbox_emulation_state_change)
-        self.ui.rumbleBox.stateChanged.connect(self.handle_rumble_state_change)
+        self.ui.rumbleSlider.valueChanged.connect(self.handle_rumble_value_change)
 
         self.ui.shortcutComboBox.currentIndexChanged.connect(self.handle_shortcutComboBox)
 
@@ -210,9 +210,9 @@ class MakeSense(QMainWindow):
             self.ui.bSlider.setValue(b_value)
 
             self.ui.emulateXboxBox.setChecked(settings.get("emulate_xbox_checked", False))
-            self.ui.rumbleBox.setEnabled(settings.get("emulate_xbox_checked", False))
+            self.ui.rumbleSlider.setEnabled(settings.get("emulate_xbox_checked", False))
             self.ui.rumbleLabel.setEnabled(settings.get("emulate_xbox_checked", False))
-            self.ui.rumbleBox.setChecked(settings.get("rumble_checked", False))
+            self.ui.rumbleSlider.setValue(settings.get("rumble_intensity", 50))
 
             self.ui.shortcutComboBox.setCurrentIndex(index)
 
@@ -225,7 +225,7 @@ class MakeSense(QMainWindow):
                 "b": self.ui.b.value()
             },
             "emulate_xbox_checked": self.ui.emulateXboxBox.isChecked(),
-            "rumble_checked": self.ui.rumbleBox.isChecked(),
+            "rumble_intensity": self.ui.rumbleSlider.value(),
             "shortcut_combo_index" : self.ui.shortcutComboBox.currentIndex()
         }
 
@@ -258,7 +258,7 @@ class MakeSense(QMainWindow):
         self.update_battery_level()
         self.check_startup_shortcut()
         self.handle_xbox_emulation_state_change()
-        self.handle_rumble_state_change()
+        self.handle_rumble_value_change()
         self.handle_shortcutComboBox()
 
     def toggle_ui_elements(self, show):
@@ -281,12 +281,9 @@ class MakeSense(QMainWindow):
             self.delete_startup_shortcut()
         self.save_settings()
 
-    def handle_rumble_state_change(self):
+    def handle_rumble_value_change(self):
         if self.controller:
-            if self.ui.rumbleBox.isChecked() and self.ui.rumbleBox.isEnabled():
-                self.rumble_enabled = True
-            else:
-                self.rumble_enabled = False
+            self.rumble_intensity = self.ui.rumbleSlider.value()
         self.save_settings()
 
     def toggle_mic_led(self):
@@ -321,11 +318,11 @@ class MakeSense(QMainWindow):
     def handle_xbox_emulation_state_change(self):
         if self.ui.emulateXboxBox.isChecked():
             self.start_xbox_emulation()
-            self.ui.rumbleBox.setEnabled(True)
+            self.ui.rumbleSlider.setEnabled(True)
             self.ui.rumbleLabel.setEnabled(True)
         else:
             self.stop_xbox_emulation()
-            self.ui.rumbleBox.setEnabled(False)
+            self.ui.rumbleSlider.setEnabled(False)
             self.ui.rumbleLabel.setEnabled(False)
         self.save_settings()
 
@@ -401,14 +398,14 @@ class MakeSense(QMainWindow):
             self.gamepad.left_trigger(value=int(self.controller.left_trigger.value * 255))
             self.gamepad.right_trigger(value=int(self.controller.right_trigger.value * 255))
 
-            if self.rumble_enabled:
-                self.gamepad.register_notification(callback_function=self.rumble_callback)
+            
+            self.gamepad.register_notification(callback_function=self.rumble_callback)
             self.gamepad.update()
 
     def rumble_callback(self, client, target, large_motor, small_motor, led_number, user_data):
         if self.controller:
-            converted_large_motor = large_motor / 255.0
-            converted_small_motor = small_motor / 255.0
+            converted_large_motor = (large_motor / 255.0) * (self.rumble_intensity / 100)
+            converted_small_motor = (small_motor / 255.0) * (self.rumble_intensity / 100)
             self.controller.left_rumble.set(converted_large_motor)
             self.controller.right_rumble.set(converted_small_motor)
 
