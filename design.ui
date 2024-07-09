@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>429</width>
-    <height>517</height>
+    <height>551</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -376,6 +376,23 @@
           <property name="verticalSpacing">
            <number>12</number>
           </property>
+          <item row="4" column="1">
+           <widget class="QComboBox" name="shortcutComboBox"/>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="touchpadLabel">
+            <property name="text">
+             <string>Touchpad</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0">
+           <widget class="QLabel" name="startupLabel">
+            <property name="text">
+             <string>Run at startup</string>
+            </property>
+           </widget>
+          </item>
           <item row="0" column="1">
            <widget class="QCheckBox" name="startupBox">
             <property name="layoutDirection">
@@ -383,13 +400,6 @@
             </property>
             <property name="text">
              <string/>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="touchpadLabel">
-            <property name="text">
-             <string>Touchpad</string>
             </property>
            </widget>
           </item>
@@ -403,13 +413,6 @@
             </property>
            </widget>
           </item>
-          <item row="0" column="0">
-           <widget class="QLabel" name="startupLabel">
-            <property name="text">
-             <string>Run at startup</string>
-            </property>
-           </widget>
-          </item>
           <item row="4" column="0">
            <widget class="QLabel" name="label_3">
             <property name="text">
@@ -417,8 +420,15 @@
             </property>
            </widget>
           </item>
-          <item row="4" column="1">
-           <widget class="QComboBox" name="shortcutComboBox"/>
+          <item row="5" column="0">
+           <widget class="QLabel" name="label_5">
+            <property name="text">
+             <string>Trigger effect</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="1">
+           <widget class="QComboBox" name="triggerComboBox"/>
           </item>
          </layout>
         </widget>

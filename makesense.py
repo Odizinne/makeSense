@@ -90,6 +90,7 @@ class MakeSense(QMainWindow):
         self.settings_file = os.path.join(os.getenv('APPDATA'), 'makesense', 'settings.json')
 
         self.ui.shortcutComboBox.addItems(["Toggle mic state", "Toggle touchpad", "Toggle virtual XBOX"])
+        self.ui.triggerComboBox.addItems(["Off", "Full press", "Soft press", "Medium press", "Hard press", "Pulse", "Choppy", "Soft rigidity", "Medium rigidity", "Hard rigidity", "Max rigidity", "Half press"])
         self.load_settings()
 
         self.setup_ui_connections()
@@ -121,6 +122,7 @@ class MakeSense(QMainWindow):
         self.ui.emulateXboxBox.stateChanged.connect(self.handle_xbox_emulation_state_change)
         self.ui.rumbleSlider.valueChanged.connect(self.handle_rumble_value_change)
 
+        self.ui.triggerComboBox.currentIndexChanged.connect(self.handle_triggerComboBox)
         self.ui.shortcutComboBox.currentIndexChanged.connect(self.handle_shortcutComboBox)
 
     def sync_r_slider_spinbox(self, value):
@@ -201,7 +203,8 @@ class MakeSense(QMainWindow):
             r_value = settings.get("lightbar_color", {"r": 0, "g": 0, "b": 0}).get("r", 0)
             g_value = settings.get("lightbar_color", {"r": 0, "g": 0, "b": 0}).get("g", 0)
             b_value = settings.get("lightbar_color", {"r": 0, "g": 0, "b": 0}).get("b", 0)
-            index = settings.get("shortcut_combo_index", 0)
+            shortcut_combo_index = settings.get("shortcut_combo_index", 0)
+            trigger_combo_index = settings.get("trigger_combo_index", 0)
             self.ui.r.setValue(r_value)
             self.ui.g.setValue(g_value)
             self.ui.b.setValue(b_value)
@@ -214,7 +217,8 @@ class MakeSense(QMainWindow):
             self.ui.rumbleLabel.setEnabled(settings.get("emulate_xbox_checked", False))
             self.ui.rumbleSlider.setValue(settings.get("rumble_intensity", 50))
 
-            self.ui.shortcutComboBox.setCurrentIndex(index)
+            self.ui.shortcutComboBox.setCurrentIndex(shortcut_combo_index)
+            self.ui.triggerComboBox.setCurrentIndex(trigger_combo_index)
 
     def save_settings(self):
         settings = {
@@ -226,7 +230,8 @@ class MakeSense(QMainWindow):
             },
             "emulate_xbox_checked": self.ui.emulateXboxBox.isChecked(),
             "rumble_intensity": self.ui.rumbleSlider.value(),
-            "shortcut_combo_index" : self.ui.shortcutComboBox.currentIndex()
+            "shortcut_combo_index" : self.ui.shortcutComboBox.currentIndex(),
+            "trigger_combo_index" : self.ui.triggerComboBox.currentIndex()
         }
 
         with open(self.settings_file, 'w') as file:
@@ -260,6 +265,7 @@ class MakeSense(QMainWindow):
         self.handle_xbox_emulation_state_change()
         self.handle_rumble_value_change()
         self.handle_shortcutComboBox()
+        self.handle_triggerComboBox()
 
     def toggle_ui_elements(self, show):
         self.ui.controllerFrame.setVisible(show)
@@ -298,6 +304,44 @@ class MakeSense(QMainWindow):
         if self.ui.shortcutComboBox.currentIndex() == 2:
             self.ui.emulateXboxBox.setChecked(not self.ui.emulateXboxBox.isChecked())
 
+    def handle_triggerComboBox(self):
+        if self.controller:
+            index = self.ui.triggerComboBox.currentIndex()
+            if index == 0:
+                self.controller.left_trigger.effect.off()
+                self.controller.right_trigger.effect.off()
+            elif index == 1:
+                self.controller.left_trigger.effect.full_press()
+                self.controller.right_trigger.effect.full_press()
+            elif index == 2:
+                self.controller.left_trigger.effect.soft_press()
+                self.controller.right_trigger.effect.soft_press()
+            elif index == 3:
+                self.controller.left_trigger.effect.medium_press()
+                self.controller.right_trigger.effect.medium_press()
+            elif index == 4:
+                self.controller.left_trigger.effect.hard_press()
+                self.controller.right_trigger.effect.hard_press()
+            elif index == 5:
+                self.controller.left_trigger.effect.pulse()
+                self.controller.right_trigger.effect.pulse()
+            elif index == 6:
+                self.controller.left_trigger.effect.choppy()
+                self.controller.right_trigger.effect.choppy()
+            elif index == 7:
+                self.controller.left_trigger.effect.soft_rigidity()
+                self.controller.right_trigger.effect.soft_rigidity()
+            elif index == 8:
+                self.controller.left_trigger.effect.medium_rigidity()
+                self.controller.right_trigger.effect.medium_rigidity()
+            elif index == 9:
+                self.controller.left_trigger.effect.max_rigidity()
+                self.controller.right_trigger.effect.max_rigidity()
+            elif index == 10:
+                self.controller.left_trigger.effect.half_press()
+                self.controller.right_trigger.effect.half_press()
+        self.save_settings()
+            
     def handle_shortcutComboBox(self):
         if self.controller:
                 index = self.ui.shortcutComboBox.currentIndex()
