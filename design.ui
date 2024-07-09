@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>429</width>
-    <height>518</height>
+    <height>520</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -30,70 +30,220 @@
        <property name="bottomMargin">
         <number>0</number>
        </property>
-       <item row="6" column="0">
-        <widget class="QLabel" name="label_2">
-         <property name="font">
-          <font>
-           <bold>true</bold>
-          </font>
+       <item row="3" column="0">
+        <widget class="QFrame" name="settingsFrame">
+         <property name="frameShape">
+          <enum>QFrame::Shape::StyledPanel</enum>
          </property>
-         <property name="text">
-          <string>Lightbar</string>
+         <property name="frameShadow">
+          <enum>QFrame::Shadow::Sunken</enum>
          </property>
-         <property name="indent">
-          <number>3</number>
-         </property>
+         <layout class="QGridLayout" name="gridLayout_4">
+          <property name="leftMargin">
+           <number>9</number>
+          </property>
+          <property name="topMargin">
+           <number>9</number>
+          </property>
+          <property name="rightMargin">
+           <number>9</number>
+          </property>
+          <property name="bottomMargin">
+           <number>9</number>
+          </property>
+          <property name="verticalSpacing">
+           <number>12</number>
+          </property>
+          <item row="4" column="1">
+           <widget class="QComboBox" name="shortcutComboBox"/>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="touchpadLabel">
+            <property name="text">
+             <string>Touchpad</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0">
+           <widget class="QLabel" name="startupLabel">
+            <property name="text">
+             <string>Run at startup</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QCheckBox" name="startupBox">
+            <property name="layoutDirection">
+             <enum>Qt::LayoutDirection::RightToLeft</enum>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QCheckBox" name="touchpadBox">
+            <property name="layoutDirection">
+             <enum>Qt::LayoutDirection::RightToLeft</enum>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0">
+           <widget class="QLabel" name="label_3">
+            <property name="text">
+             <string>Mic button</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="0">
+           <widget class="QLabel" name="label_5">
+            <property name="text">
+             <string>Trigger effect</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="1">
+           <widget class="QComboBox" name="triggerComboBox"/>
+          </item>
+         </layout>
         </widget>
        </item>
-       <item row="2" column="0">
-        <widget class="QLabel" name="label">
-         <property name="font">
-          <font>
-           <bold>true</bold>
-          </font>
+       <item row="5" column="0">
+        <widget class="QFrame" name="gridFrame">
+         <property name="frameShape">
+          <enum>QFrame::Shape::StyledPanel</enum>
          </property>
-         <property name="text">
-          <string>Settings</string>
+         <property name="frameShadow">
+          <enum>QFrame::Shadow::Sunken</enum>
          </property>
-         <property name="indent">
-          <number>3</number>
-         </property>
+         <layout class="QGridLayout" name="gridLayout_2">
+          <property name="leftMargin">
+           <number>9</number>
+          </property>
+          <property name="topMargin">
+           <number>9</number>
+          </property>
+          <property name="rightMargin">
+           <number>9</number>
+          </property>
+          <property name="bottomMargin">
+           <number>9</number>
+          </property>
+          <property name="verticalSpacing">
+           <number>12</number>
+          </property>
+          <item row="2" column="0">
+           <widget class="QLabel" name="rumbleLabel">
+            <property name="text">
+             <string>Rumble intensity</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0">
+           <widget class="QLabel" name="emulateXboxLabel">
+            <property name="text">
+             <string>Virtual XBOX Controller</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QCheckBox" name="emulateXboxBox">
+            <property name="layoutDirection">
+             <enum>Qt::LayoutDirection::RightToLeft</enum>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QSlider" name="rumbleSlider">
+            <property name="maximum">
+             <number>100</number>
+            </property>
+            <property name="sliderPosition">
+             <number>50</number>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Orientation::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </widget>
        </item>
-       <item row="4" column="0">
-        <widget class="QLabel" name="label_4">
-         <property name="font">
-          <font>
-           <bold>true</bold>
-          </font>
+       <item row="1" column="0">
+        <widget class="QFrame" name="batteryFrame">
+         <property name="frameShape">
+          <enum>QFrame::Shape::StyledPanel</enum>
          </property>
-         <property name="text">
-          <string>Virtual gamepad</string>
+         <property name="frameShadow">
+          <enum>QFrame::Shadow::Sunken</enum>
          </property>
-         <property name="indent">
-          <number>3</number>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="0">
-        <widget class="QLabel" name="batteryLabel_3">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="font">
-          <font>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string>Battery</string>
-         </property>
-         <property name="indent">
-          <number>3</number>
-         </property>
+         <layout class="QGridLayout" name="gridLayout_3">
+          <property name="leftMargin">
+           <number>9</number>
+          </property>
+          <property name="topMargin">
+           <number>9</number>
+          </property>
+          <property name="rightMargin">
+           <number>9</number>
+          </property>
+          <property name="bottomMargin">
+           <number>9</number>
+          </property>
+          <item row="0" column="1">
+           <widget class="QLabel" name="batteryLabel">
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0">
+           <widget class="QProgressBar" name="batteryBar">
+            <property name="value">
+             <number>24</number>
+            </property>
+            <property name="textVisible">
+             <bool>false</bool>
+            </property>
+            <property name="invertedAppearance">
+             <bool>false</bool>
+            </property>
+            <property name="textDirection">
+             <enum>QProgressBar::Direction::TopToBottom</enum>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0" colspan="2">
+           <layout class="QGridLayout" name="gridLayout_6">
+            <item row="0" column="1">
+             <widget class="QLabel" name="connectionTypeLabel">
+              <property name="layoutDirection">
+               <enum>Qt::LayoutDirection::LeftToRight</enum>
+              </property>
+              <property name="text">
+               <string>Connection type</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="0">
+             <widget class="QLabel" name="batteryStatusLabel">
+              <property name="text">
+               <string>Status</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
         </widget>
        </item>
        <item row="7" column="0">
@@ -285,203 +435,70 @@
          </layout>
         </widget>
        </item>
-       <item row="1" column="0">
-        <widget class="QFrame" name="batteryFrame">
-         <property name="frameShape">
-          <enum>QFrame::Shape::StyledPanel</enum>
+       <item row="6" column="0">
+        <widget class="QLabel" name="label_2">
+         <property name="font">
+          <font>
+           <bold>true</bold>
+          </font>
          </property>
-         <property name="frameShadow">
-          <enum>QFrame::Shadow::Sunken</enum>
+         <property name="text">
+          <string>Lightbar</string>
          </property>
-         <layout class="QGridLayout" name="gridLayout_3">
-          <property name="leftMargin">
-           <number>9</number>
-          </property>
-          <property name="topMargin">
-           <number>9</number>
-          </property>
-          <property name="rightMargin">
-           <number>9</number>
-          </property>
-          <property name="bottomMargin">
-           <number>9</number>
-          </property>
-          <item row="0" column="1">
-           <widget class="QLabel" name="batteryLabel">
-            <property name="text">
-             <string/>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="0">
-           <widget class="QProgressBar" name="batteryBar">
-            <property name="value">
-             <number>24</number>
-            </property>
-            <property name="textVisible">
-             <bool>false</bool>
-            </property>
-            <property name="invertedAppearance">
-             <bool>false</bool>
-            </property>
-            <property name="textDirection">
-             <enum>QProgressBar::Direction::TopToBottom</enum>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="batteryStatusLabel">
-            <property name="text">
-             <string>Status</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
+         <property name="indent">
+          <number>3</number>
+         </property>
         </widget>
        </item>
-       <item row="3" column="0">
-        <widget class="QFrame" name="settingsFrame">
-         <property name="frameShape">
-          <enum>QFrame::Shape::StyledPanel</enum>
+       <item row="4" column="0">
+        <widget class="QLabel" name="label_4">
+         <property name="font">
+          <font>
+           <bold>true</bold>
+          </font>
          </property>
-         <property name="frameShadow">
-          <enum>QFrame::Shadow::Sunken</enum>
+         <property name="text">
+          <string>Virtual gamepad</string>
          </property>
-         <layout class="QGridLayout" name="gridLayout_4">
-          <property name="leftMargin">
-           <number>9</number>
-          </property>
-          <property name="topMargin">
-           <number>9</number>
-          </property>
-          <property name="rightMargin">
-           <number>9</number>
-          </property>
-          <property name="bottomMargin">
-           <number>9</number>
-          </property>
-          <property name="verticalSpacing">
-           <number>12</number>
-          </property>
-          <item row="4" column="1">
-           <widget class="QComboBox" name="shortcutComboBox"/>
-          </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="touchpadLabel">
-            <property name="text">
-             <string>Touchpad</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="0">
-           <widget class="QLabel" name="startupLabel">
-            <property name="text">
-             <string>Run at startup</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="QCheckBox" name="startupBox">
-            <property name="layoutDirection">
-             <enum>Qt::LayoutDirection::RightToLeft</enum>
-            </property>
-            <property name="text">
-             <string/>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QCheckBox" name="touchpadBox">
-            <property name="layoutDirection">
-             <enum>Qt::LayoutDirection::RightToLeft</enum>
-            </property>
-            <property name="text">
-             <string/>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="0">
-           <widget class="QLabel" name="label_3">
-            <property name="text">
-             <string>Mic button</string>
-            </property>
-           </widget>
-          </item>
-          <item row="5" column="0">
-           <widget class="QLabel" name="label_5">
-            <property name="text">
-             <string>Trigger effect</string>
-            </property>
-           </widget>
-          </item>
-          <item row="5" column="1">
-           <widget class="QComboBox" name="triggerComboBox"/>
-          </item>
-         </layout>
+         <property name="indent">
+          <number>3</number>
+         </property>
         </widget>
        </item>
-       <item row="5" column="0">
-        <widget class="QFrame" name="gridFrame">
-         <property name="frameShape">
-          <enum>QFrame::Shape::StyledPanel</enum>
+       <item row="2" column="0">
+        <widget class="QLabel" name="label">
+         <property name="font">
+          <font>
+           <bold>true</bold>
+          </font>
          </property>
-         <property name="frameShadow">
-          <enum>QFrame::Shadow::Sunken</enum>
+         <property name="text">
+          <string>Settings</string>
          </property>
-         <layout class="QGridLayout" name="gridLayout_2">
-          <property name="leftMargin">
-           <number>9</number>
-          </property>
-          <property name="topMargin">
-           <number>9</number>
-          </property>
-          <property name="rightMargin">
-           <number>9</number>
-          </property>
-          <property name="bottomMargin">
-           <number>9</number>
-          </property>
-          <property name="verticalSpacing">
-           <number>12</number>
-          </property>
-          <item row="2" column="0">
-           <widget class="QLabel" name="rumbleLabel">
-            <property name="text">
-             <string>Rumble intensity</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="0">
-           <widget class="QLabel" name="emulateXboxLabel">
-            <property name="text">
-             <string>Virtual XBOX Controller</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="QCheckBox" name="emulateXboxBox">
-            <property name="layoutDirection">
-             <enum>Qt::LayoutDirection::RightToLeft</enum>
-            </property>
-            <property name="text">
-             <string/>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="1">
-           <widget class="QSlider" name="rumbleSlider">
-            <property name="maximum">
-             <number>100</number>
-            </property>
-            <property name="sliderPosition">
-             <number>50</number>
-            </property>
-            <property name="orientation">
-             <enum>Qt::Orientation::Horizontal</enum>
-            </property>
-           </widget>
-          </item>
-         </layout>
+         <property name="indent">
+          <number>3</number>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QLabel" name="batteryLabel_3">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="font">
+          <font>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>Battery</string>
+         </property>
+         <property name="indent">
+          <number>3</number>
+         </property>
         </widget>
        </item>
       </layout>

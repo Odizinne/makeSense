@@ -187,7 +187,6 @@ class MakeSense(QMainWindow):
             "shortcut_combo_index" : self.ui.shortcutComboBox.currentIndex(),
             "trigger_combo_index" : self.ui.triggerComboBox.currentIndex()
         }
-        print(f"saved mic shortcut: {self.ui.shortcutComboBox.currentIndex()}")
         with open(self.settings_file, 'w') as file:
             json.dump(settings, file)
 
@@ -367,8 +366,6 @@ class MakeSense(QMainWindow):
             self.gamepad.left_trigger(value=int(self.controller.left_trigger.value * 255))
             self.gamepad.right_trigger(value=int(self.controller.right_trigger.value * 255))
 
-            
-            
             self.gamepad.update()
 
     def rumble_callback(self, client, target, large_motor, small_motor, led_number, user_data):
@@ -380,15 +377,22 @@ class MakeSense(QMainWindow):
 
     def update_battery_level(self):
         if self.controller:
-            battery_level = round(self.controller.battery.value.level_percentage)
-            battery_status = self.controller.battery.value.charging
-            if battery_status:
+            controller_battery_level = round(self.controller.battery.value.level_percentage)
+            controller_battery_status = self.controller.battery.value.charging
+            controller_connection_type = self.controller.connection_type.name
+            if controller_battery_status:
                 battery_status = "Charging"
             else:
                 battery_status = "Discharging"
-            self.ui.batteryBar.setValue(battery_level)
-            self.ui.batteryLabel.setText(f"{battery_level}%")
+
+            if controller_connection_type == "USB_01":
+                connexion_type = "Wired"
+            else:
+                connexion_type = "Wireless"
+            self.ui.batteryBar.setValue(controller_battery_level)
+            self.ui.batteryLabel.setText(f"{controller_battery_level}%")
             self.ui.batteryStatusLabel.setText(battery_status)
+            self.ui.connectionTypeLabel.setText(connexion_type)
 
     def get_device_instance_path(self):
         startupinfo = subprocess.STARTUPINFO()
