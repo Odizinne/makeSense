@@ -1,5 +1,6 @@
 import sys
 import os
+import winreg
 from PyQt6.QtWidgets import QApplication, QMessageBox
 from PyQt6.QtGui import QIcon
 
@@ -56,6 +57,7 @@ class MakeSense(QMainWindow):
         self.toggle_mic_slot_created = False
         self.toggle_touchpad_slot_created = False
         self.toggle_xbox_emulation_slot_created = False
+        self.toggle_steam_slot_created = False
         self.rumble_intensity = 50
         self.settings_file = os.path.join(os.getenv('APPDATA'), 'makesense', 'settings.json')
         self.setup_comboboxes()
@@ -74,7 +76,7 @@ class MakeSense(QMainWindow):
         self.on_controller_changed(controller_present_now)
 
     def setup_comboboxes(self):
-        self.ui.shortcutComboBox.addItems(["Toggle mic state", "Toggle touchpad", "Toggle virtual XBOX"])
+        self.ui.shortcutComboBox.addItems(["Toggle mic state", "Toggle touchpad", "Toggle virtual XBOX", "Start or focus Steam"])
         self.ui.triggerComboBox.addItems(["Off", "Full press", "Soft press", "Medium press", "Hard press", "Pulse", "Choppy", "Soft rigidity", "Medium rigidity", "Hard rigidity", "Max rigidity", "Half press"])
     
     def setup_ui_connections(self):
@@ -260,6 +262,21 @@ class MakeSense(QMainWindow):
                 3000
             )
             
+    def start_steam(self):
+        if self.ui.shortcutComboBox.currentIndex() == 3:
+            try:
+                reg_key = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, r"SOFTWARE\WOW6432Node\Valve\Steam")
+                install_path, _ = winreg.QueryValueEx(reg_key, "InstallPath")
+                winreg.CloseKey(reg_key)
+                if not install_path:
+                    return
+                steam_exe_path = os.path.join(install_path, "steam.exe")
+                if not os.path.exists(steam_exe_path):
+                    return
+                subprocess.Popen([steam_exe_path])
+    
+            except FileNotFoundError:
+                return
 
     def handle_trigger_effect_change(self):
         if self.controller:
@@ -296,6 +313,10 @@ class MakeSense(QMainWindow):
                 if not self.toggle_xbox_emulation_slot_created:
                     self.controller.btn_mute.on_down(self.toggle_xbox_emulation)
                     self.toggle_xbox_emulation_slot_created = True
+            elif index == 3:
+                if not self.toggle_steam_slot_created:
+                    self.controller.btn_mute.on_down(self.start_steam)
+                    self.toggle_steam_slot_created = True
 
             self.save_settings()
 
