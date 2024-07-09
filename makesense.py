@@ -72,7 +72,7 @@ class MakeSense(QMainWindow):
         super().__init__()
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
-        self.setWindowTitle("MakeSense")
+        self.setWindowTitle("makeSense")
         self.setWindowIcon(QIcon('icons/icon.png'))
         self.setFixedSize(self.size())
 

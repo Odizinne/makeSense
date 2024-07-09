@@ -24,7 +24,7 @@ Restart your computer after installation.
 
 Download [latest build](https://github.com/Odizinne/makeSense/releases/download/v0/makeSense.zip) and extract it.
 
-Run `makesense.exe`.
+Run `makeSense.exe`.
 
 Feel free to open an issue for bug report if you encounter any.
 
