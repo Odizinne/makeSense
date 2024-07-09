@@ -69,3 +69,5 @@ You must install HidHide.
 
 - [Nefarius](https://github.com/nefarius) (Hidhide, ViGemBus Driver)
 - [Yesbotics](https://github.com/yesbotics) (dualsense-controller-python)
+- Edited PS logo from [wikimedia](https://commons.wikimedia.org/wiki/File:PlayStation_logo.svg)
+- Edited XBOX logo from [wikimedia](https://commons.wikimedia.org/wiki/File:Xbox_Logo.svg)

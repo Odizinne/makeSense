@@ -28,7 +28,7 @@ check_dependencies()
 
 import vgamepad as vg
 from PyQt6.QtWidgets import QMainWindow, QSystemTrayIcon, QMenu
-from PyQt6.QtCore import QTimer, QThread, pyqtSignal, QPointF, QPoint
+from PyQt6.QtCore import QTimer, QPointF, QPoint
 from PyQt6.QtGui import QAction, QCursor
 import json
 import subprocess
@@ -252,12 +252,14 @@ class MakeSense(QMainWindow):
             self.ui.emulateXboxBox.setChecked(not self.ui.emulateXboxBox.isChecked())
             xbox_status = "enabled" if self.ui.emulateXboxBox.isChecked() else "disabled"
             dualsense_status = "hidden" if self.ui.emulateXboxBox.isChecked() else "visible"
+            icon = QIcon('icons/xb_logo.png') if self.ui.emulateXboxBox.isChecked() else QIcon('icons/ps_logo.png')
             self.tray_icon.showMessage(
                 f"XBOX controller emulation {xbox_status}.",
                 f"Dualsense controller is now {dualsense_status}.",
-                QSystemTrayIcon.MessageIcon.Information,
+                icon,
                 3000
             )
+            
 
     def handle_trigger_effect_change(self):
         if self.controller:
