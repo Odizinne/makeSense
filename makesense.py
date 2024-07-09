@@ -132,8 +132,7 @@ class MakeSense(QMainWindow):
 
     def quit(self):
         if self.controller:
-            if self.virtual_xbox_gamepad:
-                self.stop_xbox_emulation()
+            self.stop_xbox_emulation()
             self.controller.lightbar.set_color(0, 0, 255)
             self.controller.deactivate()
             self.controller = None
@@ -305,11 +304,11 @@ class MakeSense(QMainWindow):
     def start_xbox_emulation(self):
         self.virtual_xbox_gamepad = VirtualXBOXGamepad(self.controller)
         self.virtual_xbox_gamepad.start_emulation()
-        self.xbox_emulation_status = True
 
     def stop_xbox_emulation(self):
-        self.virtual_xbox_gamepad.stop_emulation()
-        self.virtual_xbox_gamepad = None
+        if self.virtual_xbox_gamepad:
+            self.virtual_xbox_gamepad.stop_emulation()
+            self.virtual_xbox_gamepad = None
 
     def update_battery_level(self):
         if self.controller:
