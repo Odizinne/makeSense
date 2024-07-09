@@ -47,17 +47,10 @@ class MakeSense(QMainWindow):
         self.setWindowTitle("makeSense")
         self.setWindowIcon(QIcon('icons/icon.png'))
         self.setFixedSize(self.size())
-
         self.controller = None
         self.gamepad = None
         self.last_touch_position = None
-        self.handle_touchpad_events = False
         self.device_instance_path = None
-        self.touchpad_slots_created = False
-        self.toggle_mic_slot_created = False
-        self.toggle_touchpad_slot_created = False
-        self.toggle_xbox_emulation_slot_created = False
-        self.toggle_steam_slot_created = False
         self.rumble_intensity = 50
         self.settings_file = os.path.join(os.getenv('APPDATA'), 'makesense', 'settings.json')
         self.setup_comboboxes()
@@ -222,11 +215,11 @@ class MakeSense(QMainWindow):
 
     def handle_touchpad_state_change(self):
         if self.controller:
-            if not self.touchpad_slots_created:
+            self.controller.touch_finger_1._state.remove_all_change_listeners()
+            self.controller.btn_touchpad._state.remove_all_change_listeners()
+            if self.ui.touchpadBox.isChecked():
                 self.controller.touch_finger_1.on_change(self.on_touchpad_change)
                 self.controller.btn_touchpad.on_down(self.send_mouse_left_click_pressed)
-                self.touchpad_slots_created = True
-        self.handle_touchpad_events = self.ui.touchpadBox.isChecked()
         self.save_settings()
 
     def handle_startup_state_change(self):
@@ -242,28 +235,19 @@ class MakeSense(QMainWindow):
         self.save_settings()
 
     def toggle_mic_led(self):
-        if self.ui.shortcutComboBox.currentIndex() == 0:
-            self.controller.microphone.toggle_muted()
+        self.controller.microphone.toggle_muted()
 
     def toggle_touchpad(self):
-        if self.ui.shortcutComboBox.currentIndex() == 1:
-            self.ui.touchpadBox.setChecked(not self.ui.touchpadBox.isChecked())
+        self.ui.touchpadBox.setChecked(not self.ui.touchpadBox.isChecked())
 
     def toggle_xbox_emulation(self):
-        if self.ui.shortcutComboBox.currentIndex() == 2:
             self.ui.emulateXboxBox.setChecked(not self.ui.emulateXboxBox.isChecked())
             xbox_status = "enabled" if self.ui.emulateXboxBox.isChecked() else "disabled"
             dualsense_status = "hidden" if self.ui.emulateXboxBox.isChecked() else "visible"
             icon = QIcon('icons/xb_logo.png') if self.ui.emulateXboxBox.isChecked() else QIcon('icons/ps_logo.png')
-            self.tray_icon.showMessage(
-                f"XBOX controller emulation {xbox_status}.",
-                f"Dualsense controller is now {dualsense_status}.",
-                icon,
-                3000
-            )
+            self.tray_icon.showMessage(f"XBOX controller emulation {xbox_status}.", f"Dualsense controller is now {dualsense_status}.", icon, 3000)
             
     def start_steam(self):
-        if self.ui.shortcutComboBox.currentIndex() == 3:
             try:
                 reg_key = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, r"SOFTWARE\WOW6432Node\Valve\Steam")
                 install_path, _ = winreg.QueryValueEx(reg_key, "InstallPath")
@@ -274,7 +258,6 @@ class MakeSense(QMainWindow):
                 if not os.path.exists(steam_exe_path):
                     return
                 subprocess.Popen([steam_exe_path])
-    
             except FileNotFoundError:
                 return
 
@@ -301,22 +284,15 @@ class MakeSense(QMainWindow):
     def handle_mic_shortcut_change(self):
         if self.controller:
             index = self.ui.shortcutComboBox.currentIndex()
+            self.controller.btn_mute._state.remove_all_change_listeners()
             if index == 0:
-                if not self.toggle_mic_slot_created:
-                    self.controller.btn_mute.on_down(self.toggle_mic_led)
-                    self.toggle_mic_slot_created = True
+                self.controller.btn_mute.on_down(self.toggle_mic_led)
             elif index == 1:
-                if not self.toggle_touchpad_slot_created:
-                    self.controller.btn_mute.on_down(self.toggle_touchpad)
-                    self.toggle_touchpad_slot_created = True
+                self.controller.btn_mute.on_down(self.toggle_touchpad)
             elif index == 2:
-                if not self.toggle_xbox_emulation_slot_created:
-                    self.controller.btn_mute.on_down(self.toggle_xbox_emulation)
-                    self.toggle_xbox_emulation_slot_created = True
+                self.controller.btn_mute.on_down(self.toggle_xbox_emulation)
             elif index == 3:
-                if not self.toggle_steam_slot_created:
-                    self.controller.btn_mute.on_down(self.start_steam)
-                    self.toggle_steam_slot_created = True
+                self.controller.btn_mute.on_down(self.start_steam)
 
             self.save_settings()
 
@@ -465,7 +441,7 @@ class MakeSense(QMainWindow):
         self.toggle_window()
 
     def on_touchpad_change(self, value):
-        if self.controller and self.handle_touchpad_events:
+        if self.controller:
             touch_position = QPointF(value.x, value.y)
 
             if self.last_touch_position is not None:
@@ -480,7 +456,7 @@ class MakeSense(QMainWindow):
             self.last_touch_position = touch_position
 
     def send_mouse_left_click_pressed(self):
-        if self.controller and self.handle_touchpad_events:
+        if self.controller:
             pyautogui.leftClick()
             
     def set_lightbar_color(self):
@@ -490,7 +466,6 @@ class MakeSense(QMainWindow):
 
         if self.controller:
             self.controller.lightbar.set_color(r, g, b)
-        
         self.save_settings()
 
 if __name__ == "__main__":
