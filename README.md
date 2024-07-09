@@ -7,9 +7,9 @@ Python Dualsense driver using dualsense-controller.
   <img src="assets/kofi_button_red.png" alt="Ko-fi" width="200" height="auto">
 </a>
 
-![image](assets/makeSense.png)
-
 ## Features
+
+![image](assets/makeSense.png)
 
 What's working:
 - LED
