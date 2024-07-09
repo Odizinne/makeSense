@@ -448,7 +448,6 @@ class MakeSense(QMainWindow):
             pyautogui.leftClick()
             
     def set_lightbar_color(self):
-        print("Setting lightbar color")
         r = self.ui.r.value()
         g = self.ui.g.value()
         b = self.ui.b.value()
