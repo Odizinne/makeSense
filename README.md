@@ -61,6 +61,10 @@ You must install HidHide.
 - Build with cx_freeze:  
 `python .\setup.py build`
 
+## To-do
+- Big code cleanup
+- New icon
+
 ## Credits
 
 - [Nefarius](https://github.com/nefarius) (Hidhide, ViGemBus Driver)
