@@ -58,3 +58,8 @@ You must install HidHide.
 
 - Build with cx_freeze:  
 `python .\setup.py build`
+
+## Credits
+
+- [Nefarius](https://github.com/nefarius) (Hidhide, ViGemBus Driver)
+- [Yesbotics](https://github.com/yesbotics) (dualsense-controller-python)
