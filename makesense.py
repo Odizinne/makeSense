@@ -3,10 +3,10 @@ import os
 from PyQt6.QtWidgets import QApplication, QMessageBox
 from PyQt6.QtGui import QIcon
 
-def check_dependencies():
-    hidhide_path = r"C:\Program Files\Nefarius Software Solutions\HidHide\x64\hidhidecli.exe"
-    vigembus_path = r"C:\Program Files\Nefarius Software Solutions\ViGEm Bus Driver\nefconw.exe"
+hidhide_path = r"C:\Program Files\Nefarius Software Solutions\HidHide\x64\hidhidecli.exe"
+vigembus_path = r"C:\Program Files\Nefarius Software Solutions\ViGEm Bus Driver\nefconw.exe"
 
+def check_dependencies():
     missing_components = []
 
     if not os.path.exists(hidhide_path):
@@ -57,13 +57,9 @@ class MakeSense(QMainWindow):
         self.toggle_touchpad_slot_created = False
         self.toggle_xbox_emulation_slot_created = False
         self.rumble_intensity = 50
-        self.hidhide_path = r"C:\Program Files\Nefarius Software Solutions\HidHide\x64\hidhidecli.exe"
         self.settings_file = os.path.join(os.getenv('APPDATA'), 'makesense', 'settings.json')
-
-        self.ui.shortcutComboBox.addItems(["Toggle mic state", "Toggle touchpad", "Toggle virtual XBOX"])
-        self.ui.triggerComboBox.addItems(["Off", "Full press", "Soft press", "Medium press", "Hard press", "Pulse", "Choppy", "Soft rigidity", "Medium rigidity", "Hard rigidity", "Max rigidity", "Half press"])
+        self.setup_comboboxes()
         self.load_settings()
-
         self.setup_ui_connections()
         self.setup_timers()
         self.create_system_tray_icon()
@@ -72,12 +68,15 @@ class MakeSense(QMainWindow):
         self.controller_checker.start()
         self.initialize_ui_state()
 
-
     def initialize_ui_state(self):
         device_infos = DualSenseController.enumerate_devices()
         controller_present_now = len(device_infos) > 0
         self.on_controller_changed(controller_present_now)
 
+    def setup_comboboxes(self):
+        self.ui.shortcutComboBox.addItems(["Toggle mic state", "Toggle touchpad", "Toggle virtual XBOX"])
+        self.ui.triggerComboBox.addItems(["Off", "Full press", "Soft press", "Medium press", "Hard press", "Pulse", "Choppy", "Soft rigidity", "Medium rigidity", "Hard rigidity", "Max rigidity", "Half press"])
+    
     def setup_ui_connections(self):
         self.setup_slider_spinbox_sync(self.ui.rSlider, self.ui.r)
         self.setup_slider_spinbox_sync(self.ui.gSlider, self.ui.g)
@@ -88,8 +87,8 @@ class MakeSense(QMainWindow):
         self.ui.emulateXboxBox.stateChanged.connect(self.handle_xbox_emulation_state_change)
         self.ui.rumbleSlider.valueChanged.connect(self.handle_rumble_value_change)
 
-        self.ui.triggerComboBox.currentIndexChanged.connect(self.handle_triggerComboBox)
-        self.ui.shortcutComboBox.currentIndexChanged.connect(self.handle_shortcutComboBox)
+        self.ui.triggerComboBox.currentIndexChanged.connect(self.handle_trigger_effect_change)
+        self.ui.shortcutComboBox.currentIndexChanged.connect(self.handle_mic_shortcut_change)
 
     def setup_slider_spinbox_sync(self, slider, spinbox):
         slider.valueChanged.connect(lambda value: spinbox.setValue(value))
@@ -144,6 +143,7 @@ class MakeSense(QMainWindow):
         if self.controller:
             self.controller.lightbar.set_color(0, 0, 255)
             self.controller.deactivate()
+            self.controller = None
         self.controller_checker.stop()
         QApplication.quit()
 
@@ -187,7 +187,7 @@ class MakeSense(QMainWindow):
             "shortcut_combo_index" : self.ui.shortcutComboBox.currentIndex(),
             "trigger_combo_index" : self.ui.triggerComboBox.currentIndex()
         }
-
+        print(f"saved mic shortcut: {self.ui.shortcutComboBox.currentIndex()}")
         with open(self.settings_file, 'w') as file:
             json.dump(settings, file)
 
@@ -201,13 +201,8 @@ class MakeSense(QMainWindow):
                     self.start_xbox_emulation()
         else:
             if self.controller:
-                try:
-                    self.controller.deactivate()
-                except AssertionError as e:
-                    print(f"Error deactivating controller: {e}")
-                finally:
-                    self.controller = None
-
+                self.controller = None
+                self.toggle_ui_elements(False)
             self.toggle_ui_elements(False)
             self.stop_xbox_emulation()
 
@@ -217,8 +212,8 @@ class MakeSense(QMainWindow):
         self.check_startup_shortcut()
         self.handle_xbox_emulation_state_change()
         self.handle_rumble_value_change()
-        self.handle_shortcutComboBox()
-        self.handle_triggerComboBox()
+        self.handle_mic_shortcut_change()
+        self.handle_trigger_effect_change()
 
     def toggle_ui_elements(self, show):
         self.ui.controllerFrame.setVisible(show)
@@ -257,7 +252,7 @@ class MakeSense(QMainWindow):
         if self.ui.shortcutComboBox.currentIndex() == 2:
             self.ui.emulateXboxBox.setChecked(not self.ui.emulateXboxBox.isChecked())
 
-    def handle_triggerComboBox(self):
+    def handle_trigger_effect_change(self):
         if self.controller:
             index = self.ui.triggerComboBox.currentIndex()
             effects = {
@@ -277,22 +272,22 @@ class MakeSense(QMainWindow):
                 effects[index]()
             self.save_settings()
             
-    def handle_shortcutComboBox(self):
+    def handle_mic_shortcut_change(self):
         if self.controller:
-                index = self.ui.shortcutComboBox.currentIndex()
-                if index == 0:
-                    if not self.toggle_mic_slot_created:
-                        self.controller.btn_mute.on_down(self.toggle_mic_led)
-                        self.toggle_mic_slot_created = True
-                elif index == 1:
-                    if not self.toggle_touchpad_slot_created:
-                        self.controller.btn_mute.on_down(self.toggle_touchpad)
-                        self.toggle_touchpad_slot_created = True
-                elif index == 2:
-                    if not self.toggle_xbox_emulation_slot_created:
-                        self.controller.btn_mute.on_down(self.toggle_xbox_emulation)
-                        self.toggle_xbox_emulation_slot_created = True
-                self.save_settings()
+            index = self.ui.shortcutComboBox.currentIndex()
+            if index == 0:
+                if not self.toggle_mic_slot_created:
+                    self.controller.btn_mute.on_down(self.toggle_mic_led)
+                    self.toggle_mic_slot_created = True
+            elif index == 1:
+                if not self.toggle_touchpad_slot_created:
+                    self.controller.btn_mute.on_down(self.toggle_touchpad)
+                    self.toggle_touchpad_slot_created = True
+            elif index == 2:
+                if not self.toggle_xbox_emulation_slot_created:
+                    self.controller.btn_mute.on_down(self.toggle_xbox_emulation)
+                    self.toggle_xbox_emulation_slot_created = True
+            self.save_settings()
 
     def handle_xbox_emulation_state_change(self):
         if self.ui.emulateXboxBox.isChecked():
@@ -310,19 +305,18 @@ class MakeSense(QMainWindow):
             self.device_instance_path = self.get_device_instance_path()
             self.gamepad = vg.VX360Gamepad()
             self.gamepad.register_notification(callback_function=self.rumble_callback)
-            self.hide_dualsense_controller()
+            self.toggle_dualsense_controller_visibility(True)
             self.map_ds_to_xbox()
-            self.xbox_emulation_timer.start(10)
+            self.xbox_emulation_timer.start(4)
 
     def stop_xbox_emulation(self):
         if self.gamepad:
             self.gamepad.unregister_notification()
             self.gamepad = None
-            self.show_dualsense_controller()
+            self.toggle_dualsense_controller_visibility(False)
             self.xbox_emulation_timer.stop()
 
-    def control_dualsense_controller(self, hide):
-        
+    def toggle_dualsense_controller_visibility(self, hide):
         if self.device_instance_path:
             action = "--dev-hide" if hide else "--dev-unhide"
             cloak_action = "--cloak-on" if hide else "--cloak-off"
@@ -330,29 +324,9 @@ class MakeSense(QMainWindow):
             startupinfo = subprocess.STARTUPINFO()
             startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
             startupinfo.wShowWindow = subprocess.SW_HIDE
-            subprocess.run([self.hidhide_path, "--app-reg", sys.executable], startupinfo=startupinfo)
-            subprocess.run([self.hidhide_path, action, self.device_instance_path], startupinfo=startupinfo)
-            subprocess.run([self.hidhide_path, cloak_action], startupinfo=startupinfo)
-
-    def hide_dualsense_controller(self):
-        self.device_instance_path = self.get_device_instance_path()
-        if self.device_instance_path:
-            startupinfo = subprocess.STARTUPINFO()
-            startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
-            startupinfo.wShowWindow = subprocess.SW_HIDE
-
-            subprocess.run([self.hidhide_path, "--dev-hide", self.device_instance_path], startupinfo=startupinfo)
-            subprocess.run([self.hidhide_path, "--app-reg", sys.executable], startupinfo=startupinfo)
-            subprocess.run([self.hidhide_path, "--cloak-on"], startupinfo=startupinfo)
-
-    def show_dualsense_controller(self):
-        if self.device_instance_path:
-            startupinfo = subprocess.STARTUPINFO()
-            startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
-            startupinfo.wShowWindow = subprocess.SW_HIDE
-
-            subprocess.run([self.hidhide_path, "--dev-unhide", self.device_instance_path], startupinfo=startupinfo)
-            subprocess.run([self.hidhide_path, "--cloak-off"], startupinfo=startupinfo)
+            subprocess.run([hidhide_path, "--app-reg", sys.executable], startupinfo=startupinfo)
+            subprocess.run([hidhide_path, action, self.device_instance_path], startupinfo=startupinfo)
+            subprocess.run([hidhide_path, cloak_action], startupinfo=startupinfo)
 
     def map_ds_to_xbox(self):
         if self.controller and self.gamepad:
@@ -421,7 +395,7 @@ class MakeSense(QMainWindow):
         startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
         startupinfo.wShowWindow = subprocess.SW_HIDE
         
-        result = subprocess.run([self.hidhide_path, '--dev-gaming'], capture_output=True, text=True, startupinfo=startupinfo)
+        result = subprocess.run([hidhide_path, '--dev-gaming'], capture_output=True, text=True, startupinfo=startupinfo)
         data = json.loads(result.stdout)
         for device in data:
             if device.get('friendlyName') == "Sony Interactive Entertainment DualSense Wireless Controller" or device.get('friendlyName') == "Sony Interactive Entertainment Wireless Controller":
@@ -474,6 +448,7 @@ class MakeSense(QMainWindow):
             pyautogui.leftClick()
             
     def set_lightbar_color(self):
+        print("Setting lightbar color")
         r = self.ui.r.value()
         g = self.ui.g.value()
         b = self.ui.b.value()
