@@ -108,8 +108,6 @@ class MakeSense(QMainWindow):
         self.on_controller_changed(controller_present_now)
 
     def setup_ui_connections(self):
-        self.ui.applyButton.clicked.connect(self.set_lightbar_color)
-
         self.ui.r.valueChanged.connect(self.sync_r_slider_spinbox)
         self.ui.rSlider.valueChanged.connect(self.sync_r_spinbox_slider)
         self.ui.g.valueChanged.connect(self.sync_g_slider_spinbox)
@@ -127,21 +125,26 @@ class MakeSense(QMainWindow):
 
     def sync_r_slider_spinbox(self, value):
         self.ui.rSlider.setValue(value)
+        self.set_lightbar_color()
 
     def sync_r_spinbox_slider(self, value):
         self.ui.r.setValue(value)
+        self.set_lightbar_color()
 
     def sync_g_slider_spinbox(self, value):
         self.ui.gSlider.setValue(value)
 
     def sync_g_spinbox_slider(self, value):
         self.ui.g.setValue(value)
+        self.set_lightbar_color()
 
     def sync_b_slider_spinbox(self, value):
         self.ui.bSlider.setValue(value)
+        self.set_lightbar_color()
 
     def sync_b_spinbox_slider(self, value):
         self.ui.b.setValue(value)
+        self.set_lightbar_color()
 
     def setup_timers(self):
         self.battery_timer = QTimer(self)

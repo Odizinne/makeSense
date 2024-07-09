@@ -10,13 +10,13 @@ What's working:
 - LED
 - Touchpad
 - Virtual XBOX controller
+- Trigger effects
 
 What's partially working:
-- Battery percentage
+- Battery percentage (Can return wrong value)
 
 What's not implemented:
 - Multiple controller support
-- Trigger effects
 
 You need Nefarius [HidHide](https://github.com/nefarius/HidHide/releases/download/v1.5.230.0/HidHide_1.5.230_x64.exe) and [ViGEmBus Driver](https://github.com/nefarius/ViGEmBus/releases/download/v1.22.0/ViGEmBus_1.22.0_x64_x86_arm64.exe) installed in default location.
 

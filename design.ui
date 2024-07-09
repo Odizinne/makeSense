@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>429</width>
-    <height>551</height>
+    <height>518</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -120,19 +120,6 @@
           <property name="verticalSpacing">
            <number>9</number>
           </property>
-          <item row="1" column="0">
-           <widget class="QLabel" name="gLabel">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>Green</string>
-            </property>
-           </widget>
-          </item>
           <item row="2" column="1">
            <widget class="QSlider" name="bSlider">
             <property name="maximum">
@@ -140,37 +127,6 @@
             </property>
             <property name="orientation">
              <enum>Qt::Orientation::Horizontal</enum>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="2">
-           <widget class="QSpinBox" name="g">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="minimumSize">
-             <size>
-              <width>80</width>
-              <height>0</height>
-             </size>
-            </property>
-            <property name="wrapping">
-             <bool>false</bool>
-            </property>
-            <property name="frame">
-             <bool>true</bool>
-            </property>
-            <property name="buttonSymbols">
-             <enum>QAbstractSpinBox::ButtonSymbols::UpDownArrows</enum>
-            </property>
-            <property name="showGroupSeparator" stdset="0">
-             <bool>false</bool>
-            </property>
-            <property name="maximum">
-             <number>255</number>
             </property>
            </widget>
           </item>
@@ -184,70 +140,6 @@
             </property>
             <property name="text">
              <string>Red</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="QSlider" name="rSlider">
-            <property name="maximum">
-             <number>255</number>
-            </property>
-            <property name="orientation">
-             <enum>Qt::Orientation::Horizontal</enum>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="2">
-           <widget class="QSpinBox" name="r">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="minimumSize">
-             <size>
-              <width>80</width>
-              <height>0</height>
-             </size>
-            </property>
-            <property name="wrapping">
-             <bool>false</bool>
-            </property>
-            <property name="frame">
-             <bool>true</bool>
-            </property>
-            <property name="buttonSymbols">
-             <enum>QAbstractSpinBox::ButtonSymbols::UpDownArrows</enum>
-            </property>
-            <property name="showGroupSeparator" stdset="0">
-             <bool>false</bool>
-            </property>
-            <property name="maximum">
-             <number>255</number>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QSlider" name="gSlider">
-            <property name="maximum">
-             <number>255</number>
-            </property>
-            <property name="orientation">
-             <enum>Qt::Orientation::Horizontal</enum>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="0">
-           <widget class="QLabel" name="bLabel">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>Blue</string>
             </property>
            </widget>
           </item>
@@ -282,16 +174,111 @@
             </property>
            </widget>
           </item>
-          <item row="3" column="0" colspan="3">
-           <widget class="QPushButton" name="applyButton">
+          <item row="0" column="1">
+           <widget class="QSlider" name="rSlider">
+            <property name="maximum">
+             <number>255</number>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Orientation::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QSlider" name="gSlider">
+            <property name="maximum">
+             <number>255</number>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Orientation::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="bLabel">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+             <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
             <property name="text">
-             <string>Set color</string>
+             <string>Blue</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="gLabel">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>Green</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="2">
+           <widget class="QSpinBox" name="g">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>80</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="wrapping">
+             <bool>false</bool>
+            </property>
+            <property name="frame">
+             <bool>true</bool>
+            </property>
+            <property name="buttonSymbols">
+             <enum>QAbstractSpinBox::ButtonSymbols::UpDownArrows</enum>
+            </property>
+            <property name="showGroupSeparator" stdset="0">
+             <bool>false</bool>
+            </property>
+            <property name="maximum">
+             <number>255</number>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="2">
+           <widget class="QSpinBox" name="r">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>80</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="wrapping">
+             <bool>false</bool>
+            </property>
+            <property name="frame">
+             <bool>true</bool>
+            </property>
+            <property name="buttonSymbols">
+             <enum>QAbstractSpinBox::ButtonSymbols::UpDownArrows</enum>
+            </property>
+            <property name="showGroupSeparator" stdset="0">
+             <bool>false</bool>
+            </property>
+            <property name="maximum">
+             <number>255</number>
             </property>
            </widget>
           </item>
