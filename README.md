@@ -1,8 +1,13 @@
 # makeSense
 
-Python Dualsense driver using dualsense-controller 
+Python Dualsense driver using dualsense-controller.
 
-![image](screenshots/makeSense.png)
+**If you appreciate my work and would like to support me:**<br/>
+<a href="https://ko-fi.com/odizinne">
+  <img src="assets/kofi_button_red.png" alt="Ko-fi" width="200" height="auto">
+</a>
+
+![image](assets/makeSense.png)
 
 ## Test
 
