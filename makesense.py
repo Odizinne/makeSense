@@ -460,7 +460,7 @@ class MakeSense(QMainWindow):
 
     def closeEvent(self, event):
         event.ignore()
-        self.hide()
+        self.toggle_window()
 
     def on_touchpad_change(self, value):
         if self.controller and self.handle_touchpad_events:
