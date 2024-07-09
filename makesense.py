@@ -27,7 +27,6 @@ def show_error_and_exit(title, message):
 
 check_dependencies()
 
-import vgamepad as vg
 from PyQt6.QtWidgets import QMainWindow, QSystemTrayIcon, QMenu
 from PyQt6.QtCore import QTimer, QPointF, QPoint
 from PyQt6.QtGui import QAction, QCursor
@@ -38,6 +37,7 @@ import winshell
 from design import Ui_MainWindow
 from dualsense_controller import DualSenseController
 from controller_checker import ControllerChecker
+from virtual_xbox_gamepad import VirtualXBOXGamepad
 
 class MakeSense(QMainWindow):
     def __init__(self):
@@ -48,7 +48,7 @@ class MakeSense(QMainWindow):
         self.setWindowIcon(QIcon('icons/icon.png'))
         self.setFixedSize(self.size())
         self.controller = None
-        self.gamepad = None
+        self.virtual_xbox_gamepad = None
         self.last_touch_position = None
         self.device_instance_path = None
         self.rumble_intensity = 50
@@ -81,7 +81,6 @@ class MakeSense(QMainWindow):
         self.ui.startupBox.stateChanged.connect(self.handle_startup_state_change)
         self.ui.emulateXboxBox.stateChanged.connect(self.handle_xbox_emulation_state_change)
         self.ui.rumbleSlider.valueChanged.connect(self.handle_rumble_value_change)
-
         self.ui.triggerComboBox.currentIndexChanged.connect(self.handle_trigger_effect_change)
         self.ui.shortcutComboBox.currentIndexChanged.connect(self.handle_mic_shortcut_change)
 
@@ -94,8 +93,6 @@ class MakeSense(QMainWindow):
         self.battery_timer = QTimer(self)
         self.battery_timer.timeout.connect(self.update_battery_level)
         self.battery_timer.start(10000)
-        self.xbox_emulation_timer = QTimer(self)
-        self.xbox_emulation_timer.timeout.connect(self.map_ds_to_xbox)
 
     def create_system_tray_icon(self):
         self.tray_icon = QSystemTrayIcon(self)
@@ -134,8 +131,9 @@ class MakeSense(QMainWindow):
             self.tray_icon.contextMenu().actions()[0].setText("Hide")
 
     def quit(self):
-        self.stop_xbox_emulation()
         if self.controller:
+            if self.virtual_xbox_gamepad:
+                self.stop_xbox_emulation()
             self.controller.lightbar.set_color(0, 0, 255)
             self.controller.deactivate()
             self.controller = None
@@ -160,12 +158,10 @@ class MakeSense(QMainWindow):
             self.ui.rSlider.setValue(r_value)
             self.ui.gSlider.setValue(g_value)
             self.ui.bSlider.setValue(b_value)
-
             self.ui.emulateXboxBox.setChecked(settings.get("emulate_xbox_checked", False))
             self.ui.rumbleSlider.setEnabled(settings.get("emulate_xbox_checked", False))
             self.ui.rumbleLabel.setEnabled(settings.get("emulate_xbox_checked", False))
             self.ui.rumbleSlider.setValue(settings.get("rumble_intensity", 50))
-
             self.ui.shortcutComboBox.setCurrentIndex(shortcut_combo_index)
             self.ui.triggerComboBox.setCurrentIndex(trigger_combo_index)
 
@@ -200,11 +196,9 @@ class MakeSense(QMainWindow):
             self.toggle_ui_elements(False)
             self.stop_xbox_emulation()
 
-        self.device_instance_path = self.get_device_instance_path()
         self.handle_touchpad_state_change()
         self.update_battery_level()
         self.check_startup_shortcut()
-        self.handle_xbox_emulation_state_change()
         self.handle_rumble_value_change()
         self.handle_mic_shortcut_change()
         self.handle_trigger_effect_change()
@@ -230,8 +224,9 @@ class MakeSense(QMainWindow):
         self.save_settings()
 
     def handle_rumble_value_change(self):
-        if self.controller:
+        if self.controller and self.virtual_xbox_gamepad:
             self.rumble_intensity = self.ui.rumbleSlider.value()
+            self.virtual_xbox_gamepad.set_rumble_intensity(self.rumble_intensity)
         self.save_settings()
 
     def toggle_mic_led(self):
@@ -308,80 +303,13 @@ class MakeSense(QMainWindow):
         self.save_settings()
 
     def start_xbox_emulation(self):
-        if self.controller and self.gamepad is None:
-            self.device_instance_path = self.get_device_instance_path()
-            self.gamepad = vg.VX360Gamepad()
-            self.gamepad.register_notification(callback_function=self.rumble_callback)
-            self.toggle_dualsense_controller_visibility(True)
-            self.map_ds_to_xbox()
-            self.xbox_emulation_timer.start(4)
+        self.virtual_xbox_gamepad = VirtualXBOXGamepad(self.controller)
+        self.virtual_xbox_gamepad.start_emulation()
+        self.xbox_emulation_status = True
 
     def stop_xbox_emulation(self):
-        if self.gamepad:
-            self.gamepad.unregister_notification()
-            self.gamepad = None
-            self.toggle_dualsense_controller_visibility(False)
-            self.xbox_emulation_timer.stop()
-
-    def toggle_dualsense_controller_visibility(self, hide):
-        if self.device_instance_path:
-            action = "--dev-hide" if hide else "--dev-unhide"
-            cloak_action = "--cloak-on" if hide else "--cloak-off"
-
-            startupinfo = subprocess.STARTUPINFO()
-            startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
-            startupinfo.wShowWindow = subprocess.SW_HIDE
-            subprocess.run([hidhide_path, "--app-reg", sys.executable], startupinfo=startupinfo)
-            subprocess.run([hidhide_path, action, self.device_instance_path], startupinfo=startupinfo)
-            subprocess.run([hidhide_path, cloak_action], startupinfo=startupinfo)
-
-    def map_ds_to_xbox(self):
-        if self.controller and self.gamepad:
-            mappings = [
-                (self.controller.btn_cross, vg.XUSB_BUTTON.XUSB_GAMEPAD_A),
-                (self.controller.btn_circle, vg.XUSB_BUTTON.XUSB_GAMEPAD_B),
-                (self.controller.btn_square, vg.XUSB_BUTTON.XUSB_GAMEPAD_X),
-                (self.controller.btn_triangle, vg.XUSB_BUTTON.XUSB_GAMEPAD_Y),
-                (self.controller.btn_l1, vg.XUSB_BUTTON.XUSB_GAMEPAD_LEFT_SHOULDER),
-                (self.controller.btn_r1, vg.XUSB_BUTTON.XUSB_GAMEPAD_RIGHT_SHOULDER),
-                (self.controller.btn_l3, vg.XUSB_BUTTON.XUSB_GAMEPAD_LEFT_THUMB),
-                (self.controller.btn_r3, vg.XUSB_BUTTON.XUSB_GAMEPAD_RIGHT_THUMB),
-                (self.controller.btn_create, vg.XUSB_BUTTON.XUSB_GAMEPAD_BACK),
-                (self.controller.btn_options, vg.XUSB_BUTTON.XUSB_GAMEPAD_START),
-                (self.controller.btn_ps, vg.XUSB_BUTTON.XUSB_GAMEPAD_GUIDE),
-                (self.controller.btn_up, vg.XUSB_BUTTON.XUSB_GAMEPAD_DPAD_UP),
-                (self.controller.btn_down, vg.XUSB_BUTTON.XUSB_GAMEPAD_DPAD_DOWN),
-                (self.controller.btn_left, vg.XUSB_BUTTON.XUSB_GAMEPAD_DPAD_LEFT),
-                (self.controller.btn_right, vg.XUSB_BUTTON.XUSB_GAMEPAD_DPAD_RIGHT)
-            ]
-
-            for btn_ds, btn_xbox in mappings:
-                if btn_ds.pressed:
-                    self.gamepad.press_button(button=btn_xbox)
-                else:
-                    self.gamepad.release_button(button=btn_xbox)
-
-            self.gamepad.left_joystick(
-                x_value=int(self.controller.left_stick_x.value * 32767),
-                y_value=int(self.controller.left_stick_y.value * 32767)
-            )
-
-            self.gamepad.right_joystick(
-                x_value=int(self.controller.right_stick_x.value * 32767),
-                y_value=int(self.controller.right_stick_y.value * 32767)
-            )
-
-            self.gamepad.left_trigger(value=int(self.controller.left_trigger.value * 255))
-            self.gamepad.right_trigger(value=int(self.controller.right_trigger.value * 255))
-
-            self.gamepad.update()
-
-    def rumble_callback(self, client, target, large_motor, small_motor, led_number, user_data):
-        if self.controller:
-            converted_large_motor = (large_motor / 255.0) * (self.rumble_intensity / 100)
-            converted_small_motor = (small_motor / 255.0) * (self.rumble_intensity / 100)
-            self.controller.left_rumble.set(converted_large_motor)
-            self.controller.right_rumble.set(converted_small_motor)
+        self.virtual_xbox_gamepad.stop_emulation()
+        self.virtual_xbox_gamepad = None
 
     def update_battery_level(self):
         if self.controller:
@@ -401,18 +329,6 @@ class MakeSense(QMainWindow):
             self.ui.batteryLabel.setText(f"{controller_battery_level}%")
             self.ui.batteryStatusLabel.setText(battery_status)
             self.ui.connectionTypeLabel.setText(connexion_type)
-
-    def get_device_instance_path(self):
-        startupinfo = subprocess.STARTUPINFO()
-        startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
-        startupinfo.wShowWindow = subprocess.SW_HIDE
-        
-        result = subprocess.run([hidhide_path, '--dev-gaming'], capture_output=True, text=True, startupinfo=startupinfo)
-        data = json.loads(result.stdout)
-        for device in data:
-            if device.get('friendlyName') == "Sony Interactive Entertainment DualSense Wireless Controller" or device.get('friendlyName') == "Sony Interactive Entertainment Wireless Controller":
-                if device['devices'] and len(device['devices']) > 0:
-                    return device['devices'][0].get('deviceInstancePath')
 
     def create_startup_shortcut(self):
         target = sys.executable
