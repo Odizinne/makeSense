@@ -36,36 +36,7 @@ import pyautogui
 import winshell
 from design import Ui_MainWindow
 from dualsense_controller import DualSenseController
-
-class ControllerChecker(QThread):
-    controller_changed = pyqtSignal(bool)
-
-    def __init__(self, parent=None):
-        super().__init__(parent)
-        self.controller = None
-        self.running = False
-
-    def run(self):
-        self.running = True
-        while self.running:
-            current_controller_present = self.controller is not None
-            device_infos = DualSenseController.enumerate_devices()
-            controller_present_now = len(device_infos) > 0
-
-            if current_controller_present and not controller_present_now:
-                self.controller.deactivate()
-                self.controller = None
-                self.controller_changed.emit(False)
-            elif not current_controller_present and controller_present_now:
-                self.controller = DualSenseController()
-                self.controller.activate()
-                self.controller.microphone.set_unmuted() # Disable mic led
-                self.controller_changed.emit(True)
-
-            self.msleep(1000)
-
-    def stop(self):
-        self.running = False
+from controller_checker import ControllerChecker
 
 class MakeSense(QMainWindow):
     def __init__(self):
@@ -108,12 +79,9 @@ class MakeSense(QMainWindow):
         self.on_controller_changed(controller_present_now)
 
     def setup_ui_connections(self):
-        self.ui.r.valueChanged.connect(self.sync_r_slider_spinbox)
-        self.ui.rSlider.valueChanged.connect(self.sync_r_spinbox_slider)
-        self.ui.g.valueChanged.connect(self.sync_g_slider_spinbox)
-        self.ui.gSlider.valueChanged.connect(self.sync_g_spinbox_slider)
-        self.ui.b.valueChanged.connect(self.sync_b_slider_spinbox)
-        self.ui.bSlider.valueChanged.connect(self.sync_b_spinbox_slider)
+        self.setup_slider_spinbox_sync(self.ui.rSlider, self.ui.r)
+        self.setup_slider_spinbox_sync(self.ui.gSlider, self.ui.g)
+        self.setup_slider_spinbox_sync(self.ui.bSlider, self.ui.b)
 
         self.ui.touchpadBox.stateChanged.connect(self.handle_touchpad_state_change)
         self.ui.startupBox.stateChanged.connect(self.handle_startup_state_change)
@@ -123,28 +91,10 @@ class MakeSense(QMainWindow):
         self.ui.triggerComboBox.currentIndexChanged.connect(self.handle_triggerComboBox)
         self.ui.shortcutComboBox.currentIndexChanged.connect(self.handle_shortcutComboBox)
 
-    def sync_r_slider_spinbox(self, value):
-        self.ui.rSlider.setValue(value)
-        self.set_lightbar_color()
-
-    def sync_r_spinbox_slider(self, value):
-        self.ui.r.setValue(value)
-        self.set_lightbar_color()
-
-    def sync_g_slider_spinbox(self, value):
-        self.ui.gSlider.setValue(value)
-
-    def sync_g_spinbox_slider(self, value):
-        self.ui.g.setValue(value)
-        self.set_lightbar_color()
-
-    def sync_b_slider_spinbox(self, value):
-        self.ui.bSlider.setValue(value)
-        self.set_lightbar_color()
-
-    def sync_b_spinbox_slider(self, value):
-        self.ui.b.setValue(value)
-        self.set_lightbar_color()
+    def setup_slider_spinbox_sync(self, slider, spinbox):
+        slider.valueChanged.connect(lambda value: spinbox.setValue(value))
+        spinbox.valueChanged.connect(lambda value: slider.setValue(value))
+        spinbox.valueChanged.connect(self.set_lightbar_color)
 
     def setup_timers(self):
         self.battery_timer = QTimer(self)
@@ -192,6 +142,7 @@ class MakeSense(QMainWindow):
     def quit(self):
         self.stop_xbox_emulation()
         if self.controller:
+            self.controller.lightbar.set_color(0, 0, 255)
             self.controller.deactivate()
         self.controller_checker.stop()
         QApplication.quit()
@@ -244,7 +195,6 @@ class MakeSense(QMainWindow):
         if connected:
             self.controller = self.controller_checker.controller
             if self.controller:
-                self.controller.microphone.set_unmuted()
                 self.toggle_ui_elements(True)
                 self.set_lightbar_color()
                 if self.ui.emulateXboxBox.isChecked():
@@ -310,40 +260,22 @@ class MakeSense(QMainWindow):
     def handle_triggerComboBox(self):
         if self.controller:
             index = self.ui.triggerComboBox.currentIndex()
-            if index == 0:
-                self.controller.left_trigger.effect.off()
-                self.controller.right_trigger.effect.off()
-            elif index == 1:
-                self.controller.left_trigger.effect.full_press()
-                self.controller.right_trigger.effect.full_press()
-            elif index == 2:
-                self.controller.left_trigger.effect.soft_press()
-                self.controller.right_trigger.effect.soft_press()
-            elif index == 3:
-                self.controller.left_trigger.effect.medium_press()
-                self.controller.right_trigger.effect.medium_press()
-            elif index == 4:
-                self.controller.left_trigger.effect.hard_press()
-                self.controller.right_trigger.effect.hard_press()
-            elif index == 5:
-                self.controller.left_trigger.effect.pulse()
-                self.controller.right_trigger.effect.pulse()
-            elif index == 6:
-                self.controller.left_trigger.effect.choppy()
-                self.controller.right_trigger.effect.choppy()
-            elif index == 7:
-                self.controller.left_trigger.effect.soft_rigidity()
-                self.controller.right_trigger.effect.soft_rigidity()
-            elif index == 8:
-                self.controller.left_trigger.effect.medium_rigidity()
-                self.controller.right_trigger.effect.medium_rigidity()
-            elif index == 9:
-                self.controller.left_trigger.effect.max_rigidity()
-                self.controller.right_trigger.effect.max_rigidity()
-            elif index == 10:
-                self.controller.left_trigger.effect.half_press()
-                self.controller.right_trigger.effect.half_press()
-        self.save_settings()
+            effects = {
+                0: lambda: (self.controller.left_trigger.effect.off(), self.controller.right_trigger.effect.off()),
+                1: lambda: (self.controller.left_trigger.effect.full_press(), self.controller.right_trigger.effect.full_press()),
+                2: lambda: (self.controller.left_trigger.effect.soft_press(), self.controller.right_trigger.effect.soft_press()),
+                3: lambda: (self.controller.left_trigger.effect.medium_press(), self.controller.right_trigger.effect.medium_press()),
+                4: lambda: (self.controller.left_trigger.effect.hard_press(), self.controller.right_trigger.effect.hard_press()),
+                5: lambda: (self.controller.left_trigger.effect.pulse(), self.controller.right_trigger.effect.pulse()),
+                6: lambda: (self.controller.left_trigger.effect.choppy(), self.controller.right_trigger.effect.choppy()),
+                7: lambda: (self.controller.left_trigger.effect.soft_rigidity(), self.controller.right_trigger.effect.soft_rigidity()),
+                8: lambda: (self.controller.left_trigger.effect.medium_rigidity(), self.controller.right_trigger.effect.medium_rigidity()),
+                9: lambda: (self.controller.left_trigger.effect.max_rigidity(), self.controller.right_trigger.effect.max_rigidity()),
+                10: lambda: (self.controller.left_trigger.effect.half_press(), self.controller.right_trigger.effect.half_press()),
+            }
+            if index in effects:
+                effects[index]()
+            self.save_settings()
             
     def handle_shortcutComboBox(self):
         if self.controller:
@@ -375,6 +307,7 @@ class MakeSense(QMainWindow):
 
     def start_xbox_emulation(self):
         if self.controller and self.gamepad is None:
+            self.device_instance_path = self.get_device_instance_path()
             self.gamepad = vg.VX360Gamepad()
             self.hide_dualsense_controller()
             self.map_ds_to_xbox()
@@ -385,6 +318,19 @@ class MakeSense(QMainWindow):
             self.gamepad = None
             self.show_dualsense_controller()
             self.xbox_emulation_timer.stop()
+
+    def control_dualsense_controller(self, hide):
+        
+        if self.device_instance_path:
+            action = "--dev-hide" if hide else "--dev-unhide"
+            cloak_action = "--cloak-on" if hide else "--cloak-off"
+
+            startupinfo = subprocess.STARTUPINFO()
+            startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+            startupinfo.wShowWindow = subprocess.SW_HIDE
+            subprocess.run([self.hidhide_path, "--app-reg", sys.executable], startupinfo=startupinfo)
+            subprocess.run([self.hidhide_path, action, self.device_instance_path], startupinfo=startupinfo)
+            subprocess.run([self.hidhide_path, cloak_action], startupinfo=startupinfo)
 
     def hide_dualsense_controller(self):
         self.device_instance_path = self.get_device_instance_path()
