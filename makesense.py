@@ -3,6 +3,17 @@ import os
 import winreg
 from PyQt6.QtWidgets import QApplication, QMessageBox
 from PyQt6.QtGui import QIcon
+from PyQt6.QtWidgets import QMainWindow, QSystemTrayIcon, QMenu
+from PyQt6.QtCore import QTimer, QPointF, QPoint, QSharedMemory
+from PyQt6.QtGui import QAction, QCursor
+import json
+import subprocess
+import pyautogui
+import winshell
+from design import Ui_MainWindow
+from dualsense_controller import DualSenseController
+from controller_checker import ControllerChecker
+from virtual_xbox_gamepad import VirtualXBOXGamepad
 
 hidhide_path = r"C:\Program Files\Nefarius Software Solutions\HidHide\x64\hidhidecli.exe"
 vigembus_path = r"C:\Program Files\Nefarius Software Solutions\ViGEm Bus Driver\nefconw.exe"
@@ -25,20 +36,15 @@ def show_error_and_exit(title, message):
     QMessageBox.critical(None, title, message)
     sys.exit(1)
 
+def single_instance_check():
+    shared_memory = QSharedMemory('makeSense')
+
+    if shared_memory.attach() or not shared_memory.create(1):
+        sys.exit(1)
+
+    return shared_memory
+
 check_dependencies()
-
-from PyQt6.QtWidgets import QMainWindow, QSystemTrayIcon, QMenu
-from PyQt6.QtCore import QTimer, QPointF, QPoint
-from PyQt6.QtGui import QAction, QCursor
-import json
-import subprocess
-import pyautogui
-import winshell
-from design import Ui_MainWindow
-from dualsense_controller import DualSenseController
-from controller_checker import ControllerChecker
-from virtual_xbox_gamepad import VirtualXBOXGamepad
-
 class MakeSense(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -51,6 +57,7 @@ class MakeSense(QMainWindow):
         self.virtual_xbox_gamepad = None
         self.last_touch_position = None
         self.device_instance_path = None
+        self.shared_memory = shared_memory
         self.rumble_intensity = 50
         self.settings_file = os.path.join(os.getenv('APPDATA'), 'makesense', 'settings.json')
         self.setup_comboboxes()
@@ -385,5 +392,6 @@ class MakeSense(QMainWindow):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
+    shared_memory = single_instance_check()
     makesense = MakeSense()
     sys.exit(app.exec())
