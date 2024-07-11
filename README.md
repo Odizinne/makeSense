@@ -54,3 +54,4 @@ You must install HidHide to run makeSense.
 - [Yesbotics](https://github.com/yesbotics) (dualsense-controller-python)
 - Edited PS logo from [wikimedia](https://commons.wikimedia.org/wiki/File:PlayStation_logo.svg)
 - Edited XBOX logo from [wikimedia](https://commons.wikimedia.org/wiki/File:Xbox_Logo.svg)
+- Edited dualsense square icon from [Ignire](https://next.nexusmods.com/profile/Ignire/about-me?gameId=1392)
