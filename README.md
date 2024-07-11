@@ -11,19 +11,10 @@ Python Dualsense driver using dualsense-controller.
 
 ![image](assets/makeSense.png)
 
-What's working:
-- LED
-- Touchpad
-- Virtual XBOX controller
-- Trigger effects
+- Multiple controller support is not implemented. I will probably do it one day.  
+- Wireless dongle is not implemented. I will do it if someone request it.
 
-What's partially working:
-- Battery percentage (Can return wrong value)
-
-What's not implemented:
-- Multiple controller support
-
-Every change will be saved and restored on restart.
+Every setting you change in makeSense will be saved and restored on application restart.
 
 ## Download
 
@@ -37,21 +28,12 @@ Run `makeSense.exe`.
 
 ## Build
 
-To build an executable by yourself, you'll need the following dependencies:
-
-- Python
-- cx_freeze
-- vgamepad
-- dualsense-controller
-- PyQt6
-- winshell
-- winreg
-- PyAutoGUI
+To build an executable by yourself, you'll need Python and install the following dependencies:
 
 `pip install cx_freeze PyQt6 winshell winreg PyAutoGUI dualsense-controller vgamepad`
 
 If you do not have ViGEmBus driver installer, vgamepad will prompt you to install it.  
-You must install HidHide.
+You must install HidHide to run makeSense.
 
 - Clone this repository:  
 `git clone https://github.com/Odizinne/makeSense.git`
@@ -60,7 +42,7 @@ You must install HidHide.
 `cd .\makeSense`
 
 - Build with cx_freeze:  
-`python .\setup.py build`
+`python .\src\setup.py build`
 
 ## To-do
 - Big code cleanup
