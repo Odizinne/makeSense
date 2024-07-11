@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>429</width>
-    <height>520</height>
+    <height>686</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -55,10 +55,23 @@
            <number>12</number>
           </property>
           <item row="4" column="1">
-           <widget class="QComboBox" name="shortcutComboBox"/>
+           <widget class="QComboBox" name="shortcutComboBox">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>30</height>
+             </size>
+            </property>
+           </widget>
           </item>
           <item row="1" column="0">
            <widget class="QLabel" name="touchpadLabel">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>30</height>
+             </size>
+            </property>
             <property name="text">
              <string>Touchpad</string>
             </property>
@@ -66,6 +79,12 @@
           </item>
           <item row="0" column="0">
            <widget class="QLabel" name="startupLabel">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>30</height>
+             </size>
+            </property>
             <property name="text">
              <string>Run at startup</string>
             </property>
@@ -73,6 +92,12 @@
           </item>
           <item row="0" column="1">
            <widget class="QCheckBox" name="startupBox">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>30</height>
+             </size>
+            </property>
             <property name="layoutDirection">
              <enum>Qt::LayoutDirection::RightToLeft</enum>
             </property>
@@ -83,6 +108,12 @@
           </item>
           <item row="1" column="1">
            <widget class="QCheckBox" name="touchpadBox">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>30</height>
+             </size>
+            </property>
             <property name="layoutDirection">
              <enum>Qt::LayoutDirection::RightToLeft</enum>
             </property>
@@ -93,6 +124,12 @@
           </item>
           <item row="4" column="0">
            <widget class="QLabel" name="label_3">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>30</height>
+             </size>
+            </property>
             <property name="text">
              <string>Mic button</string>
             </property>
@@ -100,13 +137,26 @@
           </item>
           <item row="5" column="0">
            <widget class="QLabel" name="label_5">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>30</height>
+             </size>
+            </property>
             <property name="text">
              <string>Trigger effect</string>
             </property>
            </widget>
           </item>
           <item row="5" column="1">
-           <widget class="QComboBox" name="triggerComboBox"/>
+           <widget class="QComboBox" name="triggerComboBox">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>30</height>
+             </size>
+            </property>
+           </widget>
           </item>
          </layout>
         </widget>
@@ -137,6 +187,12 @@
           </property>
           <item row="2" column="0">
            <widget class="QLabel" name="rumbleLabel">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>30</height>
+             </size>
+            </property>
             <property name="text">
              <string>Rumble intensity</string>
             </property>
@@ -144,6 +200,12 @@
           </item>
           <item row="0" column="0">
            <widget class="QLabel" name="emulateXboxLabel">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>30</height>
+             </size>
+            </property>
             <property name="text">
              <string>Virtual XBOX Controller</string>
             </property>
@@ -151,6 +213,12 @@
           </item>
           <item row="0" column="1">
            <widget class="QCheckBox" name="emulateXboxBox">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>30</height>
+             </size>
+            </property>
             <property name="layoutDirection">
              <enum>Qt::LayoutDirection::RightToLeft</enum>
             </property>
@@ -161,6 +229,12 @@
           </item>
           <item row="2" column="1">
            <widget class="QSlider" name="rumbleSlider">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>30</height>
+             </size>
+            </property>
             <property name="maximum">
              <number>100</number>
             </property>
@@ -205,6 +279,12 @@
           </item>
           <item row="0" column="0">
            <widget class="QProgressBar" name="batteryBar">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>30</height>
+             </size>
+            </property>
             <property name="value">
              <number>24</number>
             </property>
@@ -223,6 +303,12 @@
            <layout class="QGridLayout" name="gridLayout_6">
             <item row="0" column="1">
              <widget class="QLabel" name="connectionTypeLabel">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>30</height>
+               </size>
+              </property>
               <property name="layoutDirection">
                <enum>Qt::LayoutDirection::LeftToRight</enum>
               </property>
@@ -236,6 +322,12 @@
             </item>
             <item row="0" column="0">
              <widget class="QLabel" name="batteryStatusLabel">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>30</height>
+               </size>
+              </property>
               <property name="text">
                <string>Status</string>
               </property>
@@ -272,6 +364,12 @@
           </property>
           <item row="2" column="1">
            <widget class="QSlider" name="bSlider">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>30</height>
+             </size>
+            </property>
             <property name="maximum">
              <number>255</number>
             </property>
@@ -287,6 +385,12 @@
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>30</height>
+             </size>
             </property>
             <property name="text">
              <string>Red</string>
@@ -304,14 +408,14 @@
             <property name="minimumSize">
              <size>
               <width>80</width>
-              <height>0</height>
+              <height>30</height>
              </size>
             </property>
             <property name="wrapping">
              <bool>false</bool>
             </property>
             <property name="frame">
-             <bool>true</bool>
+             <bool>false</bool>
             </property>
             <property name="buttonSymbols">
              <enum>QAbstractSpinBox::ButtonSymbols::UpDownArrows</enum>
@@ -326,6 +430,12 @@
           </item>
           <item row="0" column="1">
            <widget class="QSlider" name="rSlider">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>30</height>
+             </size>
+            </property>
             <property name="maximum">
              <number>255</number>
             </property>
@@ -336,6 +446,12 @@
           </item>
           <item row="1" column="1">
            <widget class="QSlider" name="gSlider">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>30</height>
+             </size>
+            </property>
             <property name="maximum">
              <number>255</number>
             </property>
@@ -352,6 +468,12 @@
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>30</height>
+             </size>
+            </property>
             <property name="text">
              <string>Blue</string>
             </property>
@@ -364,6 +486,12 @@
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>30</height>
+             </size>
             </property>
             <property name="text">
              <string>Green</string>
@@ -381,14 +509,14 @@
             <property name="minimumSize">
              <size>
               <width>80</width>
-              <height>0</height>
+              <height>30</height>
              </size>
             </property>
             <property name="wrapping">
              <bool>false</bool>
             </property>
             <property name="frame">
-             <bool>true</bool>
+             <bool>false</bool>
             </property>
             <property name="buttonSymbols">
              <enum>QAbstractSpinBox::ButtonSymbols::UpDownArrows</enum>
@@ -412,14 +540,14 @@
             <property name="minimumSize">
              <size>
               <width>80</width>
-              <height>0</height>
+              <height>30</height>
              </size>
             </property>
             <property name="wrapping">
              <bool>false</bool>
             </property>
             <property name="frame">
-             <bool>true</bool>
+             <bool>false</bool>
             </property>
             <property name="buttonSymbols">
              <enum>QAbstractSpinBox::ButtonSymbols::UpDownArrows</enum>
@@ -437,6 +565,12 @@
        </item>
        <item row="6" column="0">
         <widget class="QLabel" name="label_2">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>30</height>
+          </size>
+         </property>
          <property name="font">
           <font>
            <bold>true</bold>
@@ -452,6 +586,12 @@
        </item>
        <item row="4" column="0">
         <widget class="QLabel" name="label_4">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>30</height>
+          </size>
+         </property>
          <property name="font">
           <font>
            <bold>true</bold>
@@ -467,6 +607,12 @@
        </item>
        <item row="2" column="0">
         <widget class="QLabel" name="label">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>30</height>
+          </size>
+         </property>
          <property name="font">
           <font>
            <bold>true</bold>
@@ -487,6 +633,12 @@
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>30</height>
+          </size>
          </property>
          <property name="font">
           <font>
