@@ -84,12 +84,12 @@ class MakeSense(QMainWindow):
         self.setup_slider_spinbox_sync(self.ui.gSlider, self.ui.g)
         self.setup_slider_spinbox_sync(self.ui.bSlider, self.ui.b)
 
-        self.ui.touchpadBox.stateChanged.connect(self.handle_touchpad_state_change)
-        self.ui.startupBox.stateChanged.connect(self.handle_startup_state_change)
-        self.ui.emulateXboxBox.stateChanged.connect(self.handle_xbox_emulation_state_change)
-        self.ui.rumbleSlider.valueChanged.connect(self.handle_rumble_value_change)
-        self.ui.triggerComboBox.currentIndexChanged.connect(self.handle_trigger_effect_change)
-        self.ui.shortcutComboBox.currentIndexChanged.connect(self.handle_mic_shortcut_change)
+        self.ui.touchpadBox.stateChanged.connect(self.on_touchpadBox_state_changed)
+        self.ui.startupBox.stateChanged.connect(self.on_startupBox_state_changed)
+        self.ui.emulateXboxBox.stateChanged.connect(self.on_emulateXboxBox_state_changed)
+        self.ui.rumbleSlider.valueChanged.connect(self.on_rumbleSlider_value_changed)
+        self.ui.triggerComboBox.currentIndexChanged.connect(self.on_triggerComboBox_index_changed)
+        self.ui.shortcutComboBox.currentIndexChanged.connect(self.on_shortcutComboBox_index_changed)
 
     def setup_slider_spinbox_sync(self, slider, spinbox):
         slider.valueChanged.connect(lambda value: spinbox.setValue(value))
@@ -202,12 +202,12 @@ class MakeSense(QMainWindow):
             self.toggle_ui_elements(False)
             self.stop_xbox_emulation()
 
-        self.handle_touchpad_state_change()
+        self.on_touchpadBox_state_changed()
         self.update_battery_level()
         self.check_startup_shortcut()
-        self.handle_rumble_value_change()
-        self.handle_mic_shortcut_change()
-        self.handle_trigger_effect_change()
+        self.on_rumbleSlider_value_changed()
+        self.on_shortcutComboBox_index_changed()
+        self.on_triggerComboBox_index_changed()
 
     def toggle_ui_elements(self, show):
         self.ui.controllerFrame.setVisible(show)
@@ -217,26 +217,72 @@ class MakeSense(QMainWindow):
         else:
             self.setFixedSize(300, 200)
 
-    def handle_touchpad_state_change(self):
+    def on_touchpadBox_state_changed(self):
         if self.controller:
             self.controller.touch_finger_1._state.remove_all_change_listeners()
             self.controller.btn_touchpad._state.remove_all_change_listeners()
             if self.ui.touchpadBox.isChecked():
-                self.controller.touch_finger_1.on_change(self.on_touchpad_change)
+                self.controller.touch_finger_1.on_change(self.map_touchpad_to_pointer)
                 self.controller.btn_touchpad.on_down(self.send_mouse_left_click_pressed)
         self.save_settings()
 
-    def handle_startup_state_change(self):
+    def on_startupBox_state_changed(self):
         if self.ui.startupBox.isChecked():
             self.create_startup_shortcut()
         else:
             self.delete_startup_shortcut()
         self.save_settings()
 
-    def handle_rumble_value_change(self):
+    def on_rumbleSlider_value_changed(self):
         if self.controller and self.virtual_xbox_gamepad:
             self.rumble_intensity = self.ui.rumbleSlider.value()
             self.virtual_xbox_gamepad.set_rumble_intensity(self.rumble_intensity)
+        self.save_settings()
+
+    def on_triggerComboBox_index_changed(self):
+        if self.controller:
+            index = self.ui.triggerComboBox.currentIndex()
+            effects = {
+                0: lambda: (self.controller.left_trigger.effect.off(), self.controller.right_trigger.effect.off()),
+                1: lambda: (self.controller.left_trigger.effect.full_press(), self.controller.right_trigger.effect.full_press()),
+                2: lambda: (self.controller.left_trigger.effect.soft_press(), self.controller.right_trigger.effect.soft_press()),
+                3: lambda: (self.controller.left_trigger.effect.medium_press(), self.controller.right_trigger.effect.medium_press()),
+                4: lambda: (self.controller.left_trigger.effect.hard_press(), self.controller.right_trigger.effect.hard_press()),
+                5: lambda: (self.controller.left_trigger.effect.pulse(), self.controller.right_trigger.effect.pulse()),
+                6: lambda: (self.controller.left_trigger.effect.choppy(), self.controller.right_trigger.effect.choppy()),
+                7: lambda: (self.controller.left_trigger.effect.soft_rigidity(), self.controller.right_trigger.effect.soft_rigidity()),
+                8: lambda: (self.controller.left_trigger.effect.medium_rigidity(), self.controller.right_trigger.effect.medium_rigidity()),
+                9: lambda: (self.controller.left_trigger.effect.max_rigidity(), self.controller.right_trigger.effect.max_rigidity()),
+                10: lambda: (self.controller.left_trigger.effect.half_press(), self.controller.right_trigger.effect.half_press()),
+            }
+            if index in effects:
+                effects[index]()
+            self.save_settings()
+            
+    def on_shortcutComboBox_index_changed(self):
+        if self.controller:
+            index = self.ui.shortcutComboBox.currentIndex()
+            self.controller.btn_mute._state.remove_all_change_listeners()
+            if index == 0:
+                self.controller.btn_mute.on_down(self.toggle_mic_led)
+            elif index == 1:
+                self.controller.btn_mute.on_down(self.toggle_touchpad)
+            elif index == 2:
+                self.controller.btn_mute.on_down(self.toggle_xbox_emulation)
+            elif index == 3:
+                self.controller.btn_mute.on_down(self.start_steam)
+
+            self.save_settings()
+
+    def on_emulateXboxBox_state_changed(self):
+        if self.ui.emulateXboxBox.isChecked():
+            self.start_xbox_emulation()
+            self.ui.rumbleSlider.setEnabled(True)
+            self.ui.rumbleLabel.setEnabled(True)
+        else:
+            self.stop_xbox_emulation()
+            self.ui.rumbleSlider.setEnabled(False)
+            self.ui.rumbleLabel.setEnabled(False)
         self.save_settings()
 
     def toggle_mic_led(self):
@@ -265,52 +311,6 @@ class MakeSense(QMainWindow):
                 subprocess.Popen([steam_exe_path])
             except FileNotFoundError:
                 return
-
-    def handle_trigger_effect_change(self):
-        if self.controller:
-            index = self.ui.triggerComboBox.currentIndex()
-            effects = {
-                0: lambda: (self.controller.left_trigger.effect.off(), self.controller.right_trigger.effect.off()),
-                1: lambda: (self.controller.left_trigger.effect.full_press(), self.controller.right_trigger.effect.full_press()),
-                2: lambda: (self.controller.left_trigger.effect.soft_press(), self.controller.right_trigger.effect.soft_press()),
-                3: lambda: (self.controller.left_trigger.effect.medium_press(), self.controller.right_trigger.effect.medium_press()),
-                4: lambda: (self.controller.left_trigger.effect.hard_press(), self.controller.right_trigger.effect.hard_press()),
-                5: lambda: (self.controller.left_trigger.effect.pulse(), self.controller.right_trigger.effect.pulse()),
-                6: lambda: (self.controller.left_trigger.effect.choppy(), self.controller.right_trigger.effect.choppy()),
-                7: lambda: (self.controller.left_trigger.effect.soft_rigidity(), self.controller.right_trigger.effect.soft_rigidity()),
-                8: lambda: (self.controller.left_trigger.effect.medium_rigidity(), self.controller.right_trigger.effect.medium_rigidity()),
-                9: lambda: (self.controller.left_trigger.effect.max_rigidity(), self.controller.right_trigger.effect.max_rigidity()),
-                10: lambda: (self.controller.left_trigger.effect.half_press(), self.controller.right_trigger.effect.half_press()),
-            }
-            if index in effects:
-                effects[index]()
-            self.save_settings()
-            
-    def handle_mic_shortcut_change(self):
-        if self.controller:
-            index = self.ui.shortcutComboBox.currentIndex()
-            self.controller.btn_mute._state.remove_all_change_listeners()
-            if index == 0:
-                self.controller.btn_mute.on_down(self.toggle_mic_led)
-            elif index == 1:
-                self.controller.btn_mute.on_down(self.toggle_touchpad)
-            elif index == 2:
-                self.controller.btn_mute.on_down(self.toggle_xbox_emulation)
-            elif index == 3:
-                self.controller.btn_mute.on_down(self.start_steam)
-
-            self.save_settings()
-
-    def handle_xbox_emulation_state_change(self):
-        if self.ui.emulateXboxBox.isChecked():
-            self.start_xbox_emulation()
-            self.ui.rumbleSlider.setEnabled(True)
-            self.ui.rumbleLabel.setEnabled(True)
-        else:
-            self.stop_xbox_emulation()
-            self.ui.rumbleSlider.setEnabled(False)
-            self.ui.rumbleLabel.setEnabled(False)
-        self.save_settings()
 
     def start_xbox_emulation(self):
         self.virtual_xbox_gamepad = VirtualXBOXGamepad(self.controller)
@@ -366,7 +366,7 @@ class MakeSense(QMainWindow):
         event.ignore()
         self.toggle_window()
 
-    def on_touchpad_change(self, value):
+    def map_touchpad_to_pointer(self, value):
         if self.controller:
             touch_position = QPointF(value.x, value.y)
 
