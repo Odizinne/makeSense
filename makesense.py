@@ -52,7 +52,7 @@ class MakeSense(QMainWindow):
         self.ui.setupUi(self)
         self.setWindowTitle("makeSense")
         self.setWindowIcon(QIcon('icons/icon.png'))
-        self.setFixedSize(self.size())
+        self.default_size = self.size()
         self.controller = None
         self.virtual_xbox_gamepad = None
         self.last_touch_position = None
@@ -212,6 +212,10 @@ class MakeSense(QMainWindow):
     def toggle_ui_elements(self, show):
         self.ui.controllerFrame.setVisible(show)
         self.ui.notFoundLabel.setVisible(not show)
+        if show:
+            self.setFixedSize(self.default_size)
+        else:
+            self.setFixedSize(300, 200)
 
     def handle_touchpad_state_change(self):
         if self.controller:
