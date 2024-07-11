@@ -1,10 +1,21 @@
+import os
 from cx_Freeze import setup, Executable
 
+script_dir = os.path.dirname(os.path.abspath(__file__))
+
 build_dir = "build/makeSense"
+
 base = "Win32GUI"
-icon = "icons/icon.ico"
+
+icon = os.path.join(script_dir, "icons/icon.ico")
+
 zip_include_packages = ['PyQt6', 'winshell', 'dualsense-controller', 'pyautogui']
-include_files = ['icons/', 'dependencies/hidapi/hidapi.dll', 'dependencies/hidapi/hidapi.lib']
+
+include_files = [
+    os.path.join(script_dir, 'icons/'), 
+    os.path.join(script_dir, 'dependencies/hidapi/hidapi.dll'), 
+    os.path.join(script_dir, 'dependencies/hidapi/hidapi.lib')
+]
 
 build_exe_options = {
     "include_files": include_files,
@@ -14,7 +25,7 @@ build_exe_options = {
 }
 
 executables = [
-    Executable('makesense.py', base=base, icon=icon, target_name="makeSense.exe")
+    Executable(os.path.join(script_dir, 'makesense.py'), base=base, icon=icon, target_name="makeSense.exe")
 ]
 
 setup(
