@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>429</width>
-    <height>657</height>
+    <width>443</width>
+    <height>694</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -185,19 +185,6 @@
           <property name="verticalSpacing">
            <number>12</number>
           </property>
-          <item row="2" column="0">
-           <widget class="QLabel" name="rumbleLabel">
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>25</height>
-             </size>
-            </property>
-            <property name="text">
-             <string>Rumble intensity</string>
-            </property>
-           </widget>
-          </item>
           <item row="0" column="0">
            <widget class="QLabel" name="emulateXboxLabel">
             <property name="minimumSize">
@@ -211,13 +198,16 @@
             </property>
            </widget>
           </item>
-          <item row="0" column="1">
-           <widget class="QCheckBox" name="emulateXboxBox">
+          <item row="1" column="1">
+           <widget class="QCheckBox" name="keepDualsenseHiddenBox">
             <property name="minimumSize">
              <size>
               <width>0</width>
               <height>25</height>
              </size>
+            </property>
+            <property name="toolTip">
+             <string/>
             </property>
             <property name="layoutDirection">
              <enum>Qt::LayoutDirection::RightToLeft</enum>
@@ -243,6 +233,60 @@
             </property>
             <property name="orientation">
              <enum>Qt::Orientation::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="keepDualsenseHiddenLabel">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>25</height>
+             </size>
+            </property>
+            <property name="toolTip">
+             <string>By default, dualsense is hidden only when using virtual XBOX controller.
+Enabling this will prevent any application to see your dualsense controller,
+even if virtual XBOX controller is disabled or makeSense is closed.
+Do not check unless you have specific needs or you might get stuck with no controller detected.</string>
+            </property>
+            <property name="text">
+             <string>Keep Dualsense hidden ⚠️</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QCheckBox" name="emulateXboxBox">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>25</height>
+             </size>
+            </property>
+            <property name="layoutDirection">
+             <enum>Qt::LayoutDirection::RightToLeft</enum>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="rumbleLabel">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>25</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Rumble intensity    </string>
             </property>
            </widget>
           </item>

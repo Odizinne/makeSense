@@ -12,6 +12,7 @@ class VirtualXBOXGamepad:
         self.gamepad = None
         self.device_instance_path = self.get_device_instance_path()
         self.rumble_intensity = 50
+        self.keep_dualsense_hidden = None
 
     def start_emulation(self):
         if self.controller and self.gamepad is None:
@@ -28,7 +29,8 @@ class VirtualXBOXGamepad:
         if self.gamepad:
             self.gamepad.unregister_notification()
             self.gamepad = None
-            self.toggle_dualsense_controller_visibility(False)
+            if not self.keep_dualsense_hidden:
+                self.toggle_dualsense_controller_visibility(False)
             self.xbox_emulation_timer.stop()
 
     def toggle_dualsense_controller_visibility(self, hide):

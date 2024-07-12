@@ -58,6 +58,7 @@ class MakeSense(QMainWindow):
         self.last_touch_position = None
         self.device_instance_path = None
         self.notification_sent = None
+        self.keep_dualsense_hidden = None
         self.shared_memory = shared_memory
         self.rumble_intensity = 50
         self.settings_file = os.path.join(os.getenv('APPDATA'), 'makesense', 'settings.json')
@@ -92,6 +93,7 @@ class MakeSense(QMainWindow):
         self.ui.triggerComboBox.currentIndexChanged.connect(self.on_triggerComboBox_index_changed)
         self.ui.shortcutComboBox.currentIndexChanged.connect(self.on_shortcutComboBox_index_changed)
         self.ui.batteryNotificationBox.stateChanged.connect(self.save_settings)
+        self.ui.keepDualsenseHiddenBox.stateChanged.connect(self.on_keepDualsenseHiddenBox_state_changed)
 
     def setup_slider_spinbox_sync(self, slider, spinbox):
         slider.valueChanged.connect(lambda value: spinbox.setValue(value))
@@ -169,7 +171,10 @@ class MakeSense(QMainWindow):
             self.ui.emulateXboxBox.setChecked(settings.get("emulate_xbox_checked", False))
             self.ui.rumbleSlider.setEnabled(settings.get("emulate_xbox_checked", False))
             self.ui.rumbleLabel.setEnabled(settings.get("emulate_xbox_checked", False))
+            self.ui.keepDualsenseHiddenBox.setEnabled(settings.get("emulate_xbox_checked", False))
+            self.ui.keepDualsenseHiddenLabel.setEnabled(settings.get("emulate_xbox_checked", False))
             self.ui.batteryNotificationBox.setChecked(settings.get("battery_notification_checked", False))
+            self.ui.keepDualsenseHiddenBox.setChecked(settings.get("keep_dualsense_hidden", False))
             self.ui.rumbleSlider.setValue(settings.get("rumble_intensity", 50))
             self.ui.shortcutComboBox.setCurrentIndex(shortcut_combo_index)
             self.ui.triggerComboBox.setCurrentIndex(trigger_combo_index)
@@ -184,6 +189,7 @@ class MakeSense(QMainWindow):
             },
             "emulate_xbox_checked": self.ui.emulateXboxBox.isChecked(),
             "battery_notification_checked": self.ui.batteryNotificationBox.isChecked(),
+            "keep_dualsense_hidden": self.ui.keepDualsenseHiddenBox.isChecked(),
             "rumble_intensity": self.ui.rumbleSlider.value(),
             "shortcut_combo_index" : self.ui.shortcutComboBox.currentIndex(),
             "trigger_combo_index" : self.ui.triggerComboBox.currentIndex()
@@ -212,6 +218,7 @@ class MakeSense(QMainWindow):
         self.on_rumbleSlider_value_changed()
         self.on_shortcutComboBox_index_changed()
         self.on_triggerComboBox_index_changed()
+        self.on_keepDualsenseHiddenBox_state_changed()
 
     def toggle_ui_elements(self, show):
         self.ui.controllerFrame.setVisible(show)
@@ -241,6 +248,11 @@ class MakeSense(QMainWindow):
         if self.controller and self.virtual_xbox_gamepad:
             self.rumble_intensity = self.ui.rumbleSlider.value()
             self.virtual_xbox_gamepad.set_rumble_intensity(self.rumble_intensity)
+        self.save_settings()
+
+    def on_keepDualsenseHiddenBox_state_changed(self):
+        if self.virtual_xbox_gamepad:
+            self.virtual_xbox_gamepad.keep_dualsense_hidden = self.ui.keepDualsenseHiddenBox.isChecked()
         self.save_settings()
 
     def on_triggerComboBox_index_changed(self):
@@ -281,12 +293,18 @@ class MakeSense(QMainWindow):
     def on_emulateXboxBox_state_changed(self):
         if self.ui.emulateXboxBox.isChecked():
             self.start_xbox_emulation()
+            self.keep_dualsense_hidden = self.ui.keepDualsenseHiddenBox.isChecked()
+            self.virtual_xbox_gamepad.keep_dualsense_hidden = self.keep_dualsense_hidden
             self.ui.rumbleSlider.setEnabled(True)
             self.ui.rumbleLabel.setEnabled(True)
+            self.ui.keepDualsenseHiddenBox.setEnabled(True)
+            self.ui.keepDualsenseHiddenLabel.setEnabled(True)
         else:
             self.stop_xbox_emulation()
             self.ui.rumbleSlider.setEnabled(False)
             self.ui.rumbleLabel.setEnabled(False)
+            self.ui.keepDualsenseHiddenBox.setEnabled(False)
+            self.ui.keepDualsenseHiddenLabel.setEnabled(False)
         self.save_settings()
 
     def toggle_mic_led(self):
