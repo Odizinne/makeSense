@@ -13,14 +13,13 @@ class VirtualXBOXGamepad:
     def __init__(self, controller):
         self.controller = controller
         self.gamepad = None
+        self.check_and_register()
         self.device_instance_path = self.get_device_instance_path()
         self.rumble_intensity = 50
         self.keep_dualsense_hidden = None
 
     def start_emulation(self):
         if self.controller and self.gamepad is None:
-            self.check_and_register()
-            self.device_instance_path = self.get_device_instance_path()
             self.gamepad = vg.VX360Gamepad()
             self.gamepad.register_notification(callback_function=self.rumble_callback)
             self.toggle_dualsense_controller_visibility(True)
@@ -50,9 +49,6 @@ class VirtualXBOXGamepad:
 
         if not sys.executable in app_list:
             subprocess.run([hidhide_path, "--app-reg", sys.executable], startupinfo=startupinfo)
-            print("Registered")
-        else:
-            print("Already registered")
 
     def toggle_dualsense_controller_visibility(self, hide):
         if self.device_instance_path:

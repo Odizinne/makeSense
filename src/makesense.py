@@ -377,7 +377,7 @@ class MakeSense(QMainWindow):
             if controller_connection_type == "USB_01":
                 connexion_type = "Wired"
             else:
-                connexion_type = "Wireless"
+                connexion_type = "Bluetooth"
             self.ui.batteryBar.setValue(controller_battery_level)
             self.ui.batteryLabel.setText(f"{controller_battery_level}%")
             self.ui.batteryStatusLabel.setText(battery_status)
