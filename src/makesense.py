@@ -94,6 +94,7 @@ class MakeSense(QMainWindow):
         self.ui.shortcutComboBox.currentIndexChanged.connect(self.on_shortcutComboBox_index_changed)
         self.ui.batteryNotificationBox.stateChanged.connect(self.save_settings)
         self.ui.keepDualsenseHiddenBox.stateChanged.connect(self.on_keepDualsenseHiddenBox_state_changed)
+        self.ui.resetButton.clicked.connect(self.reset_default)
 
     def setup_slider_spinbox_sync(self, slider, spinbox):
         slider.valueChanged.connect(lambda value: spinbox.setValue(value))
@@ -219,6 +220,19 @@ class MakeSense(QMainWindow):
         self.on_shortcutComboBox_index_changed()
         self.on_triggerComboBox_index_changed()
         self.on_keepDualsenseHiddenBox_state_changed()
+
+    def reset_default(self):
+        self.ui.touchpadBox.setChecked(False)
+        self.ui.keepDualsenseHiddenBox.setChecked(False)
+        self.ui.emulateXboxBox.setChecked(False)
+        self.ui.rumbleSlider.setValue(50)
+        self.ui.batteryNotificationBox.setChecked(False)
+        self.ui.r.setValue(0)
+        self.ui.g.setValue(0)
+        self.ui.b.setValue(0)
+        self.ui.shortcutComboBox.setCurrentIndex(0)
+        self.ui.triggerComboBox.setCurrentIndex(0)
+        self.save_settings()
 
     def toggle_ui_elements(self, show):
         self.ui.controllerFrame.setVisible(show)
