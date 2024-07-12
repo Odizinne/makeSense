@@ -13,16 +13,17 @@ class VirtualXBOXGamepad:
     def __init__(self, controller):
         self.controller = controller
         self.gamepad = None
-        self.check_and_register()
         self.device_instance_path = self.get_device_instance_path()
         self.rumble_intensity = 50
-        self.keep_dualsense_hidden = None
+        self.hide_dualsense = None
 
     def start_emulation(self):
         if self.controller and self.gamepad is None:
             self.gamepad = vg.VX360Gamepad()
             self.gamepad.register_notification(callback_function=self.rumble_callback)
-            self.toggle_dualsense_controller_visibility(True)
+            if self.hide_dualsense:
+                self.check_and_register()
+                self.toggle_dualsense_controller_visibility(True)
             self.map_ds_to_xbox()
             self.xbox_emulation_timer = QTimer()
             self.xbox_emulation_timer.timeout.connect(self.map_ds_to_xbox)
@@ -32,8 +33,7 @@ class VirtualXBOXGamepad:
         if self.gamepad:
             self.gamepad.unregister_notification()
             self.gamepad = None
-            if not self.keep_dualsense_hidden:
-                self.toggle_dualsense_controller_visibility(False)
+            self.toggle_dualsense_controller_visibility(False)
             self.xbox_emulation_timer.stop()
 
     def check_and_register(self):
