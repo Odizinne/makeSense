@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>443</width>
-    <height>690</height>
+    <height>659</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,22 +15,6 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
-    <item row="0" column="0">
-     <widget class="QLabel" name="notFoundLabel">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="text">
-       <string>No Dualsense found.</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignmentFlag::AlignCenter</set>
-      </property>
-     </widget>
-    </item>
     <item row="1" column="0">
      <widget class="QFrame" name="controllerFrame">
       <layout class="QGridLayout" name="gridLayout_7">
@@ -201,6 +185,63 @@
           <property name="verticalSpacing">
            <number>12</number>
           </property>
+          <item row="0" column="1">
+           <widget class="QCheckBox" name="emulateXboxBox">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>25</height>
+             </size>
+            </property>
+            <property name="layoutDirection">
+             <enum>Qt::LayoutDirection::RightToLeft</enum>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="hideDualsenseLabel">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>25</height>
+             </size>
+            </property>
+            <property name="baseSize">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Hide Dualsense</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QCheckBox" name="hideDualsenseBox">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>25</height>
+             </size>
+            </property>
+            <property name="baseSize">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="layoutDirection">
+             <enum>Qt::LayoutDirection::RightToLeft</enum>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
           <item row="0" column="0">
            <widget class="QLabel" name="emulateXboxLabel">
             <property name="minimumSize">
@@ -211,25 +252,6 @@
             </property>
             <property name="text">
              <string>Virtual XBOX Controller</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QCheckBox" name="keepDualsenseHiddenBox">
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>25</height>
-             </size>
-            </property>
-            <property name="toolTip">
-             <string/>
-            </property>
-            <property name="layoutDirection">
-             <enum>Qt::LayoutDirection::RightToLeft</enum>
-            </property>
-            <property name="text">
-             <string/>
             </property>
            </widget>
           </item>
@@ -249,41 +271,6 @@
             </property>
             <property name="orientation">
              <enum>Qt::Orientation::Horizontal</enum>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="keepDualsenseHiddenLabel">
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>25</height>
-             </size>
-            </property>
-            <property name="toolTip">
-             <string>By default, dualsense is hidden only when using virtual XBOX controller.
-Enabling this will prevent any application to see your dualsense controller,
-even if virtual XBOX controller is disabled or makeSense is closed.
-Do not check unless you have specific needs or you might get stuck with no controller detected.</string>
-            </property>
-            <property name="text">
-             <string>Keep Dualsense hidden ⚠️</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="QCheckBox" name="emulateXboxBox">
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>25</height>
-             </size>
-            </property>
-            <property name="layoutDirection">
-             <enum>Qt::LayoutDirection::RightToLeft</enum>
-            </property>
-            <property name="text">
-             <string/>
             </property>
            </widget>
           </item>
@@ -769,16 +756,19 @@ Do not check unless you have specific needs or you might get stuck with no contr
       </layout>
      </widget>
     </item>
-    <item row="2" column="0">
-     <widget class="QPushButton" name="resetButton">
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>25</height>
-       </size>
+    <item row="0" column="0">
+     <widget class="QLabel" name="notFoundLabel">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
       </property>
       <property name="text">
-       <string>Reset to default</string>
+       <string>No Dualsense found.</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignmentFlag::AlignCenter</set>
       </property>
      </widget>
     </item>
