@@ -2,6 +2,9 @@
 
 Python Dualsense driver using dualsense-controller.
 
+⚠️ makeSense is in continuous development. ⚠️  
+While i do my best to ensure everything is working when i release a new build, things may break from time to time. 
+
 **If you appreciate my work and would like to support me:**<br/>
 <a href="https://ko-fi.com/odizinne">
   <img src="assets/kofi_button_red.png" alt="Ko-fi" width="200" height="auto">
