@@ -1,4 +1,4 @@
-# Form implementation generated from reading ui file '.\design.ui'
+# Form implementation generated from reading ui file '.\ui\design.ui'
 #
 # Created by: PyQt6 UI code generator 6.7.0
 #
@@ -12,7 +12,7 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(429, 626)
+        MainWindow.resize(429, 657)
         self.centralwidget = QtWidgets.QWidget(parent=MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.gridLayout = QtWidgets.QGridLayout(self.centralwidget)
@@ -129,6 +129,16 @@ class Ui_MainWindow(object):
         self.batteryStatusLabel.setMinimumSize(QtCore.QSize(0, 25))
         self.batteryStatusLabel.setObjectName("batteryStatusLabel")
         self.gridLayout_6.addWidget(self.batteryStatusLabel, 0, 0, 1, 1)
+        self.label_6 = QtWidgets.QLabel(parent=self.batteryFrame)
+        self.label_6.setMinimumSize(QtCore.QSize(0, 25))
+        self.label_6.setObjectName("label_6")
+        self.gridLayout_6.addWidget(self.label_6, 1, 0, 1, 1)
+        self.batteryNotificationBox = QtWidgets.QCheckBox(parent=self.batteryFrame)
+        self.batteryNotificationBox.setMinimumSize(QtCore.QSize(0, 25))
+        self.batteryNotificationBox.setLayoutDirection(QtCore.Qt.LayoutDirection.RightToLeft)
+        self.batteryNotificationBox.setText("")
+        self.batteryNotificationBox.setObjectName("batteryNotificationBox")
+        self.gridLayout_6.addWidget(self.batteryNotificationBox, 1, 1, 1, 1)
         self.gridLayout_3.addLayout(self.gridLayout_6, 2, 0, 1, 2)
         self.gridLayout_7.addWidget(self.batteryFrame, 1, 0, 1, 1)
         self.lightbarFrame = QtWidgets.QFrame(parent=self.controllerFrame)
@@ -290,6 +300,7 @@ class Ui_MainWindow(object):
         self.emulateXboxLabel.setText(_translate("MainWindow", "Virtual XBOX Controller"))
         self.connectionTypeLabel.setText(_translate("MainWindow", "Connection type"))
         self.batteryStatusLabel.setText(_translate("MainWindow", "Status"))
+        self.label_6.setText(_translate("MainWindow", "Notify on low battery"))
         self.rLabel.setText(_translate("MainWindow", "Red"))
         self.bLabel.setText(_translate("MainWindow", "Blue"))
         self.gLabel.setText(_translate("MainWindow", "Green"))

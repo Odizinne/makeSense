@@ -57,6 +57,7 @@ class MakeSense(QMainWindow):
         self.virtual_xbox_gamepad = None
         self.last_touch_position = None
         self.device_instance_path = None
+        self.notification_sent = None
         self.shared_memory = shared_memory
         self.rumble_intensity = 50
         self.settings_file = os.path.join(os.getenv('APPDATA'), 'makesense', 'settings.json')
@@ -167,6 +168,7 @@ class MakeSense(QMainWindow):
             self.ui.emulateXboxBox.setChecked(settings.get("emulate_xbox_checked", False))
             self.ui.rumbleSlider.setEnabled(settings.get("emulate_xbox_checked", False))
             self.ui.rumbleLabel.setEnabled(settings.get("emulate_xbox_checked", False))
+            self.ui.batteryNotificationBox.setChecked(settings.get("battery_notification_checked", False))
             self.ui.rumbleSlider.setValue(settings.get("rumble_intensity", 50))
             self.ui.shortcutComboBox.setCurrentIndex(shortcut_combo_index)
             self.ui.triggerComboBox.setCurrentIndex(trigger_combo_index)
@@ -180,6 +182,7 @@ class MakeSense(QMainWindow):
                 "b": self.ui.b.value()
             },
             "emulate_xbox_checked": self.ui.emulateXboxBox.isChecked(),
+            "battery_notification_checked": self.ui.batteryNotificationBox.isChecked(),
             "rumble_intensity": self.ui.rumbleSlider.value(),
             "shortcut_combo_index" : self.ui.shortcutComboBox.currentIndex(),
             "trigger_combo_index" : self.ui.triggerComboBox.currentIndex()
@@ -339,6 +342,11 @@ class MakeSense(QMainWindow):
             self.ui.batteryLabel.setText(f"{controller_battery_level}%")
             self.ui.batteryStatusLabel.setText(battery_status)
             self.ui.connectionTypeLabel.setText(connexion_type)
+
+            if self.ui.batteryNotificationBox.isChecked() and controller_battery_level < 20 and not controller_battery_status:
+                if not self.notification_sent:
+                    self.tray_icon.showMessage("Low battery", "Dualsense controller battery is low.", QIcon('icons/icon.png'), 3000)
+                    self.notification_sent = True
 
     def create_startup_shortcut(self):
         target = sys.executable
