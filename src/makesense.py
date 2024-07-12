@@ -366,6 +366,8 @@ class MakeSense(QMainWindow):
                 if not self.notification_sent:
                     self.tray_icon.showMessage("Low battery", "Dualsense controller battery is low.", QIcon('icons/icon.png'), 3000)
                     self.notification_sent = True
+            if self.notification_sent and controller_battery_level > 25:
+                self.notification_sent = False
 
     def create_startup_shortcut(self):
         target = sys.executable
