@@ -1,15 +1,16 @@
 import sys
 import os
 import winreg
+import json
+import subprocess
+import pyautogui
+import winshell
+import darkdetect
 from PyQt6.QtWidgets import QApplication, QMessageBox
 from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QMainWindow, QSystemTrayIcon, QMenu
 from PyQt6.QtCore import QTimer, QPointF, QPoint, QSharedMemory
 from PyQt6.QtGui import QAction, QCursor
-import json
-import subprocess
-import pyautogui
-import winshell
 from design import Ui_MainWindow
 from dualsense_controller import DualSenseController
 from controller_checker import ControllerChecker
@@ -51,7 +52,7 @@ class MakeSense(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.setWindowTitle("makeSense")
-        self.setWindowIcon(QIcon('icons/icon.png'))
+        self.setWindowIcon(QIcon(self.detect_system_theme()))
         self.default_size = self.size()
         self.controller = None
         self.virtual_xbox_gamepad = None
@@ -72,6 +73,12 @@ class MakeSense(QMainWindow):
         self.controller_checker.start()
         self.initialize_ui_state()
 
+    def detect_system_theme(self):
+        if darkdetect.isDark():
+            return 'icons/icon.png'
+        else:
+            return 'icons/icon_light.png'
+        
     def initialize_ui_state(self):
         device_infos = DualSenseController.enumerate_devices()
         controller_present_now = len(device_infos) > 0
@@ -108,7 +115,7 @@ class MakeSense(QMainWindow):
 
     def create_system_tray_icon(self):
         self.tray_icon = QSystemTrayIcon(self)
-        self.tray_icon.setIcon(QIcon('icons/icon.png'))
+        self.tray_icon.setIcon(QIcon(self.detect_system_theme()))
 
         show_action = QAction("Show", self)
         show_action.triggered.connect(self.toggle_window)
