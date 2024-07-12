@@ -1,10 +1,13 @@
-import vgamepad as vg
 import subprocess
 import json
 import sys
+import vgamepad as vg
 from PyQt6.QtCore import QTimer
 
 hidhide_path = r"C:\Program Files\Nefarius Software Solutions\HidHide\x64\hidhidecli.exe"
+startupinfo = subprocess.STARTUPINFO()
+startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+startupinfo.wShowWindow = subprocess.SW_HIDE
 
 class VirtualXBOXGamepad:
     def __init__(self, controller):
@@ -16,6 +19,7 @@ class VirtualXBOXGamepad:
 
     def start_emulation(self):
         if self.controller and self.gamepad is None:
+            self.check_and_register()
             self.device_instance_path = self.get_device_instance_path()
             self.gamepad = vg.VX360Gamepad()
             self.gamepad.register_notification(callback_function=self.rumble_callback)
@@ -33,15 +37,27 @@ class VirtualXBOXGamepad:
                 self.toggle_dualsense_controller_visibility(False)
             self.xbox_emulation_timer.stop()
 
+    def check_and_register(self):
+        result = subprocess.run([hidhide_path, "--app-list"], capture_output=True, text=True, startupinfo=startupinfo)
+        lines = result.stdout.splitlines()
+        app_list = []
+        for line in lines:
+            if line.startswith('--app-reg'):
+                start = line.find('"') + 1
+                end = line.rfind('"')
+                path = line[start:end]
+                app_list.append(path)
+
+        if not sys.executable in app_list:
+            subprocess.run([hidhide_path, "--app-reg", sys.executable], startupinfo=startupinfo)
+            print("Registered")
+        else:
+            print("Already registered")
+
     def toggle_dualsense_controller_visibility(self, hide):
         if self.device_instance_path:
             action = "--dev-hide" if hide else "--dev-unhide"
             cloak_action = "--cloak-on" if hide else "--cloak-off"
-
-            startupinfo = subprocess.STARTUPINFO()
-            startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
-            startupinfo.wShowWindow = subprocess.SW_HIDE
-            subprocess.run([hidhide_path, "--app-reg", sys.executable], startupinfo=startupinfo)
             subprocess.run([hidhide_path, action, self.device_instance_path], startupinfo=startupinfo)
             subprocess.run([hidhide_path, cloak_action], startupinfo=startupinfo)
 
@@ -97,10 +113,6 @@ class VirtualXBOXGamepad:
         self.rumble_intensity = intensity
 
     def get_device_instance_path(self):
-        startupinfo = subprocess.STARTUPINFO()
-        startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
-        startupinfo.wShowWindow = subprocess.SW_HIDE
-        
         result = subprocess.run([hidhide_path, '--dev-gaming'], capture_output=True, text=True, startupinfo=startupinfo)
         data = json.loads(result.stdout)
         for device in data:
