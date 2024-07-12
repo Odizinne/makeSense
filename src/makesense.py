@@ -91,6 +91,7 @@ class MakeSense(QMainWindow):
         self.ui.rumbleSlider.valueChanged.connect(self.on_rumbleSlider_value_changed)
         self.ui.triggerComboBox.currentIndexChanged.connect(self.on_triggerComboBox_index_changed)
         self.ui.shortcutComboBox.currentIndexChanged.connect(self.on_shortcutComboBox_index_changed)
+        self.ui.batteryNotificationBox.stateChanged.connect(self.save_settings)
 
     def setup_slider_spinbox_sync(self, slider, spinbox):
         slider.valueChanged.connect(lambda value: spinbox.setValue(value))
