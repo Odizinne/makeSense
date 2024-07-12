@@ -116,6 +116,7 @@ class MakeSense(QMainWindow):
     def create_system_tray_icon(self):
         self.tray_icon = QSystemTrayIcon(self)
         self.tray_icon.setIcon(QIcon(self.detect_system_theme()))
+        self.tray_icon.setToolTip("makeSense")
 
         show_action = QAction("Show", self)
         show_action.triggered.connect(self.toggle_window)
@@ -382,7 +383,6 @@ class MakeSense(QMainWindow):
             self.ui.batteryLabel.setText(f"{controller_battery_level}%")
             self.ui.batteryStatusLabel.setText(battery_status)
             self.ui.connectionTypeLabel.setText(connexion_type)
-
             if self.ui.batteryNotificationBox.isChecked() and controller_battery_level < 20 and not controller_battery_status:
                 if not self.notification_sent:
                     self.tray_icon.showMessage("Low battery", "Dualsense controller battery is low.", QIcon('icons/icon.png'), 3000)
