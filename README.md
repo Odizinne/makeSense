@@ -1,6 +1,6 @@
 # makeSense
 
-Python Dualsense driver using dualsense-controller.
+Python Dualsense driver using [dualsense-controller](https://github.com/yesbotics/dualsense-controller-python).
 
 ⚠️ makeSense is in continuous development. ⚠️  
 While i do my best to ensure everything is working when i release a new build, things may break from time to time. 
