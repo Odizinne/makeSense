@@ -12,7 +12,7 @@ While i do my best to ensure everything is working when i release a new build, t
 
 ## Features
 
-![image](assets/makeSense.png)
+![image](assets/makeSense_screenshot.png)
 
 - Multiple controller support is not implemented. I will probably do it one day.  
 - Wireless dongle is not implemented. I will do it if someone request it.
