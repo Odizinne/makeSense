@@ -160,39 +160,43 @@ class MakeSense(QMainWindow):
 
     def load_settings(self):
         os.makedirs(os.path.dirname(self.settings_file), exist_ok=True)
-        if os.path.exists(self.settings_file):
-            with open(self.settings_file, 'r') as file:
-                settings = json.load(file)
+        try:
+            if os.path.exists(self.settings_file):
+                with open(self.settings_file, 'r') as file:
+                    settings = json.load(file)
 
-            self.ui.touchpadBox.setChecked(settings.get("touchpad_checked", False))
-            r_value = settings.get("lightbar_color", {"r": 0, "g": 0, "b": 0}).get("r", 0)
-            g_value = settings.get("lightbar_color", {"r": 0, "g": 0, "b": 0}).get("g", 0)
-            b_value = settings.get("lightbar_color", {"r": 0, "g": 0, "b": 0}).get("b", 0)
-            shortcut_combo_index = settings.get("shortcut_combo_index", 0)
-            trigger_combo_index = settings.get("trigger_combo_index", 0)
-            self.ui.r.setValue(r_value)
-            self.ui.g.setValue(g_value)
-            self.ui.b.setValue(b_value)
-            self.ui.rSlider.setValue(r_value)
-            self.ui.gSlider.setValue(g_value)
-            self.ui.bSlider.setValue(b_value)
-            self.ui.emulateXboxBox.setChecked(settings.get("emulate_xbox_checked", False))
-            self.ui.rumbleSlider.setEnabled(settings.get("emulate_xbox_checked", False))
-            self.ui.rumbleLabel.setEnabled(settings.get("emulate_xbox_checked", False))
-            self.ui.hideDualsenseBox.setEnabled(settings.get("emulate_xbox_checked", False))
-            self.ui.hideDualsenseLabel.setEnabled(settings.get("emulate_xbox_checked", False))
-            self.ui.batteryNotificationBox.setChecked(settings.get("battery_notification_checked", False))
-            self.ui.hideDualsenseBox.setChecked(settings.get("hide_dualsense_checked", False))
-            self.ui.rumbleSlider.setValue(settings.get("rumble_intensity", 50))
-            self.ui.shortcutComboBox.setCurrentIndex(shortcut_combo_index)
-            self.ui.triggerComboBox.setCurrentIndex(trigger_combo_index)
+                self.ui.touchpadBox.setChecked(settings.get("touchpad_checked", False))
+                r_value = settings.get("lightbar_color", {"r": 0, "g": 0, "b": 0}).get("r", 0)
+                g_value = settings.get("lightbar_color", {"r": 0, "g": 0, "b": 0}).get("g", 0)
+                b_value = settings.get("lightbar_color", {"r": 0, "g": 0, "b": 0}).get("b", 0)
+                shortcut_combo_index = settings.get("shortcut_combo_index", 0)
+                trigger_combo_index = settings.get("trigger_combo_index", 0)
+                self.ui.r.setValue(r_value)
+                self.ui.g.setValue(g_value)
+                self.ui.b.setValue(b_value)
+                self.ui.rSlider.setValue(r_value)
+                self.ui.gSlider.setValue(g_value)
+                self.ui.bSlider.setValue(b_value)
+                self.ui.emulateXboxBox.setChecked(settings.get("emulate_xbox_checked", False))
+                self.ui.rumbleSlider.setEnabled(settings.get("emulate_xbox_checked", False))
+                self.ui.rumbleLabel.setEnabled(settings.get("emulate_xbox_checked", False))
+                self.ui.hideDualsenseBox.setEnabled(settings.get("emulate_xbox_checked", False))
+                self.ui.hideDualsenseLabel.setEnabled(settings.get("emulate_xbox_checked", False))
+                self.ui.batteryNotificationBox.setChecked(settings.get("battery_notification_checked", False))
+                self.ui.hideDualsenseBox.setChecked(settings.get("hide_dualsense_checked", False))
+                self.ui.rumbleSlider.setValue(settings.get("rumble_intensity", 50))
+                self.ui.shortcutComboBox.setCurrentIndex(shortcut_combo_index)
+                self.ui.triggerComboBox.setCurrentIndex(trigger_combo_index)
 
-        else:
-            self.ui.rumbleLabel.setEnabled(False)
-            self.ui.rumbleSlider.setEnabled(False)
-            self.ui.hideDualsenseLabel.setEnabled(False)
-            self.ui.hideDualsenseBox.setEnabled(False)
-
+            else:
+                self.ui.rumbleLabel.setEnabled(False)
+                self.ui.rumbleSlider.setEnabled(False)
+                self.ui.hideDualsenseLabel.setEnabled(False)
+                self.ui.hideDualsenseBox.setEnabled(False)
+        except Exception as e:
+            print(f"Unexpected error: {e}")
+        self.save_settings()
+        
     def save_settings(self):
         settings = {
             "touchpad_checked": self.ui.touchpadBox.isChecked(),
