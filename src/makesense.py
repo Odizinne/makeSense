@@ -187,6 +187,12 @@ class MakeSense(QMainWindow):
             self.ui.shortcutComboBox.setCurrentIndex(shortcut_combo_index)
             self.ui.triggerComboBox.setCurrentIndex(trigger_combo_index)
 
+        else:
+            self.ui.rumbleLabel.setEnabled(False)
+            self.ui.rumbleSlider.setEnabled(False)
+            self.ui.hideDualsenseLabel.setEnabled(False)
+            self.ui.hideDualsenseBox.setEnabled(False)
+
     def save_settings(self):
         settings = {
             "touchpad_checked": self.ui.touchpadBox.isChecked(),
