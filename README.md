@@ -31,28 +31,25 @@ Run `makeSense.exe`.
 
 ## Build
 
-To build an executable by yourself, you'll need Python and install the following dependencies:
-
-`pip install cx_freeze PyQt6 winshell winreg PyAutoGUI dualsense-controller vgamepad darkdetect pywin32`
-
 If you do not have ViGEmBus driver installer, vgamepad will prompt you to install it.  
 You must install HidHide to run makeSense.
+
+To build an executable by yourself, you'll need Python installed.
 
 - Clone this repository:  
 `git clone https://github.com/Odizinne/makeSense.git`
 
-- Place yourself inside the cloned folder:  
+- CD inside the cloned folder:  
 `cd .\makeSense`
+
+- Install dependencies:
+`pip install -r requirements.txt`
 
 - Build with cx_freeze:  
 `python .\src\setup.py build`
 
 - Install directory and create startup shortcut:
 `python .\src\setup.py install`
-
-## To-do
-- Big code cleanup
-- New icon
 
 ## Credits
 
