@@ -19,7 +19,7 @@ build_exe_options = {
     "include_files": include_files,
     "build_exe": build_dir,
     "zip_include_packages": zip_include_packages,
-    "excludes": ["tkinter", "PyQt5", "PySide6", "pygetwindow", "PyQt6-WebEngine", "numpy"],
+    "excludes": ["tkinter"],
 }
 
 executables = [
