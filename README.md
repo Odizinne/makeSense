@@ -47,6 +47,9 @@ You must install HidHide to run makeSense.
 - Build with cx_freeze:  
 `python .\src\setup.py build`
 
+- Install directory and create startup shortcut:
+`python .\src\setup.py install`
+
 ## To-do
 - Big code cleanup
 - New icon
