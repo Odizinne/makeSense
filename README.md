@@ -25,7 +25,7 @@ You need Nefarius [HidHide](https://github.com/nefarius/HidHide/releases/downloa
 
 Restart your computer after installation.
 
-Download [latest build](https://odizinne.net/Odizinne/makeSense/releases) and extract it.
+Download [latest build](https://odizinne.net/Odizinne/makeSense/releases/latest) and extract it.
 
 Run `makeSense.exe`.
 
