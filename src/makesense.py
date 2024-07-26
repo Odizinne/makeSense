@@ -324,8 +324,8 @@ class MakeSense(QMainWindow):
         if self.virtual_xbox_gamepad:
             self.hide_dualsense = self.ui.hideDualsenseBox.isChecked()
             self.virtual_xbox_gamepad.hide_dualsense = self.hide_dualsense
-            if self.hide_dualsense:
-                self.virtual_xbox_gamepad.toggle_dualsense_controller_visibility(self.hide_dualsense)
+            print("Hiding dualsense controller")
+            self.virtual_xbox_gamepad.toggle_dualsense_controller_visibility(self.hide_dualsense)
         self.save_settings()
 
     def toggle_mic_led(self):
