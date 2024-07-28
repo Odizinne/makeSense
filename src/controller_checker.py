@@ -1,6 +1,7 @@
 from PyQt6.QtCore import QThread, pyqtSignal
 from dualsense_controller import DualSenseController
 
+
 class ControllerChecker(QThread):
     controller_changed = pyqtSignal(bool)
 
@@ -21,7 +22,8 @@ class ControllerChecker(QThread):
                 self.controller = None
                 self.controller_changed.emit(False)
             elif not current_controller_present and controller_present_now:
-                self.controller = DualSenseController(microphone_initially_muted=False) # Unmute microphone by default, disable LED
+                # Unmute microphone by default, disable LED
+                self.controller = DualSenseController(microphone_initially_muted=False)
                 self.controller.activate()
                 self.controller_changed.emit(True)
 

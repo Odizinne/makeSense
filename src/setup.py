@@ -5,14 +5,14 @@ import winshell
 
 src_dir = os.path.dirname(os.path.abspath(__file__))
 build_dir = "build/makeSense"
-install_dir = os.path.join(os.getenv('LOCALAPPDATA'), 'programs', 'makeSense')
+install_dir = os.path.join(os.getenv("LOCALAPPDATA"), "programs", "makeSense")
 
-zip_include_packages = ['PyQt6', 'winshell', 'dualsense-controller', 'pyautogui']
+zip_include_packages = ["PyQt6", "winshell", "dualsense-controller", "pyautogui"]
 
 include_files = [
-    os.path.join(src_dir, 'icons/'), 
-    os.path.join(src_dir, 'dependencies/hidapi/hidapi.dll'), 
-    os.path.join(src_dir, 'dependencies/hidapi/hidapi.lib')
+    os.path.join(src_dir, "icons/"),
+    os.path.join(src_dir, "dependencies/hidapi/hidapi.dll"),
+    os.path.join(src_dir, "dependencies/hidapi/hidapi.lib"),
 ]
 
 build_exe_options = {
@@ -23,8 +23,14 @@ build_exe_options = {
 }
 
 executables = [
-    Executable(os.path.join(src_dir, 'makesense.py'), base="Win32GUI", icon=os.path.join(src_dir, "icons/icon.ico"), target_name="makeSense.exe")
+    Executable(
+        os.path.join(src_dir, "makesense.py"),
+        base="Win32GUI",
+        icon=os.path.join(src_dir, "icons/icon.ico"),
+        target_name="makeSense.exe",
+    )
 ]
+
 
 class InstallCommand(_install):
     def run(self):
@@ -45,19 +51,16 @@ class InstallCommand(_install):
         icon = os.path.join(src_dir, "icons/icon.ico")
 
         winshell.CreateShortcut(
-            Path=shortcut_path,
-            Target=target,
-            Icon=(icon, 0),
-            Description="makeSense",
-            StartIn=install_dir
+            Path=shortcut_path, Target=target, Icon=(icon, 0), Description="makeSense", StartIn=install_dir
         )
 
         print("Created shortcut in start menu")
 
+
 setup(
-    name='makeSense',
-    version='1.0',
+    name="makeSense",
+    version="1.0",
     options={"build_exe": build_exe_options},
     executables=executables,
-    cmdclass={'install': InstallCommand}
+    cmdclass={"install": InstallCommand},
 )

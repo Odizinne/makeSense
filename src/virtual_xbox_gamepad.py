@@ -9,6 +9,7 @@ startupinfo = subprocess.STARTUPINFO()
 startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
 startupinfo.wShowWindow = subprocess.SW_HIDE
 
+
 class VirtualXBOXGamepad:
     def __init__(self, controller):
         self.controller = controller
@@ -42,13 +43,13 @@ class VirtualXBOXGamepad:
         lines = result.stdout.splitlines()
         app_list = []
         for line in lines:
-            if line.startswith('--app-reg'):
+            if line.startswith("--app-reg"):
                 start = line.find('"') + 1
                 end = line.rfind('"')
                 path = line[start:end]
                 app_list.append(path)
 
-        if not sys.executable in app_list:
+        if sys.executable not in app_list:
             subprocess.run([hidhide_path, "--app-reg", sys.executable], startupinfo=startupinfo)
 
     def toggle_dualsense_controller_visibility(self, hide):
@@ -75,7 +76,7 @@ class VirtualXBOXGamepad:
                 (self.controller.btn_up, vg.XUSB_BUTTON.XUSB_GAMEPAD_DPAD_UP),
                 (self.controller.btn_down, vg.XUSB_BUTTON.XUSB_GAMEPAD_DPAD_DOWN),
                 (self.controller.btn_left, vg.XUSB_BUTTON.XUSB_GAMEPAD_DPAD_LEFT),
-                (self.controller.btn_right, vg.XUSB_BUTTON.XUSB_GAMEPAD_DPAD_RIGHT)
+                (self.controller.btn_right, vg.XUSB_BUTTON.XUSB_GAMEPAD_DPAD_RIGHT),
             ]
 
             for btn_ds, btn_xbox in mappings:
@@ -86,12 +87,12 @@ class VirtualXBOXGamepad:
 
             self.gamepad.left_joystick(
                 x_value=int(self.controller.left_stick_x.value * 32767),
-                y_value=int(self.controller.left_stick_y.value * 32767)
+                y_value=int(self.controller.left_stick_y.value * 32767),
             )
 
             self.gamepad.right_joystick(
                 x_value=int(self.controller.right_stick_x.value * 32767),
-                y_value=int(self.controller.right_stick_y.value * 32767)
+                y_value=int(self.controller.right_stick_y.value * 32767),
             )
 
             self.gamepad.left_trigger(value=int(self.controller.left_trigger.value * 255))
@@ -110,9 +111,12 @@ class VirtualXBOXGamepad:
         self.rumble_intensity = intensity
 
     def get_device_instance_path(self):
-        result = subprocess.run([hidhide_path, '--dev-gaming'], capture_output=True, text=True, startupinfo=startupinfo)
+        result = subprocess.run([hidhide_path, "--dev-gaming"], capture_output=True, text=True, startupinfo=startupinfo)
         data = json.loads(result.stdout)
         for device in data:
-            if device.get('friendlyName') == "Sony Interactive Entertainment DualSense Wireless Controller" or device.get('friendlyName') == "Sony Interactive Entertainment Wireless Controller":
-                if device['devices'] and len(device['devices']) > 0:
-                    return device['devices'][0].get('deviceInstancePath')
+            if (
+                device.get("friendlyName") == "Sony Interactive Entertainment DualSense Wireless Controller"
+                or device.get("friendlyName") == "Sony Interactive Entertainment Wireless Controller"
+            ):
+                if device["devices"] and len(device["devices"]) > 0:
+                    return device["devices"][0].get("deviceInstancePath")
