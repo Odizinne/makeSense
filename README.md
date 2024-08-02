@@ -1,11 +1,14 @@
 # makeSense
+[![Github All Releases](https://img.shields.io/github/downloads/odizinne/makesense/total.svg)]()
+[![license](https://img.shields.io/github/license/odizinne/makesense)]()
 
 Python Dualsense driver using [dualsense-controller](https://github.com/yesbotics/dualsense-controller-python).
 
 ⚠️ makeSense is in continuous development. ⚠️  
 While i do my best to ensure everything is working when i release a new build, things may break from time to time. 
 
-**If you appreciate my work and would like to support me:**<br/>
+**If you appreciate my work and would like to support me:**
+
 <a href="https://ko-fi.com/odizinne">
   <img src="assets/kofi_button_red.png" alt="Ko-fi" width="200" height="auto">
 </a>
