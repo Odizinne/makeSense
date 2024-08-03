@@ -15,6 +15,8 @@ from design import Ui_MainWindow
 from dualsense_controller import DualSenseController
 from controller_checker import ControllerChecker
 from virtual_xbox_gamepad import VirtualXBOXGamepad
+from utils import is_windows_10
+from color_utils import set_frame_color_based_on_window
 
 hidhide_path = r"C:\Program Files\Nefarius Software Solutions\HidHide\x64\hidhidecli.exe"
 vigembus_path = r"C:\Program Files\Nefarius Software Solutions\ViGEm Bus Driver\nefconw.exe"
@@ -63,6 +65,7 @@ class MakeSense(QMainWindow):
         self.ui.setupUi(self)
         self.setWindowTitle("makeSense")
         self.setWindowIcon(QIcon(self.detect_system_theme()))
+        self.set_fusion_frames()
         self.default_size = self.size()
         self.controller = None
         self.virtual_xbox_gamepad = None
@@ -88,6 +91,16 @@ class MakeSense(QMainWindow):
             return "icons/icon.png"
         else:
             return "icons/icon_light.png"
+
+    def set_fusion_frames(self):
+        if app.style().objectName() == "fusion":
+            set_frame_color_based_on_window(self, self.ui.gridFrame)
+            set_frame_color_based_on_window(self, self.ui.batteryFrame)
+            set_frame_color_based_on_window(self, self.ui.lightbarFrame)
+            set_frame_color_based_on_window(self, self.ui.settingsFrame)
+            self.ui.r.setFrame(True)
+            self.ui.g.setFrame(True)
+            self.ui.b.setFrame(True)
 
     def initialize_ui_state(self):
         device_infos = DualSenseController.enumerate_devices()
@@ -374,7 +387,6 @@ class MakeSense(QMainWindow):
         if self.virtual_xbox_gamepad:
             self.hide_dualsense = self.ui.hideDualsenseBox.isChecked()
             self.virtual_xbox_gamepad.hide_dualsense = self.hide_dualsense
-            print("Hiding dualsense controller")
             self.virtual_xbox_gamepad.toggle_dualsense_controller_visibility(self.hide_dualsense)
         self.save_settings()
 
@@ -502,6 +514,8 @@ class MakeSense(QMainWindow):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
+    if is_windows_10():
+        app.setStyle("Fusion")
     shared_memory = single_instance_check()
     makesense = MakeSense()
     sys.exit(app.exec())
