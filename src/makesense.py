@@ -9,7 +9,7 @@ import darkdetect
 from PyQt6.QtWidgets import QApplication, QMessageBox
 from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QMainWindow, QSystemTrayIcon, QMenu
-from PyQt6.QtCore import QTimer, QPointF, QPoint, QSharedMemory, QTranslator, QLocale
+from PyQt6.QtCore import QTimer, QPointF, QPoint, QSharedMemory, QTranslator, QLocale, QCoreApplication
 from PyQt6.QtGui import QAction, QCursor
 from design import Ui_MainWindow
 from dualsense_controller import DualSenseController
@@ -32,11 +32,11 @@ def check_dependencies():
 
     if missing_components:
         error_message = (
-            "The following components are missing:\n"
+            QCoreApplication.translate("MakeSense", "The following components are missing:\n")
             + "\n".join(missing_components)
-            + "\n\nPlease install the missing components."
+            + QCoreApplication.translate("MakeSense", "\n\nPlease install the missing components.")
         )
-        show_error_and_exit("Missing Dependencies", error_message)
+        show_error_and_exit(QCoreApplication.translate("MakeSense", "Missing Dependencies"), error_message)
 
 
 def show_error_and_exit(title, message):
@@ -109,22 +109,27 @@ class MakeSense(QMainWindow):
 
     def setup_comboboxes(self):
         self.ui.shortcutComboBox.addItems(
-            ["Toggle mic state", "Toggle touchpad", "Toggle virtual XBOX", "Start or focus Steam"]
+            [
+                self.tr("Toggle mic state"),
+                self.tr("Toggle touchpad"),
+                self.tr("Toggle virtual XBOX"),
+                self.tr("Start or focus Steam"),
+            ]
         )
         self.ui.triggerComboBox.addItems(
             [
-                "Off",
-                "Full press",
-                "Soft press",
-                "Medium press",
-                "Hard press",
-                "Pulse",
-                "Choppy",
-                "Soft rigidity",
-                "Medium rigidity",
-                "Hard rigidity",
-                "Max rigidity",
-                "Half press",
+                self.tr("Off"),
+                self.tr("Full press"),
+                self.tr("Soft press"),
+                self.tr("Medium press"),
+                self.tr("Hard press"),
+                self.tr("Pulse"),
+                self.tr("Choppy"),
+                self.tr("Soft rigidity"),
+                self.tr("Medium rigidity"),
+                self.tr("Hard rigidity"),
+                self.tr("Max rigidity"),
+                self.tr("Half press"),
             ]
         )
 
@@ -157,10 +162,10 @@ class MakeSense(QMainWindow):
         self.tray_icon.setIcon(QIcon(self.detect_system_theme()))
         self.tray_icon.setToolTip("makeSense")
 
-        show_action = QAction("Show", self)
+        show_action = QAction(self.tr("Show"), self)
         show_action.triggered.connect(self.toggle_window)
 
-        exit_action = QAction("Exit", self)
+        exit_action = QAction(self.tr("Exit"), self)
         exit_action.triggered.connect(self.quit)
 
         tray_menu = QMenu()
@@ -176,18 +181,18 @@ class MakeSense(QMainWindow):
         if reason == QSystemTrayIcon.ActivationReason.Trigger:
             if self.isVisible():
                 self.hide()
-                self.tray_icon.contextMenu().actions()[0].setText("Show")
+                self.tray_icon.contextMenu().actions()[0].setText(self.tr("Show"))
             else:
                 self.show()
-                self.tray_icon.contextMenu().actions()[0].setText("Hide")
+                self.tray_icon.contextMenu().actions()[0].setText(self.tr("Hide"))
 
     def toggle_window(self):
         if self.isVisible():
             self.hide()
-            self.tray_icon.contextMenu().actions()[0].setText("Show")
+            self.tray_icon.contextMenu().actions()[0].setText(self.tr("Show"))
         else:
             self.show()
-            self.tray_icon.contextMenu().actions()[0].setText("Hide")
+            self.tray_icon.contextMenu().actions()[0].setText(self.tr("Hide"))
 
     def quit(self):
         if self.controller:
@@ -398,11 +403,14 @@ class MakeSense(QMainWindow):
 
     def toggle_xbox_emulation(self):
         self.ui.emulateXboxBox.setChecked(not self.ui.emulateXboxBox.isChecked())
-        xbox_status = "enabled" if self.ui.emulateXboxBox.isChecked() else "disabled"
-        dualsense_status = "hidden" if self.ui.emulateXboxBox.isChecked() else "visible"
+        xbox_status = self.tr("enabled") if self.ui.emulateXboxBox.isChecked() else self.tr("disabled")
+        dualsense_status = self.tr("hidden") if self.ui.emulateXboxBox.isChecked() else self.tr("visible")
         icon = QIcon("icons/xb_logo.png") if self.ui.emulateXboxBox.isChecked() else QIcon("icons/ps_logo.png")
         self.tray_icon.showMessage(
-            f"XBOX controller emulation {xbox_status}.", f"Dualsense controller is now {dualsense_status}.", icon, 3000
+            self.tr("XBOX controller emulation {xbox_status}.").format(xbox_status=xbox_status),
+            self.tr("Dualsense controller is now {dualsense_status}.").format(dualsense_status=dualsense_status),
+            icon,
+            3000,
         )
 
     def start_steam(self):
@@ -436,14 +444,15 @@ class MakeSense(QMainWindow):
             controller_battery_status = self.controller.battery.value.charging
             controller_connection_type = self.controller.connection_type.name
             if controller_battery_status:
-                battery_status = "Charging"
+                battery_status = self.tr("Charging")
             else:
-                battery_status = "Discharging"
+                battery_status = self.tr("Discharging")
 
             if controller_connection_type == "USB_01":
-                connexion_type = "Wired"
+                connexion_type = self.tr("Wired")
             else:
-                connexion_type = "Bluetooth"
+                connexion_type = self.tr("Bluetooth")
+
             self.ui.batteryBar.setValue(controller_battery_level)
             self.ui.batteryLabel.setText(f"{controller_battery_level}%")
             self.ui.batteryStatusLabel.setText(battery_status)
@@ -455,8 +464,12 @@ class MakeSense(QMainWindow):
             ):
                 if not self.notification_sent:
                     self.tray_icon.showMessage(
-                        "Low battery", "Dualsense controller battery is low.", QIcon("icons/icon.png"), 3000
+                        self.tr("Low battery"),
+                        self.tr("Dualsense controller battery is low."),
+                        QIcon("icons/icon.png"),
+                        3000,
                     )
+
                     self.notification_sent = True
             if self.notification_sent and controller_battery_level > 25:
                 self.notification_sent = False
