@@ -9,7 +9,7 @@ import darkdetect
 from PyQt6.QtWidgets import QApplication, QMessageBox
 from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QMainWindow, QSystemTrayIcon, QMenu
-from PyQt6.QtCore import QTimer, QPointF, QPoint, QSharedMemory
+from PyQt6.QtCore import QTimer, QPointF, QPoint, QSharedMemory, QTranslator, QLocale
 from PyQt6.QtGui import QAction, QCursor
 from design import Ui_MainWindow
 from dualsense_controller import DualSenseController
@@ -514,6 +514,21 @@ class MakeSense(QMainWindow):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
+    translator = QTranslator()
+    locale = QLocale.system().name()
+    if locale.startswith("en"):
+        file_name = "tr/qms_en.qm"
+    elif locale.startswith("es"):
+        file_name = "tr/qms_es.qm"
+    elif locale.startswith("fr"):
+        file_name = "tr/qms_fr.qm"
+    elif locale.startswith("de"):
+        file_name = "tr/qms_de.qm"
+    else:
+        file_name = None
+
+    if file_name and translator.load(file_name):
+        app.installTranslator(translator)
     if is_windows_10():
         app.setStyle("Fusion")
     shared_memory = single_instance_check()
