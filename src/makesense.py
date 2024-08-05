@@ -530,13 +530,13 @@ if __name__ == "__main__":
     translator = QTranslator()
     locale = QLocale.system().name()
     if locale.startswith("en"):
-        file_name = "tr/qms_en.qm"
+        file_name = "tr/makesense_en.qm"
     elif locale.startswith("es"):
-        file_name = "tr/qms_es.qm"
+        file_name = "tr/makesense_es.qm"
     elif locale.startswith("fr"):
-        file_name = "tr/qms_fr.qm"
+        file_name = "tr/makesense_fr.qm"
     elif locale.startswith("de"):
-        file_name = "tr/qms_de.qm"
+        file_name = "tr/makesense_de.qm"
     else:
         file_name = None
 
