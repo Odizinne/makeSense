@@ -528,15 +528,10 @@ class MakeSense(QMainWindow):
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     translator = QTranslator()
-    locale = QLocale.system().name()
-    if locale.startswith("en"):
-        file_name = "tr/makesense_en.qm"
-    elif locale.startswith("es"):
-        file_name = "tr/makesense_es.qm"
-    elif locale.startswith("fr"):
-        file_name = "tr/makesense_fr.qm"
-    elif locale.startswith("de"):
-        file_name = "tr/makesense_de.qm"
+    locale_name = QLocale.system().name()
+    locale = locale_name[:2]
+    if locale:
+        file_name = f"makesense_{locale}.qm"
     else:
         file_name = None
 
