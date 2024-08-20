@@ -22,7 +22,7 @@ build_exe_options = {
 
 executables = [
     Executable(
-        os.path.join(src_dir, "makesense.py"),
+        os.path.join(src_dir, "main.py"),
         base="Win32GUI",
         icon=os.path.join(src_dir, "icons/icon.ico"),
         target_name="makeSense.exe",

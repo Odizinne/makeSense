@@ -9,13 +9,12 @@ import darkdetect
 from PyQt6.QtWidgets import QApplication, QMessageBox
 from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QMainWindow, QSystemTrayIcon, QMenu
-from PyQt6.QtCore import QTimer, QPointF, QPoint, QSharedMemory, QTranslator, QLocale, QCoreApplication
+from PyQt6.QtCore import QTimer, QPointF, QPoint, QCoreApplication
 from PyQt6.QtGui import QAction, QCursor
 from design import Ui_MainWindow
 from dualsense_controller import DualSenseController
 from controller_checker import ControllerChecker
 from virtual_xbox_gamepad import VirtualXBOXGamepad
-from utils import is_windows_10
 from color_utils import set_frame_color_based_on_window
 
 hidhide_path = r"C:\Program Files\Nefarius Software Solutions\HidHide\x64\hidhidecli.exe"
@@ -46,15 +45,6 @@ def show_error_and_exit(title, message):
     sys.exit(1)
 
 
-def single_instance_check():
-    shared_memory = QSharedMemory("makeSense")
-
-    if shared_memory.attach() or not shared_memory.create(1):
-        sys.exit(1)
-
-    return shared_memory
-
-
 check_dependencies()
 
 
@@ -73,7 +63,6 @@ class MakeSense(QMainWindow):
         self.device_instance_path = None
         self.notification_sent = None
         self.hide_dualsense = None
-        self.shared_memory = shared_memory
         self.rumble_intensity = 50
         self.settings_file = os.path.join(os.getenv("APPDATA"), "makesense", "settings.json")
         self.setup_comboboxes()
@@ -93,7 +82,7 @@ class MakeSense(QMainWindow):
             return "icons/icon_light.png"
 
     def set_fusion_frames(self):
-        if app.style().objectName() == "fusion":
+        if self.style().objectName() == "fusion":
             set_frame_color_based_on_window(self, self.ui.gridFrame)
             set_frame_color_based_on_window(self, self.ui.batteryFrame)
             set_frame_color_based_on_window(self, self.ui.lightbarFrame)
@@ -523,22 +512,3 @@ class MakeSense(QMainWindow):
         if self.controller:
             self.controller.lightbar.set_color(r, g, b)
         self.save_settings()
-
-
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    translator = QTranslator()
-    locale_name = QLocale.system().name()
-    locale = locale_name[:2]
-    if locale:
-        file_name = f"makesense_{locale}.qm"
-    else:
-        file_name = None
-
-    if file_name and translator.load(file_name):
-        app.installTranslator(translator)
-    if is_windows_10():
-        app.setStyle("Fusion")
-    shared_memory = single_instance_check()
-    makesense = MakeSense()
-    sys.exit(app.exec())
